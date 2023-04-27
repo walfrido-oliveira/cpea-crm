@@ -9,7 +9,9 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\ContactTypeController;
 use App\Http\Controllers\EmailConfigController;
+use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\TemplateEmailController;
+use App\Http\Controllers\ProposedStatusController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\GeneralContactTypeController;
 
@@ -125,6 +127,24 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('status-integracao')->name('prospecting-statuss.')->group(function(){
         Route::post('/filter', [ProspectingStatusController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('status-proposta', ProposedStatusController::class, [
+        'names' => 'proposed-statuss'])->parameters([
+        'status-proposta' => 'proposed-status'
+    ]);
+
+    Route::prefix('status-proposta')->name('proposed-statuss.')->group(function(){
+        Route::post('/filter', [ProposedStatusController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('status-projeto', ProjectStatusController::class, [
+        'names' => 'project-statuss'])->parameters([
+        'status-projeto' => 'project-status'
+    ]);
+
+    Route::prefix('status-projeto')->name('project-statuss.')->group(function(){
+        Route::post('/filter', [ProjectStatusController::class, 'filter'])->name('filter');
     });
 
 });
