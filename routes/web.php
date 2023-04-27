@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\EmailConfigController;
 use App\Http\Controllers\TemplateEmailController;
@@ -66,6 +67,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('cargos')->name('occupations.')->group(function(){
         Route::post('/filter', [OccupationController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('diretorias', DirectionController::class, [
+        'names' => 'directions'])->parameters([
+        'diretorias' => 'direction'
+    ]);
+
+    Route::prefix('diretorias')->name('directions.')->group(function(){
+        Route::post('/filter', [DirectionController::class, 'filter'])->name('filter');
     });
 
 });

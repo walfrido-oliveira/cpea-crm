@@ -1,19 +1,19 @@
 <x-app-layout>
-    <div class="py-6 show-occupations">
+    <div class="py-6 show-directions">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
             <div class="flex md:flex-row flex-col">
                 <div class="w-full flex items-center">
-                    <h1>{{ __('Detalhes do Cargo') }}</h1>
+                    <h1>{{ __('Detalhes do Diretoria') }}</h1>
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2 ">
-                        <a class="btn-outline-info" href="{{ route('occupations.index') }}">{{ __('Listar') }}</a>
+                        <a class="btn-outline-info" href="{{ route('directions.index') }}">{{ __('Listar') }}</a>
                     </div>
                     <div class="m-2">
-                        <a class="btn-outline-warning" href="{{ route('occupations.edit', ['occupation' => $occupation->id]) }}">{{ __('Editar') }}</a>
+                        <a class="btn-outline-warning" href="{{ route('directions.edit', ['direction' => $direction->id]) }}">{{ __('Editar') }}</a>
                     </div>
                     <div class="m-2">
-                        <button type="button" class="btn-outline-danger delete-occupation" id="occupation_delete" data-toggle="modal" data-target="#delete_modal" data-id="{{ $occupation->id }}">{{ __('Apagar') }}</button>
+                        <button type="button" class="btn-outline-danger delete-direction" id="direction_delete" data-toggle="modal" data-target="#delete_modal" data-id="{{ $direction->id }}">{{ __('Apagar') }}</button>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="w-full md:w-1/2">
-                            <p class=   "text-gray-500 font-bold">{{ $occupation->id }}</p>
+                            <p class=   "text-gray-500 font-bold">{{ $direction->id }}</p>
                         </div>
                     </div>
 
@@ -35,7 +35,7 @@
                             <p class="font-bold">{{ __('Nome') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $occupation->name }}</p>
+                            <p class="text-gray-500 font-bold">{{ $direction->name }}</p>
                         </div>
                     </div>
 
@@ -44,7 +44,7 @@
                             <p class="font-bold">{{ __('Data de Cadastro') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $occupation->created_at->format('d/m/Y H:i:s')}}</p>
+                            <p class="text-gray-500 font-bold">{{ $direction->created_at->format('d/m/Y H:i:s')}}</p>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                             <p class="font-bold">{{ __('Última Edição') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $occupation->updated_at->format('d/m/Y H:i:s')}}</p>
+                            <p class="text-gray-500 font-bold">{{ $direction->updated_at->format('d/m/Y H:i:s')}}</p>
                         </div>
                     </div>
                 </div>
@@ -62,18 +62,18 @@
         </div>
     </div>
 
-    <x-modal title="{{ __('Excluir cargo') }}"
-             msg="{{ __('Deseja realmente apagar esse cargo?') }}"
-             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_occupation_modal"
+    <x-modal title="{{ __('Excluir departamento') }}"
+             msg="{{ __('Deseja realmente apagar esse departamento?') }}"
+             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_direction_modal"
              method="DELETE"
-             url="{{ route('occupations.destroy', ['occupation' => $occupation->id]) }}"
-             redirect-url="{{ route('occupations.index') }}"/>
+             url="{{ route('directions.destroy', ['direction' => $direction->id]) }}"
+             redirect-url="{{ route('directions.index') }}"/>
 
     <script>
         function eventsDeleteCallback() {
-            document.querySelectorAll('.delete-occupation').forEach(item => {
+            document.querySelectorAll('.delete-direction').forEach(item => {
             item.addEventListener("click", function() {
-                var modal = document.getElementById("delete_occupation_modal");
+                var modal = document.getElementById("delete_direction_modal");
                 modal.classList.remove("hidden");
                 modal.classList.add("block");
             })
