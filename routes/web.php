@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\ContactTypeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\OccupationController;
@@ -76,6 +77,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('diretorias')->name('directions.')->group(function(){
         Route::post('/filter', [DirectionController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('tipo-contato', ContactTypeController::class, [
+        'names' => 'contact-types'])->parameters([
+        'tipo-contato' => 'contact_type'
+    ]);
+
+    Route::prefix('tipo-contato')->name('contact-types.')->group(function(){
+        Route::post('/filter', [ContactTypeController::class, 'filter'])->name('filter');
     });
 
 });
