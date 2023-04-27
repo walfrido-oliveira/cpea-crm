@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\prospectingStatus;
+use App\Models\ProspectingStatus;
 
 class ProspectingStatusController extends Controller
 {
@@ -16,7 +16,7 @@ class ProspectingStatusController extends Controller
      */
     public function index(Request $request)
     {
-        $prospectingStatuss =  prospectingStatus::filter($request->all());
+        $prospectingStatuss =  ProspectingStatus::filter($request->all());
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
 
@@ -47,7 +47,7 @@ class ProspectingStatusController extends Controller
 
         $input = $request->all();
 
-       prospectingStatus::create([
+        ProspectingStatus::create([
             'name' => $input['name'],
         ]);
 
@@ -67,7 +67,7 @@ class ProspectingStatusController extends Controller
      */
     public function show($id)
     {
-        $prospectingStatus = prospectingStatus::findOrFail($id);
+        $prospectingStatus = ProspectingStatus::findOrFail($id);
         return view('prospecting-statuss.show', compact('prospectingStatus'));
     }
 
@@ -79,7 +79,7 @@ class ProspectingStatusController extends Controller
      */
     public function edit($id)
     {
-        $prospectingStatus = prospectingStatus::findOrFail($id);
+        $prospectingStatus = ProspectingStatus::findOrFail($id);
         return view('prospecting-statuss.edit', compact('prospectingStatus'));
     }
 
@@ -92,7 +92,7 @@ class ProspectingStatusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $prospectingStatus = prospectingStatus::findOrFail($id);
+        $prospectingStatus = ProspectingStatus::findOrFail($id);
 
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('contact_types', 'name')->ignore($prospectingStatus->id)],
@@ -120,7 +120,7 @@ class ProspectingStatusController extends Controller
      */
     public function destroy($id)
     {
-        $prospectingStatus = prospectingStatus::findOrFail($id);
+        $prospectingStatus = ProspectingStatus::findOrFail($id);
 
         $prospectingStatus->delete();
 
@@ -138,7 +138,7 @@ class ProspectingStatusController extends Controller
      */
     public function filter(Request $request)
     {
-        $prospectingStatuss = prospectingStatus::filter($request->all());
+        $prospectingStatuss = ProspectingStatus::filter($request->all());
         $orderBy = $request->get('order_by');
         $ascending = $request->get('ascending');
         $paginatePerPage = $request->get('paginate_per_page');
