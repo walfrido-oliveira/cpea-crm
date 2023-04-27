@@ -98,6 +98,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
     });
 
+    Route::resource('setores', SegmentController::class, [
+        'names' => 'sectors'])->parameters([
+        'setores' => 'sector'
+    ]);
+
+    Route::prefix('setores')->name('sectors.')->group(function(){
+        Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
+    });
+
 });
 
 
