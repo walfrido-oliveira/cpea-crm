@@ -8,6 +8,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\EmailConfigController;
+use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\TemplateEmailController;
 
 /*
@@ -86,6 +87,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('tipo-contato')->name('contact-types.')->group(function(){
         Route::post('/filter', [ContactTypeController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('segmentos', SegmentController::class, [
+        'names' => 'segments'])->parameters([
+        'segmentos' => 'segment'
+    ]);
+
+    Route::prefix('segmentos')->name('segments.')->group(function(){
+        Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
     });
 
 });
