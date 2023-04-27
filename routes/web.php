@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Fornecedore;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ToController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\EmailConfigController;
 use App\Http\Controllers\TemplateEmailController;
 
@@ -39,12 +39,33 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     });
 
     Route::prefix('config')->name('config.')->group(function(){
+        Route::get('/', [ConfigController::class, 'index'])->name('index');
+        Route::post('/store', [ConfigController::class, 'store'])->name('store');
+
         Route::prefix('emails')->name('emails.')->group(function(){
             Route::get('/', [EmailConfigController::class, 'index'])->name('index');
             Route::post('/store', [EmailConfigController::class, 'store'])->name('store');
             Route::resource('templates', TemplateEmailController::class);
             Route::get('templates/mail-preview/{template}', [TemplateEmailController::class, 'show'])->name("templates.mail-preview");
         });
+    });
+
+    Route::resource('departamentos', DepartmentController::class, [
+        'names' => 'departments'])->parameters([
+        'departamentos' => 'department'
+    ]);
+
+    Route::prefix('departamentos')->name('departments.')->group(function(){
+        Route::post('/filter', [DepartmentController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('cargos', OccupationController::class, [
+        'names' => 'occupations'])->parameters([
+        'cargos' => 'occupation'
+    ]);
+
+    Route::prefix('cargos')->name('occupations.')->group(function(){
+        Route::post('/filter', [OccupationController::class, 'filter'])->name('filter');
     });
 
 });

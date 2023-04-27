@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Department;
+use App\Models\Occupation;
 use App\Events\CreatedUser;
+use App\Events\UpdatedUser;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
@@ -40,6 +43,8 @@ class UserController extends Controller
     {
         $roles =  Role::all()->pluck('name', 'name');
         $status = User::getStatusArray();
+        $occupations  = Occupation::all()->pluck('name', 'id');
+        $departments = Department::all()->pluck('name', 'id');
 
         return view('users.create', compact('roles', 'status', 'occupations', 'departments'));
     }
@@ -61,7 +66,18 @@ class UserController extends Controller
             'email' => $input['email'],
             'status' => $input['status'],
             'password' => Hash::make(Str::random(8)),
+            'crq' => $input['crq'],
+            'department_id' => $input['department_id'],
+            'occupation_id' => $input['occupation_id'],
         ]);
+
+        if($request->signer) {
+            $sigerName = time().'.'.$request->signer->getClientOriginalExtension();
+            $request->signer->move(public_path(User::getSignerPath()), $sigerName);
+            $signerPath = User::getSignerPath() . '/' . $sigerName;
+            $user->signer = $signerPath;
+            $user->save();
+        }
 
         $user->syncRoles([$input['role']]);
 
@@ -104,8 +120,10 @@ class UserController extends Controller
         $roles =  Role::all()->pluck('name', 'name');
         $userRole = $user->roles->values()->get(0) ? $user->roles->values()->get(0)->name : null;
         $status = User::getStatusArray();
+        $occupations  = Occupation::all()->pluck('name', 'id');
+        $departments = Department::all()->pluck('name', 'id');
 
-        return view('users.edit', compact('user', 'roles', 'status', 'userRole'));
+        return view('users.edit', compact('user', 'roles', 'status', 'userRole', 'occupations', 'departments'));
     }
 
     /**
@@ -126,7 +144,18 @@ class UserController extends Controller
             'last_name' => $input['last_name'],
             'phone' => preg_replace('/[^0-9]/', '', $input['phone']),
             'status' => $input['status'],
+            'crq' => $input['crq'],
+            'department_id' => $input['department_id'],
+            'occupation_id' => $input['occupation_id'],
         ]);
+
+        if($request->signer) {
+            $sigerName = time().'.'.$request->signer->getClientOriginalExtension();
+            $request->signer->move(public_path(User::getSignerPath()), $sigerName);
+            $signerPath = User::getSignerPath() . '/' . $sigerName;
+            $user->signer = $signerPath;
+            $user->save();
+        }
 
         $user->syncRoles([$input['role']]);
 
@@ -162,6 +191,7 @@ class UserController extends Controller
     public function filter(Request $request)
     {
         $users = User::filter($request->all());
+        $users = $users->setPath('');
         $orderBy = $request->get('order_by');
         $ascending = $request->get('ascending');
         $paginatePerPage = $request->get('paginate_per_page');

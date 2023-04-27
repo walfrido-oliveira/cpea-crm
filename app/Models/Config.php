@@ -44,7 +44,6 @@ class Config extends Model
             $config = self::getAllConfigs()->where('name', $key)->first();
             return self::castValue($config->value, $config->type);
         }
-
         return "";
     }
 
