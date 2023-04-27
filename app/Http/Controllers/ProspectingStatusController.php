@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\prospectingStatus;
 
-class prospectingStatusController extends Controller
+class ProspectingStatusController extends Controller
 {
      /**
     * Display a listing of the user.

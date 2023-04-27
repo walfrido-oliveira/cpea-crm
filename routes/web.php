@@ -10,8 +10,8 @@ use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\ContactTypeController;
 use App\Http\Controllers\EmailConfigController;
 use App\Http\Controllers\TemplateEmailController;
+use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\GeneralContactTypeController;
-use App\Http\Controllers\prospectingStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,13 +118,13 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
     });
 
-    Route::resource('status-integracao', prospectingStatusController::class, [
+    Route::resource('status-integracao', ProspectingStatusController::class, [
         'names' => 'prospecting-statuss'])->parameters([
         'status-integracao' => 'prospecting-status'
     ]);
 
     Route::prefix('status-integracao')->name('prospecting-statuss.')->group(function(){
-        Route::post('/filter', [prospectingStatusController::class, 'filter'])->name('filter');
+        Route::post('/filter', [ProspectingStatusController::class, 'filter'])->name('filter');
     });
 
 });
