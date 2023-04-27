@@ -3,13 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
-use App\Http\Controllers\ContactTypeController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\DirectionController;
-use App\Http\Controllers\OccupationController;
-use App\Http\Controllers\EmailConfigController;
 use App\Http\Controllers\SegmentController;
+use App\Http\Controllers\DirectionController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\OccupationController;
+use App\Http\Controllers\ContactTypeController;
+use App\Http\Controllers\EmailConfigController;
 use App\Http\Controllers\TemplateEmailController;
+use App\Http\Controllers\GeneralContactTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('tipo-contato')->name('contact-types.')->group(function(){
         Route::post('/filter', [ContactTypeController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('tipo-contato-geral', GeneralContactTypeController::class, [
+        'names' => 'general-contact-types'])->parameters([
+        'tipo-contato-geral' => 'general_contact_type'
+    ]);
+
+    Route::prefix('tipo-contato-geral')->name('general-contact-types.')->group(function(){
+        Route::post('/filter', [GeneralContactTypeController::class, 'filter'])->name('filter');
     });
 
     Route::resource('segmentos', SegmentController::class, [
