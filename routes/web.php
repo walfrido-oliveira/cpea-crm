@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\SectorController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OccupationController;
@@ -149,13 +151,29 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('/filter', [ProjectStatusController::class, 'filter'])->name('filter');
     });
 
-    Route::resource('produto', ProductController::class, [
+    Route::resource('produtos', ProductController::class, [
         'names' => 'products'])->parameters([
-        'produto' => 'product'
+        'produtos' => 'product'
     ]);
 
-    Route::prefix('produto')->name('products.')->group(function(){
+    Route::prefix('produtos')->name('products.')->group(function(){
         Route::post('/filter', [ProductController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('clientes', CustomerController::class, [
+        'names' => 'customers'])->parameters([
+        'clientes' => 'customer'
+    ]);
+
+    Route::prefix('clientes')->name('customers.')->group(function(){
+        Route::post('/filter', [CustomerController::class, 'filter'])->name('filter');
+
+        Route::prefix('contato')->name('customers.')->group(function(){
+            Route::put('/', [ContactController::class, 'store'])->name('store');
+            Route::post('/{contact}', [ContactController::class, 'update'])->name('update');
+            Route::delete('/{contact}', [ContactController::class, 'update'])->name('update');
+        });
+
     });
 
 });

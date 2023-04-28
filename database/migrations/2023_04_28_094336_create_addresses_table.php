@@ -18,7 +18,7 @@ class CreateAddressesTable extends Migration
             $table->char("cep", 8)->index();
             $table->string("address");
             $table->string("number");
-            $table->string("complement");
+            $table->string("complement")->nullbale();
             $table->string("district");
             $table->string("city")->index();
             $table->char("state", 2)->index();

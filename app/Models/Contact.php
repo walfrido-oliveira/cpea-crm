@@ -15,7 +15,7 @@ class Contact extends Model
      * @var array
      */
     protected $fillable = [
-        'general_contact_type_id', 'description', 'obs'
+        'general_contact_type_id', 'description', 'obs', 'customer_id'
     ];
 
     /**
