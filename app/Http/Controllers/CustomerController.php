@@ -25,6 +25,7 @@ class CustomerController extends Controller
             'segment_id' => ['required', 'exists:segments,id'],
             'sector_id' => ['required', 'exists:sectors,id'],
             'addresses' => ['required'],
+            'status' => ['in:active,inactive', 'nullable']
         ]);
     }
 
@@ -39,8 +40,10 @@ class CustomerController extends Controller
         $customers =  Customer::filter($request->all());
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
+        $status = Customer::getStatusArray();
+        $segments = Segment::pluck("name", "id");
 
-        return view('customers.index', compact('customers', 'ascending', 'orderBy'));
+        return view('customers.index', compact('customers', 'ascending', 'orderBy', 'status', 'segments'));
     }
 
     /**
@@ -138,8 +141,9 @@ class CustomerController extends Controller
         $segments = Segment::pluck("name", "id");
         $sectors = Sector::pluck("name", "id");
         $generalContactTypes = GeneralContactType::pluck("name", "id");
+        $status = Customer::getStatusArray();
 
-        return view('customers.edit', compact('customer', 'segments', 'sectors', 'generalContactTypes'));
+        return view('customers.edit', compact('customer', 'segments', 'sectors', 'generalContactTypes', 'status'));
     }
 
     /**
@@ -165,6 +169,7 @@ class CustomerController extends Controller
             'competitors' => $input['competitors'],
             'segment_id' => $input['segment_id'],
             'sector_id' => $input['sector_id'],
+            'status' => $input['status'],
         ]);
 
         if(isset($customer->addresses[0]) && isset($inputs["addresses"])) {

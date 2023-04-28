@@ -20,6 +20,7 @@ class CreateCustomersTable extends Migration
             $table->string("corporate_name");
             $table->text("obs")->nullable();
             $table->text("competitors")->nullable();
+            $table->string("status")->default("active");
 
             $table->foreignId('sector_id')->constrained()->cascadeOnDelete();
             $table->foreignId('segment_id')->constrained()->cascadeOnDelete();

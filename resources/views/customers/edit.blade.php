@@ -7,7 +7,7 @@
                 <input type="hidden" name="customer_id" id="customer_id" value="{{ $customer->id }}">
                 <div class="flex md:flex-row flex-col">
                     <div class="w-full flex items-center">
-                        <h1>{{ __('Produto') }}</h1>
+                        <h1>{{ __('Cliente') }}</h1>
                     </div>
                     <div class="w-full flex justify-end">
                         <div class="m-2 ">
@@ -49,6 +49,12 @@
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="segment_id" value="{{ __('Segmento') }}" required/>
                             <x-custom-select :options="$segments" value="{{ $customer->segment_id }}" name="segment_id" id="segment_id" class="mt-1"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="status" value="{{ __('Situação do Cliente') }}" required/>
+                            <x-custom-select class="mt-1" :options="$status" name="status" id="status" :value="$customer->status" required/>
                         </div>
                     </div>
                 </div>

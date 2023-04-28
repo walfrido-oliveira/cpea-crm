@@ -15,8 +15,18 @@ class Customer extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'cnpj', 'corporate_name', 'obs', 'competitors', 'segment_id', 'sector_id'
+        'name', 'cnpj', 'corporate_name', 'obs', 'competitors', 'segment_id', 'sector_id', 'status'
     ];
+
+    /**
+     * Get status array
+     *
+     * @return Array
+     */
+    public static function getStatusArray()
+    {
+        return  ['active' => 'Ativo', 'inactive' => 'Inativo'];
+    }
 
     /**
      * The Segment
@@ -74,6 +84,22 @@ class Customer extends Model
                 if(!is_null($query['id']))
                 {
                     $q->where('id', $query['id']);
+                }
+            }
+
+            if(isset($query['segment_id']))
+            {
+                if(!is_null($query['segment_id']))
+                {
+                    $q->where('segment_id', $query['segment_id']);
+                }
+            }
+
+            if(isset($query['status']))
+            {
+                if(!is_null($query['status']))
+                {
+                    $q->where('status', $query['status']);
                 }
             }
 

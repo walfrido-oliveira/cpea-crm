@@ -1,19 +1,19 @@
 <x-app-layout>
-    <div class="py-6 show-products">
+    <div class="py-6 show-customers">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
             <div class="flex md:flex-row flex-col">
                 <div class="w-full flex items-center">
-                    <h1>{{ __('Detalhes do Produto') }}</h1>
+                    <h1>{{ __('Detalhes do Cliente') }}</h1>
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2 ">
-                        <a class="btn-outline-info" href="{{ route('products.index') }}">{{ __('Listar') }}</a>
+                        <a class="btn-outline-info" href="{{ route('customers.index') }}">{{ __('Listar') }}</a>
                     </div>
                     <div class="m-2">
-                        <a class="btn-outline-warning" href="{{ route('products.edit', ['product' => $product->id]) }}">{{ __('Editar') }}</a>
+                        <a class="btn-outline-warning" href="{{ route('customers.edit', ['customer' => $customer->id]) }}">{{ __('Editar') }}</a>
                     </div>
                     <div class="m-2">
-                        <button type="button" class="btn-outline-danger delete-product" id="product_delete" data-toggle="modal" data-target="#delete_modal" data-id="{{ $product->id }}">{{ __('Apagar') }}</button>
+                        <button type="button" class="btn-outline-danger delete-customer" id="customer_delete" data-toggle="modal" data-target="#delete_modal" data-id="{{ $customer->id }}">{{ __('Apagar') }}</button>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="w-full md:w-1/2">
-                            <p class=   "text-gray-500 font-bold">{{ $product->id }}</p>
+                            <p class=   "text-gray-500 font-bold">{{ $customer->id }}</p>
                         </div>
                     </div>
 
@@ -35,7 +35,7 @@
                             <p class="font-bold">{{ __('Nome') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $product->name }}</p>
+                            <p class="text-gray-500 font-bold">{{ $customer->name }}</p>
                         </div>
                     </div>
 
@@ -44,7 +44,7 @@
                             <p class="font-bold">{{ __('Data de Cadastro') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $product->created_at->format('d/m/Y H:i:s')}}</p>
+                            <p class="text-gray-500 font-bold">{{ $customer->created_at->format('d/m/Y H:i:s')}}</p>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                             <p class="font-bold">{{ __('Última Edição') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $product->updated_at->format('d/m/Y H:i:s')}}</p>
+                            <p class="text-gray-500 font-bold">{{ $customer->updated_at->format('d/m/Y H:i:s')}}</p>
                         </div>
                     </div>
                 </div>
@@ -64,16 +64,16 @@
 
     <x-modal title="{{ __('Excluir cargo') }}"
              msg="{{ __('Deseja realmente apagar esse cargo?') }}"
-             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_product_modal"
+             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_customer_modal"
              method="DELETE"
-             url="{{ route('products.destroy', ['product' => $product->id]) }}"
-             redirect-url="{{ route('products.index') }}"/>
+             url="{{ route('customers.destroy', ['customer' => $customer->id]) }}"
+             redirect-url="{{ route('customers.index') }}"/>
 
     <script>
         function eventsDeleteCallback() {
-            document.querySelectorAll('.delete-product').forEach(item => {
+            document.querySelectorAll('.delete-customer').forEach(item => {
             item.addEventListener("click", function() {
-                var modal = document.getElementById("delete_product_modal");
+                var modal = document.getElementById("delete_customer_modal");
                 modal.classList.remove("hidden");
                 modal.classList.add("block");
             })

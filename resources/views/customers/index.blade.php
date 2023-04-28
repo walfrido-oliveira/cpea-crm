@@ -21,7 +21,7 @@
                     <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
                         <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="id">
-                                {{ __('ID') }}
+                                {{ __('Cód Cliente') }}
                             </label>
                             <x-jet-input id="id" class="form-control block w-full filter-field" type="text" name="id" :value="app('request')->input('id')" autofocus autocomplete="id" />
                         </div>
@@ -30,6 +30,18 @@
                                 {{ __('Cliente') }}
                             </label>
                             <x-jet-input id="name" class="form-control block w-full filter-field" type="text" name="name" :value="app('request')->input('name')" autofocus autocomplete="name" />
+                        </div>
+                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="segment_id">
+                                {{ __('Segmento') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$segments" name="segment_id" id="segment_id" value=""/>
+                        </div>
+                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="status">
+                                {{ __('Situação') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$status" name="status" id="status" value=""/>
                         </div>
                     </div>
                 </div>
@@ -45,8 +57,8 @@
         </div>
     </div>
 
-    <x-modal title="{{ __('Excluir Produto') }}"
-             msg="{{ __('Deseja realmente apagar esse Produto?') }}"
+    <x-modal title="{{ __('Excluir Cliente') }}"
+             msg="{{ __('Deseja realmente apagar esse Cliente?') }}"
              confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_customer_modal"
              method="DELETE"
              redirect-url="{{ route('customers.index') }}"/>
@@ -61,6 +73,8 @@
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
                 var id = document.getElementById("id").value;
                 var name = document.getElementById("name").value;
+                var segment_id = document.getElementById("segment_id").value;
+                var status = document.getElementById("status").value;
 
                 ajax.open(method, url);
 
@@ -86,6 +100,8 @@
                 data.append('order_by', orderBY);
                 if(id) data.append('id', id);
                 if(name) data.append('name', name);
+                if(segment_id) data.append('segment_id', segment_id);
+                if(status) data.append('status', status);
 
                 ajax.send(data);
             }
@@ -104,6 +120,8 @@
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
                 var id = document.getElementById("id").value;
                 var name = document.getElementById("name").value;
+                var segment_id = document.getElementById("segment_id").value;
+                var status = document.getElementById("status").value;
 
                 ajax.open(method, url);
 
@@ -130,6 +148,8 @@
                 data.append('order_by', orderBY);
                 if(id) data.append('id', id);
                 if(name) data.append('name', name);
+                if(segment_id) data.append('segment_id', segment_id);
+                if(status) data.append('status', status);
 
                 ajax.send(data);
             }
