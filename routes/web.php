@@ -170,10 +170,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('/filter', [CustomerController::class, 'filter'])->name('filter');
         Route::post('/cnpj/{cnpj}', [CustomerController::class, 'cnpj'])->name('cnpj');
 
-        Route::prefix('contato')->name('cintact.')->group(function(){
-            Route::put('/', [ContactController::class, 'store'])->name('store');
-            Route::post('/{contact}', [ContactController::class, 'update'])->name('update');
-            Route::delete('/{contact}', [ContactController::class, 'update'])->name('update');
+        Route::prefix('contato')->name('contact.')->group(function(){
+            Route::put('/store', [ContactController::class, 'store'])->name('store');
+            Route::post('/update/{contact}', [ContactController::class, 'update'])->name('update');
+            Route::delete('/delete/{contact}', [ContactController::class, 'destroy'])->name('delete');
         });
 
         Route::prefix('endereco')->name('address.')->group(function(){

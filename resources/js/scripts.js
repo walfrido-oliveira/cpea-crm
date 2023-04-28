@@ -96,31 +96,6 @@ window.addEventListener("load", function() {
     });
     window.SpinLoad = new SpinLoad("spin_load");
 
-    document.querySelectorAll('.filter-field').forEach(item => {
-        item.addEventListener("change", function() {
-            if(item.value) {
-                const getUrl = window.location;
-                //const baseUrl = `${getUrl.protocol}//${getUrl.host}/${getUrl.pathname.split('/')[1]}?`;
-                const baseUrl = `${window.location.href}${!window.location.href.includes("?") ? '?' : ''}`;
-
-                const nextURL = `${baseUrl}${this.name}=${this.value}&`;
-                const nextTitle = '';
-                const nextState = { additionalInformation: '' };
-
-                window.history.pushState(nextState, nextTitle, nextURL);
-
-            } else {
-                const regex = new RegExp(item.name + "=.*");
-                const baseUrl = window.location.href.replace(regex, '');
-
-                const nextURL = `${baseUrl}`;
-                const nextTitle = '';
-                const nextState = { additionalInformation: '' };
-
-                window.history.pushState(nextState, nextTitle, nextURL);
-            }
-        });
-    });
 });
 
 class SpinLoad {

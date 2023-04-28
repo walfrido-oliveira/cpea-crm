@@ -1,9 +1,10 @@
 <x-app-layout>
-    <div class="py-6 edit-products">
+    <div class="py-6 edit-customers">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
-            <form method="POST" action="{{ route('products.update', ['product' => $customer->id]) }}">
+            <form method="POST" action="{{ route('customers.update', ['customer' => $customer->id]) }}">
                 @csrf
                 @method("PUT")
+                <input type="hidden" name="customer_id" id="customer_id" value="{{ $customer->id }}">
                 <div class="flex md:flex-row flex-col">
                     <div class="w-full flex items-center">
                         <h1>{{ __('Produto') }}</h1>
@@ -13,7 +14,7 @@
                             <button type="submit" class="btn-outline-success">{{ __('Confirmar') }}</button>
                         </div>
                         <div class="m-2">
-                            <a href="{{ route('products.index')}}" class="btn-outline-danger">{{ __('Cancelar') }}</a>
+                            <a href="{{ route('customers.index')}}" class="btn-outline-danger">{{ __('Cancelar') }}</a>
                         </div>
                     </div>
                 </div>
@@ -103,7 +104,7 @@
                     </div>
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <div class="w-full">
-                            <table class="table table-responsive md:table w-full">
+                            <table class="table-contacts table table-responsive md:table w-full" x-data="showOrders()">
                                 <thead>
                                     <tr class="thead-light">
                                         <th scope="col"  class="custom-th">{{ __('Tipo') }}</th>
@@ -114,7 +115,35 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @forelse ($customer->contacts as $key => $contact)
+                                        @include('customers.contact-content')
+                                    @empty
+                                        <tr>
+                                            <td class="text-center" colspan="5">{{ __('Nenhum contato encontrado') }}</td>
+                                        </tr>
+                                    @endforelse
+                                    @if(count($customer->contacts) > 4)
+                                        <tr>
+                                            <td class="text-center" colspan="5">
+                                                <button class="btn-transition-secondary" type="button" id="show_all_orders"
+                                                    @click="isOpen() ? close() : show();">
+                                                    <span x-show="isOpen()">
+                                                        {{ __('Mostra menos pedidos') }}
+                                                    </span>
+                                                    <span x-show="!isOpen()">
+                                                        {{ __('Mostra todos pedidos') }}
+                                                    </span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }"
+                                                        class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -139,5 +168,7 @@
         </div>
     </div>
 
+    @include("customers.contact-modal")
+    @include("customers.delete-contact-modal")
     @include('customers.scripts')
 </x-app-layout>

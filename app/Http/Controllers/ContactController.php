@@ -3,10 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    public function validation($request)
+    {
+        $request->validate([
+            'general_contact_type_id' => ['required', 'exists:general_contact_types,id'],
+            'description' => ['required', 'string', 'max:255'],
+            'obs' => ['nullable', 'string', 'max:255'],
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -26,10 +36,12 @@ class ContactController extends Controller
             'customer_id' => $input['customer_id'],
         ]);
 
+        $key = count(Customer::find($input['customer_id'])->contacts) - 1;
+
         return response()->json([
             'message' => __('Contato Cadastrado com Sucesso!'),
             'alert-type' => 'success',
-            'contact' => $contact
+            'contact' => view('customers.contact-content', compact('contact', 'key'))->render()
         ]);
     }
 
@@ -47,6 +59,7 @@ class ContactController extends Controller
         $this->validation($request);
 
         $input = $request->all();
+        $key = $input["key"];
 
         $contact->update([
             'general_contact_type_id' => $input['general_contact_type_id'],
@@ -56,7 +69,8 @@ class ContactController extends Controller
 
         return response()->json([
             'message' => __('Contato atualizado com Sucesso!!'),
-            'alert-type' => 'success'
+            'alert-type' => 'success',
+            'contact' => view('customers.contact-content', compact('contact', 'key'))->render()
         ]);
     }
 
