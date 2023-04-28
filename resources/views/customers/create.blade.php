@@ -1,0 +1,99 @@
+<x-app-layout>
+    <div class="py-6 create-products">
+        <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
+            <form method="POST" action="{{ route('products.store') }}">
+                @csrf
+                @method("POST")
+                <div class="flex md:flex-row flex-col">
+                    <div class="w-full flex items-center">
+                        <h1>{{ __('Cliente') }}</h1>
+                    </div>
+                    <div class="w-full flex justify-end">
+                        <div class="m-2 ">
+                            <button type="submit" class="btn-outline-success">{{ __('Confirmar') }}</button>
+                        </div>
+                        <div class="m-2">
+                            <a href="{{ route('products.index')}}" class="btn-outline-danger">{{ __('Cancelar') }}</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex md:flex-row flex-col">
+                    <x-jet-validation-errors class="mb-4" />
+                </div>
+
+                <div class="py-2 my-2 bg-white rounded-lg">
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4"><h2 class="px-3 mb-6 md:mb-0">Dados do Cliente</h2></div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="name" value="{{ __('Nome do Cliente') }}" required/>
+                            <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" name="name" maxlength="255" required autofocus autocomplete="name"/>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="cnpj" value="{{ __('CNPJ') }}" required/>
+                            <x-jet-input id="cnpj" class="form-control block mt-1 w-full" type="text" name="cnpj" maxlength="20" required autofocus autocomplete="cnpj"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                            <x-jet-label for="corporate_name" value="{{ __('Razão Social') }}" required/>
+                            <x-jet-input id="corporate_name" class="form-control block mt-1 w-full" type="text" name="corporate_name" maxlength="255" required autofocus autocomplete="corporate_name"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="sector_id" value="{{ __('Setor') }}" required/>
+                            <x-custom-select :options="$sectors" value="" name="sector_id" id="sector_id" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="segment_id" value="{{ __('Segmento') }}" required/>
+                            <x-custom-select :options="$segments" value="" name="segment_id" id="segment_id" class="mt-1"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="py-2 my-2 bg-white rounded-lg">
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4"><h2 class="px-3 mb-6 md:mb-0">Endereço</h2></div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                            <x-jet-label for="cep" value="{{ __('CEP') }}" required/>
+                            <x-jet-input id="cep" class="form-control block mt-1 w-full" type="text" name="cep" maxlength="9" required autofocus autocomplete="cep"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                            <x-jet-label for="address" value="{{ __('Endereço') }}" required/>
+                            <x-jet-input id="address" class="form-control block mt-1 w-full" type="text" name="address" maxlength="255" required autofocus autocomplete="address"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="number" value="{{ __('Número') }}" required/>
+                            <x-jet-input id="number" class="form-control block mt-1 w-full" type="text" name="number" maxlength="255" required autofocus autocomplete="number"/>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="complement" value="{{ __('Complemento') }}"/>
+                            <x-jet-input id="complement" class="form-control block mt-1 w-full" type="text" name="complement" maxlength="255" autofocus autocomplete="complement"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="district" value="{{ __('Bairro') }}" required/>
+                            <x-jet-input id="district" class="form-control block mt-1 w-full" type="text" name="district" maxlength="255" required autofocus autocomplete="district"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="city" value="{{ __('Cidade') }}" required/>
+                            <x-jet-input id="city" class="form-control block mt-1 w-full" type="text" name="city" maxlength="255" required autofocus autocomplete="city"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="state" value="{{ __('Estado (UF)') }}" required/>
+                            <x-custom-select :options="states()" value="" name="state" id="state" class="mt-1"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</x-app-layout>
