@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
+use App\Models\Contact;
 use App\Models\Customer;
 use App\Models\GeneralContactType;
 use App\Models\Sector;
@@ -16,12 +18,13 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'cnpj' => ['required', 'string', 'max:14'],
+            'cnpj' => ['required', 'string', 'max:18'],
             'corporate_name' => ['required', 'string', 'max:255'],
             'obs' => ['nullable', 'string', 'max:255'],
             'competitors' => ['nullable', 'string', 'max:255'],
             'segment_id' => ['required', 'exists:segments,id'],
             'sector_id' => ['required', 'exists:sectors,id'],
+            'addresses' => ['required'],
         ]);
     }
 
@@ -68,7 +71,7 @@ class CustomerController extends Controller
 
         $customer = Customer::create([
             'name' => $input['name'],
-            'cnpj' => $input['cnpj'],
+            'cnpj' => preg_replace('/[^0-9]/', '', $input['cnpj']),
             'corporate_name' => $input['corporate_name'],
             'obs' => $input['obs'],
             'competitors' => $input['competitors'],
@@ -76,26 +79,28 @@ class CustomerController extends Controller
             'sector_id' => $input['sector_id'],
         ]);
 
-        if(isset($inputs["addresses"])) {
-            foreach ($inputs["addresses"] as $address) {
-                $customer->adresses()->create([
-                    'cep' => $address['cep'],
+        if(isset($input["addresses"])) {
+            foreach ($input["addresses"] as $address) {
+                Address::create([
+                    'cep' => preg_replace('/[^0-9]/', '', $address['cep']),
                     'address' => $address['address'],
                     'number' => $address['number'],
                     'complement' => $address['complement'],
                     'district' => $address['district'],
                     'city' => $address['city'],
                     'state' => $address['state'],
+                    'customer_id' => $customer->id,
                 ]);
             }
         }
 
-        if(isset($inputs["contacts"])) {
-            foreach ($inputs["contacts"] as $contact) {
-                $customer->adresses()->create([
+        if(isset($input["contacts"])) {
+            foreach ($input["contacts"] as $contact) {
+                Contact::create([
                     'general_contact_type_id' => $contact['general_contact_type_id'],
                     'description' => $contact['description'],
                     'obs' => $contact['obs'],
+                    'customer_id' => $customer->id,
                 ]);
             }
         }
@@ -105,7 +110,7 @@ class CustomerController extends Controller
             'alert-type' => 'success'
         ];
 
-        return redirect()->route('customers.index')->with($resp);
+        return redirect()->route('customers.edit', ['customer' => $customer->id])->with($resp);
     }
 
     /**
@@ -154,7 +159,7 @@ class CustomerController extends Controller
 
         $customer->update([
             'name' => $input['name'],
-            'cnpj' => $input['cnpj'],
+            'cnpj' => preg_replace('/[0-9]/', '', $input['cnpj']),
             'corporate_name' => $input['corporate_name'],
             'obs' => $input['obs'],
             'competitors' => $input['competitors'],
@@ -224,6 +229,13 @@ class CustomerController extends Controller
                 'ascending' => $ascending,
                 'paginate_per_page' => $paginatePerPage,
                 ])->render(),
-            ]);
+        ]);
+    }
+
+    public function cnpj($cnpj)
+    {
+        $results = file_get_contents("https://www.receitaws.com.br/v1/cnpj/" . $cnpj);
+
+        return response()->json(json_decode($results));
     }
 }

@@ -50,6 +50,11 @@ class Customer extends Model
         return $this->hasMany(Address::class);
     }
 
+    public function getFormattedCnpjAttribute()
+    {
+        return mask($this->cnpj, "##.###.###/####-##");
+    }
+
     /**
      * Find users in dabase
      *

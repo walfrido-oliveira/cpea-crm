@@ -18,8 +18,8 @@ class CreateCustomersTable extends Migration
             $table->string("name");
             $table->char("cnpj", 14)->index();
             $table->string("corporate_name");
-            $table->text("obs")->nullbale();
-            $table->text("competitors")->nullbale();
+            $table->text("obs")->nullable();
+            $table->text("competitors")->nullable();
 
             $table->foreignId('sector_id')->constrained()->cascadeOnDelete();
             $table->foreignId('segment_id')->constrained()->cascadeOnDelete();

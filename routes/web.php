@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\SectorController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
@@ -167,11 +168,16 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('clientes')->name('customers.')->group(function(){
         Route::post('/filter', [CustomerController::class, 'filter'])->name('filter');
+        Route::post('/cnpj/{cnpj}', [CustomerController::class, 'cnpj'])->name('cnpj');
 
-        Route::prefix('contato')->name('customers.')->group(function(){
+        Route::prefix('contato')->name('cintact.')->group(function(){
             Route::put('/', [ContactController::class, 'store'])->name('store');
             Route::post('/{contact}', [ContactController::class, 'update'])->name('update');
             Route::delete('/{contact}', [ContactController::class, 'update'])->name('update');
+        });
+
+        Route::prefix('endereco')->name('address.')->group(function(){
+            Route::post('/cep/{cep}', [AddressController::class, 'cep'])->name('cep');
         });
 
     });

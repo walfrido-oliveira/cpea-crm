@@ -26,6 +26,11 @@ class Address extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function getFormattedCepAttribute()
+    {
+        return mask($this->cep, "#####-###");
+    }
+
     /**
      * Find users in dabase
      *
