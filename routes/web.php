@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\DepartmentController;
@@ -145,6 +146,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('status-projeto')->name('project-statuss.')->group(function(){
         Route::post('/filter', [ProjectStatusController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('produto', ProductController::class, [
+        'names' => 'products'])->parameters([
+        'produto' => 'product'
+    ]);
+
+    Route::prefix('produto')->name('products.')->group(function(){
+        Route::post('/filter', [ProductController::class, 'filter'])->name('filter');
     });
 
 });
