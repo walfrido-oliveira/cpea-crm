@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\SectorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\DirectionController;
@@ -112,13 +113,13 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
     });
 
-    Route::resource('setores', SegmentController::class, [
+    Route::resource('setores', SectorController::class, [
         'names' => 'sectors'])->parameters([
         'setores' => 'sector'
     ]);
 
     Route::prefix('setores')->name('sectors.')->group(function(){
-        Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
+        Route::post('/filter', [SectorController::class, 'filter'])->name('filter');
     });
 
     Route::resource('status-integracao', ProspectingStatusController::class, [
