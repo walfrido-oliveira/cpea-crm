@@ -80,6 +80,7 @@ class CustomerController extends Controller
             'competitors' => $input['competitors'],
             'segment_id' => $input['segment_id'],
             'sector_id' => $input['sector_id'],
+            'created_user' => auth()->user()->id,
         ]);
 
         if(isset($input["addresses"])) {
@@ -163,20 +164,21 @@ class CustomerController extends Controller
 
         $customer->update([
             'name' => $input['name'],
-            'cnpj' => preg_replace('/[0-9]/', '', $input['cnpj']),
+            'cnpj' => preg_replace('/[^0-9]/', '', $input['cnpj']),
             'corporate_name' => $input['corporate_name'],
             'obs' => $input['obs'],
             'competitors' => $input['competitors'],
             'segment_id' => $input['segment_id'],
             'sector_id' => $input['sector_id'],
             'status' => $input['status'],
+            'updated_user' => auth()->user()->id,
         ]);
 
         if(isset($customer->addresses[0]) && isset($inputs["addresses"])) {
             $address = $inputs["addresses"][0];
 
             $customer->addresses()[0]->update([
-                'cep' => $address['cep'],
+                'cep' => preg_replace('/[^0-9]/', '', $address['cep']),
                 'address' => $address['address'],
                 'number' => $address['number'],
                 'complement' => $address['complement'],

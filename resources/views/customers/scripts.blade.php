@@ -242,19 +242,19 @@
         });
     });
 
-    function showOrders() {
+    function showContacts() {
         return {
             open: false,
             show() {
                 this.open = true;
-                setTimeout(() => document.getElementById("show_all_orders").scrollIntoView({
+                setTimeout(() => document.getElementById("show_all_contacts").scrollIntoView({
                     behavior: 'smooth',
                     block: 'end'
                 }), 100);
             },
             close() {
                 this.open = false;
-                setTimeout(() => document.getElementById("show_all_orders").scrollIntoView({
+                setTimeout(() => document.getElementById("show_all_contacts").scrollIntoView({
                     behavior: 'smooth',
                     block: 'end'
                 }), 100);

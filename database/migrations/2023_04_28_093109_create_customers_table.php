@@ -25,6 +25,12 @@ class CreateCustomersTable extends Migration
             $table->foreignId('sector_id')->constrained()->cascadeOnDelete();
             $table->foreignId('segment_id')->constrained()->cascadeOnDelete();
 
+            $table->unsignedBigInteger('created_user');
+            $table->foreign('created_user')->references('id')->on('users')->onDelete('cascade');
+
+            $table->unsignedBigInteger('updated_user')->nullable();
+            $table->foreign('updated_user')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

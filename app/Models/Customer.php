@@ -15,7 +15,8 @@ class Customer extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'cnpj', 'corporate_name', 'obs', 'competitors', 'segment_id', 'sector_id', 'status'
+        'name', 'cnpj', 'corporate_name', 'obs', 'competitors', 'segment_id', 'sector_id', 'status',
+        'created_user', 'updated_user'
     ];
 
     /**
@@ -42,6 +43,22 @@ class Customer extends Model
     public function sector()
     {
         return $this->belongsTo(Sector::class);
+    }
+
+    /**
+     * The Creator
+    */
+    public function createdUser()
+    {
+        return $this->belongsTo(User::class, 'created_user');
+    }
+
+    /**
+     * The Update
+    */
+    public function updatedUser()
+    {
+        return $this->belongsTo(User::class, 'updated_user');
     }
 
     /**

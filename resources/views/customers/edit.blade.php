@@ -110,7 +110,7 @@
                     </div>
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <div class="w-full">
-                            <table class="table-contacts table table-responsive md:table w-full" x-data="showOrders()">
+                            <table class="table-contacts table table-responsive md:table w-full" x-data="showContacts()">
                                 <thead>
                                     <tr class="thead-light">
                                         <th scope="col"  class="custom-th">{{ __('Tipo') }}</th>
@@ -131,7 +131,7 @@
                                     @if(count($customer->contacts) > 4)
                                         <tr>
                                             <td class="text-center" colspan="5">
-                                                <button class="btn-transition-secondary" type="button" id="show_all_orders"
+                                                <button class="btn-transition-secondary" type="button" id="show_all_contacts"
                                                     @click="isOpen() ? close() : show();">
                                                     <span x-show="isOpen()">
                                                         {{ __('Mostra menos pedidos') }}
