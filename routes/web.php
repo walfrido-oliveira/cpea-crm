@@ -13,6 +13,7 @@ use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\ContactTypeController;
+use App\Http\Controllers\DetailedContactController;
 use App\Http\Controllers\EmailConfigController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\TemplateEmailController;
@@ -175,6 +176,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
             Route::post('/update/{contact}', [ContactController::class, 'update'])->name('update');
             Route::delete('/delete/{contact}', [ContactController::class, 'destroy'])->name('delete');
         });
+
+        Route::resource('contato-detalhado', DetailedContactController::class, [
+            'names' => 'detailed-contacts'])->parameters([
+            'contato-detalhado' => 'detailed_contact'
+        ]);
 
         Route::prefix('endereco')->name('address.')->group(function(){
             Route::post('/cep/{cep}', [AddressController::class, 'cep'])->name('cep');

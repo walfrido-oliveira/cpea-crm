@@ -166,31 +166,31 @@
 
             function eventsDeleteCallback() {
                 document.querySelectorAll('.delete-customers').forEach(item => {
-                item.addEventListener("click", function() {
-                    if(this.dataset.type != 'multiple') {
-                        var url = this.dataset.url;
-                        var modal = document.getElementById("delete_customer_modal");
-                        modal.dataset.url = url;
-                        modal.classList.remove("hidden");
-                        modal.classList.add("block");
-                    }
-                    else {
-                        var urls = '';
-                        document.querySelectorAll('input:checked.customers-url').forEach((item, index, arr) => {
-                            urls += item.value ;
-                            if(index < (arr.length - 1)) {
-                                urls += ',';
-                            }
-                        });
-
-                        if(urls.length > 0) {
+                    item.addEventListener("click", function() {
+                        if(this.dataset.type != 'multiple') {
+                            var url = this.dataset.url;
                             var modal = document.getElementById("delete_customer_modal");
-                            modal.dataset.url = urls;
+                            modal.dataset.url = url;
                             modal.classList.remove("hidden");
                             modal.classList.add("block");
                         }
-                    }
-                })
+                        else {
+                            var urls = '';
+                            document.querySelectorAll('input:checked.customers-url').forEach((item, index, arr) => {
+                                urls += item.value ;
+                                if(index < (arr.length - 1)) {
+                                    urls += ',';
+                                }
+                            });
+
+                            if(urls.length > 0) {
+                                var modal = document.getElementById("delete_customer_modal");
+                                modal.dataset.url = urls;
+                                modal.classList.remove("hidden");
+                                modal.classList.add("block");
+                            }
+                        }
+                    });
             });
             }
 

@@ -24,20 +24,6 @@ class DetailedContactController extends Controller
         ]);
     }
 
-    /**
-    * Display a listing of the user.
-     *
-     * @param  Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $detailedContacts =  DetailedContact::filter($request->all());
-        $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
-
-        return view('detailed-contact.index', compact('detailedContacts', 'ascending', 'orderBy'));
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -80,7 +66,7 @@ class DetailedContactController extends Controller
             'alert-type' => 'success'
         ];
 
-        return redirect()->route('detailed-contact.index')->with($resp);
+        return redirect()->route('customers.show', ['customer' => $input['customer_id']])->with($resp);
     }
 
     /**
@@ -141,7 +127,7 @@ class DetailedContactController extends Controller
             'alert-type' => 'success'
         ];
 
-        return redirect()->route('detailed-contact.index')->with($resp);
+        return redirect()->route('customers.show', ['customer' => $input['customer_id']])->with($resp);
     }
 
     /**
@@ -160,29 +146,5 @@ class DetailedContactController extends Controller
             'message' => __('Contato Apagado com Sucesso!!'),
             'alert-type' => 'success'
         ]);
-    }
-
-    /**
-     * Filter detailedContact
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(Request $request)
-    {
-        $detailedContacts = DetailedContact::filter($request->all());
-        $orderBy = $request->get('order_by');
-        $ascending = $request->get('ascending');
-        $paginatePerPage = $request->get('paginate_per_page');
-
-        return response()->json([
-            'filter_result' => view('detailed-contact.filter-result', compact('detailedContacts', 'orderBy', 'ascending'))->render(),
-            'pagination' => view('layouts.pagination', [
-                'models' => $detailedContacts,
-                'order_by' => $orderBy,
-                'ascending' => $ascending,
-                'paginate_per_page' => $paginatePerPage,
-                ])->render(),
-            ]);
     }
 }

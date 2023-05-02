@@ -16,7 +16,7 @@ class DetailedContact extends Model
      */
     protected $fillable = [
         'contact', 'mail', 'phone', 'cell_phone', 'role', 'linkedin',
-        'secretary', 'mail_secretary', 'phone_secretary', 'cell_phone_secretary', 'obs'
+        'secretary', 'mail_secretary', 'phone_secretary', 'cell_phone_secretary', 'obs', 'customer_id'
     ];
 
     /**

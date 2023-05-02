@@ -24,12 +24,8 @@
                         <h2 class="w-full">Dados do Cliente</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
                             <button class="btn-transition-primary" type="button" id="show_all_infos" @click="isOpen() ? close() : show();">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }"
-                                    class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+                                <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
                                 </svg>
                             </button>
                         </div>
@@ -273,7 +269,161 @@
 
             <div class="py-2 my-2 bg-white rounded-lg">
                 <div class="mx-4 px-3 py-2 mt-4">
-                    <h2>Contatos do Cliente</h2>
+                    <div class="w-full flex">
+                        <h2 class="w-full">Contatos do Cliente</h2>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                            <a class="btn-outline-info" href="{{ route('customers.detailed-contacts.create', ['customer' => $customer->id ]) }}" id="add_contact">
+                                Nova contato
+                            </a>
+                        </div>
+                    </div>
+                    @foreach ($customer->detailedContats as $contact)
+                        <div class="w-full flex" x-data="showInfosContact()">
+                            <div class="w-full">
+                                <div class="flex flex-wrap">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('Nome') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->contact }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('Cargo') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->role }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap" x-show="isOpen()"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90 hidden">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('E-mail') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->mail }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap" x-show="isOpen()"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90 hidden">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('telefone') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->phone }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap" x-show="isOpen()"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90 hidden">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('Celular') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->cell_phone }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap" x-show="isOpen()"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90 hidden">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('Linkedin') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->linkedin }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap" x-show="isOpen()"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90 hidden">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('Nome Secretária') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->secretary }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap" x-show="isOpen()"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90 hidden">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('Telefone Secretária') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->phone_secretary }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap" x-show="isOpen()"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform scale-90"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-90 hidden">
+                                    <div class="w-full md:w-3/12">
+                                        <p class="font-bold">{{ __('Observações') }}</p>
+                                    </div>
+                                    <div class="w-full md:w-1/2">
+                                        <p class="text-gray-500 font-bold">{{$contact->obs }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0 flex justify-center place-items-start mt-2">
+                                <button class="btn-transition-primary" type="button" id="show_all_infos" @click="isOpen() ? close() : show();">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
+                                    </svg>
+                                </button>
+                                <a class="btn-transition-warning" href="{{ route('customers.detailed-contacts.edit', ['detailed_contact' => $contact->id]) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                </a>
+                                <button class="btn-transition-danger delete-contacts" data-url="{!! route('customers.detailed-contacts.destroy', ['detailed_contact' => $contact->id]) !!}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                    @endforeach
+
                 </div>
             </div>
 
@@ -326,27 +476,70 @@
         </div>
     </div>
 
-    <x-modal title="{{ __('Excluir cargo') }}"
-             msg="{{ __('Deseja realmente apagar esse cargo?') }}"
+    <x-modal title="{{ __('Excluir Cliente') }}"
+             msg="{{ __('Deseja realmente apagar esse cliente?') }}"
              confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_customer_modal"
              method="DELETE"
              url="{{ route('customers.destroy', ['customer' => $customer->id]) }}"
              redirect-url="{{ route('customers.index') }}"/>
 
+    <x-modal title="{{ __('Excluir Contato') }}"
+            msg="{{ __('Deseja realmente apagar esse contato?') }}"
+            confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_contact_modal"
+            confirm_id="confirm_contact" cancel_modal="cancel_contact"
+            method="DELETE"
+            redirect-url="{{ route('customers.show', ['customer' => $customer->id]) }}"/>
+
     <script>
         function eventsDeleteCallback() {
             document.querySelectorAll('.delete-customer').forEach(item => {
-            item.addEventListener("click", function() {
-                var modal = document.getElementById("delete_customer_modal");
-                modal.classList.remove("hidden");
-                modal.classList.add("block");
-            })
-        });
+                item.addEventListener("click", function() {
+                    var modal = document.getElementById("delete_customer_modal");
+                    modal.classList.remove("hidden");
+                    modal.classList.add("block");
+                });
+            });
+        }
+
+        function eventsDeleteContactCallback() {
+            document.querySelectorAll('.delete-contacts').forEach(item => {
+                item.addEventListener("click", function() {
+                    var url = this.dataset.url;
+                    var modal = document.getElementById("delete_contact_modal");
+                    modal.dataset.url = url;
+                    modal.classList.remove("hidden");
+                    modal.classList.add("block");
+                });
+            });
         }
 
         eventsDeleteCallback();
+        eventsDeleteContactCallback();
 
     function showInfos() {
+        return {
+            open: false,
+            show() {
+                this.open = true;
+                setTimeout(() => document.getElementById("show_all_contacts").scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end'
+                }), 100);
+            },
+            close() {
+                this.open = false;
+                setTimeout(() => document.getElementById("show_all_contacts").scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end'
+                }), 100);
+            },
+            isOpen() {
+                return this.open === true
+            },
+        }
+    }
+
+    function showInfosContact() {
         return {
             open: false,
             show() {

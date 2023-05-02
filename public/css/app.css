@@ -1558,6 +1558,9 @@ select {
 .flex-wrap {
 	flex-wrap: wrap;
 }
+.place-items-start {
+	place-items: start;
+}
 .items-end {
 	align-items: flex-end;
 }

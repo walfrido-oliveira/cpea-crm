@@ -85,6 +85,14 @@ class Customer extends Model
         return $this->hasMany(Contact::class);
     }
 
+    /**
+     * The Detailed Contacts
+    */
+    public function detailedContats()
+    {
+        return $this->hasMany(DetailedContact::class);
+    }
+
      /**
      * The Addresses
     */
