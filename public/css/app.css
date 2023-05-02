@@ -3929,6 +3929,10 @@ input:read-only {
 		margin-right: 1rem;
 	}
 
+	.md\:mb-1 {
+		margin-bottom: 0.25rem;
+	}
+
 	.md\:block {
 		display: block;
 	}

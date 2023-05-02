@@ -5824,33 +5824,6 @@ window.addEventListener("load", function () {
     });
   });
   window.SpinLoad = new SpinLoad("spin_load");
-  document.querySelectorAll('.filter-field').forEach(function (item) {
-    item.addEventListener("change", function () {
-      if (item.value) {
-        var getUrl = window.location; //const baseUrl = `${getUrl.protocol}//${getUrl.host}/${getUrl.pathname.split('/')[1]}?`;
-
-        var baseUrl = "".concat(window.location.href).concat(!window.location.href.includes("?") ? '?' : '');
-        var nextURL = "".concat(baseUrl).concat(this.name, "=").concat(this.value, "&");
-        var nextTitle = '';
-        var nextState = {
-          additionalInformation: ''
-        };
-        window.history.pushState(nextState, nextTitle, nextURL);
-      } else {
-        var regex = new RegExp(item.name + "=.*");
-
-        var _baseUrl = window.location.href.replace(regex, '');
-
-        var _nextURL = "".concat(_baseUrl);
-
-        var _nextTitle = '';
-        var _nextState = {
-          additionalInformation: ''
-        };
-        window.history.pushState(_nextState, _nextTitle, _nextURL);
-      }
-    });
-  });
 });
 
 var SpinLoad = /*#__PURE__*/function () {

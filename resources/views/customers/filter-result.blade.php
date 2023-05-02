@@ -3,6 +3,7 @@
         <x-table-sort-header :orderBy="null" :ascending="null" columnName="" columnText="{{ __('') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="id" columnText="{{ __('Cód. Cliente') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Cliente') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="customer_id" columnText="{{ __('Matrix') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="segment_id" columnText="{{ __('Segmento') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="updated_at" columnText="{{ __('Data da Última Interação') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="created_at" columnText="{{ __('Data de Cadastro') }}"/>
@@ -24,6 +25,9 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->name }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->customer ? $customer->customer->name : '-' }}</a>
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->segment->name }}</a>

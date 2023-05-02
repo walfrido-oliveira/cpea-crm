@@ -16,7 +16,7 @@ class Customer extends Model
      */
     protected $fillable = [
         'name', 'cnpj', 'corporate_name', 'obs', 'competitors', 'segment_id', 'sector_id', 'status',
-        'created_user', 'updated_user'
+        'created_user_id', 'updated_user_id', 'customer_id'
     ];
 
     /**
@@ -38,6 +38,22 @@ class Customer extends Model
     }
 
     /**
+     * The Customer
+    */
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    /**
+     * The Customers
+    */
+    public function customers()
+    {
+        return $this->hasMany(Customer::class, 'customer_id', 'id');
+    }
+
+    /**
      * The Sector
     */
     public function sector()
@@ -50,7 +66,7 @@ class Customer extends Model
     */
     public function createdUser()
     {
-        return $this->belongsTo(User::class, 'created_user');
+        return $this->belongsTo(User::class, 'created_user_id');
     }
 
     /**
@@ -58,7 +74,7 @@ class Customer extends Model
     */
     public function updatedUser()
     {
-        return $this->belongsTo(User::class, 'updated_user');
+        return $this->belongsTo(User::class, 'updated_user_id');
     }
 
     /**
@@ -101,6 +117,14 @@ class Customer extends Model
                 if(!is_null($query['id']))
                 {
                     $q->where('id', $query['id']);
+                }
+            }
+
+            if(isset($query['customer_id']))
+            {
+                if(!is_null($query['customer_id']))
+                {
+                    $q->where('customer_id', $query['customer_id']);
                 }
             }
 

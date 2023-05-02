@@ -40,12 +40,17 @@
                             <x-jet-input id="corporate_name" class="form-control block mt-1 w-full" type="text" name="corporate_name" maxlength="255" required autofocus autocomplete="corporate_name" value="{{ old('corporate_name') }}"/>
                         </div>
                     </div>
+
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="customer_id" value="{{ __('Matriz') }}" required/>
+                            <x-custom-select :options="$customers" value="{{ app('request')->get('customer') }}" name="customer_id" id="customer_id" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="sector_id" value="{{ __('Setor') }}" required/>
                             <x-custom-select :options="$sectors" value="" name="sector_id" id="sector_id" class="mt-1" value="{{ old('sector_id') }}"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="segment_id" value="{{ __('Segmento') }}" required/>
                             <x-custom-select :options="$segments" value="" name="segment_id" id="segment_id" class="mt-1" value="{{ old('segment_id') }}"/>
                         </div>

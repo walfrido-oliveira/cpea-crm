@@ -9,7 +9,6 @@ use App\Models\GeneralContactType;
 use App\Models\Sector;
 use App\Models\Segment;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
@@ -25,7 +24,8 @@ class CustomerController extends Controller
             'segment_id' => ['required', 'exists:segments,id'],
             'sector_id' => ['required', 'exists:sectors,id'],
             'addresses' => ['required'],
-            'status' => ['in:active,inactive', 'nullable']
+            'status' => ['in:active,inactive', 'nullable'],
+            'customer_id' => ['nullable', 'exists:customers,id']
         ]);
     }
 
@@ -56,8 +56,9 @@ class CustomerController extends Controller
         $segments = Segment::pluck("name", "id");
         $sectors = Sector::pluck("name", "id");
         $generalContactTypes = GeneralContactType::pluck("name", "id");
+        $customers =  Customer::where("status", "active")->get()->pluck("name", "id");
 
-        return view('customers.create', compact("segments", "sectors", "generalContactTypes"));
+        return view('customers.create', compact("segments", "sectors", "generalContactTypes", "customers"));
     }
 
     /**
@@ -80,7 +81,8 @@ class CustomerController extends Controller
             'competitors' => $input['competitors'],
             'segment_id' => $input['segment_id'],
             'sector_id' => $input['sector_id'],
-            'created_user' => auth()->user()->id,
+            'created_user_id' => auth()->user()->id,
+            'customer_id' => $input['customer_id'],
         ]);
 
         if(isset($input["addresses"])) {
@@ -143,8 +145,9 @@ class CustomerController extends Controller
         $sectors = Sector::pluck("name", "id");
         $generalContactTypes = GeneralContactType::pluck("name", "id");
         $status = Customer::getStatusArray();
+        $customers =  Customer::where("status", "active")->get()->pluck("name", "id");
 
-        return view('customers.edit', compact('customer', 'segments', 'sectors', 'generalContactTypes', 'status'));
+        return view('customers.edit', compact('customer', 'segments', 'sectors', 'generalContactTypes', 'status', 'customers'));
     }
 
     /**
@@ -171,7 +174,8 @@ class CustomerController extends Controller
             'segment_id' => $input['segment_id'],
             'sector_id' => $input['sector_id'],
             'status' => $input['status'],
-            'updated_user' => auth()->user()->id,
+            'updated_user_id' => auth()->user()->id,
+            'customer_id' => $input['customer_id'],
         ]);
 
         if(isset($customer->addresses[0]) && isset($inputs["addresses"])) {
