@@ -25,4 +25,19 @@ class Conversation extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    /**
+     * The items
+    */
+    public function items()
+    {
+        return $this->hasMany(ConversationItem::class);
+    }
+
+    /**
+     * Products
+     */
+    public function products(){
+        return $this->belongsToMany(Product::class);
+    }
 }

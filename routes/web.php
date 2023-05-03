@@ -13,11 +13,13 @@ use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\ContactTypeController;
-use App\Http\Controllers\DetailedContactController;
 use App\Http\Controllers\EmailConfigController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\TemplateEmailController;
 use App\Http\Controllers\ProposedStatusController;
+use App\Http\Controllers\DetailedContactController;
+use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\GeneralContactTypeController;
 
@@ -184,6 +186,16 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
         Route::prefix('endereco')->name('address.')->group(function(){
             Route::post('/cep/{cep}', [AddressController::class, 'cep'])->name('cep');
+        });
+
+        Route::prefix('conversas')->name('conversations.')->group(function(){
+            Route::get('/{conversation}', [ConversationController::class, 'show'])->name('show');
+            Route::post('/store', [ConversationController::class, 'store'])->name('store');
+
+            Route::prefix('item')->name('item.')->group(function(){
+                Route::get('/create/{conversation}', [ConversationItemController::class, 'create'])->name('create');
+                Route::post('/store', [ConversationItemController::class, 'store'])->name('store');
+            });
         });
 
     });

@@ -5,7 +5,7 @@
             $index = 0;
         @endphp
         @foreach ($options as $key => $item)
-            <option  @if(isset($ids[$index])) data-id="{{ $ids[$index] }}" @endif @if($key == $value) {{ 'selected' }} @endif value="{{ $key }}">{{ __($item) }}</option>
+            <option  @if(isset($ids[$index])) data-id="{{ $ids[$index] }}" @endif @if(array_key_exists($key, $value)) {{ 'selected' }} @endif value="{{ $key }}">{{ __($item) }}</option>
             @php
                 $index++;
             @endphp

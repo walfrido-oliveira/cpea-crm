@@ -51,7 +51,7 @@
                     </table>
                 </div>
                 <div class="flex mt-4 p-2" id="pagination">
-                        {{ $customers->appends(request()->input())->links() }}
+                    {{ $customers->appends(request()->input())->links() }}
                 </div>
             </div>
         </div>

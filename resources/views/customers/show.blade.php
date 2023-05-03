@@ -432,13 +432,18 @@
                     <div class="w-full flex">
                         <h2 class="w-full">IDCPEA</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
-                            <a class="btn-outline-info" href="{{ route('customers.create', ['customer' => $customer->id ]) }}" id="add_conversation">
-                                Nova interação
-                            </a>
+                            <form method="POST" action="{{ route('customers.conversations.store') }}">
+                                @csrf
+                                @method("POST")
+                                <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                <button type="submit" class="btn-outline-info" id="add_conversation">
+                                    Nova interação
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <div class="flex flex-wrap mt-2">
-                        <table class="table-contacts table table-responsive md:table w-full" x-data="showContacts()">
+                        <table class="table-contacts table table-responsive md:table w-full">
                             <thead>
                                 <tr class="thead-light">
                                     <th scope="col"  class="custom-th">{{ __('Cód. da Interação') }}</th>
@@ -455,10 +460,12 @@
                             @foreach ($customer->conversations as $conversation)
                                 <tr>
                                     <td>
-                                        <a class="text-green-600 underline font-bold" href="#">{{ $conversation->id }}</a>
+                                        <a class="text-green-600 underline font-bold" href="{{ route('customers.conversations.show', ['conversation' => $conversation->id]) }}">
+                                            {{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }}
+                                        </a>
                                     </td>
                                     <td>
-                                        <a class="text-green-600 underline font-bold" href="#">{{ $conversation->cpea_id }}</a>
+                                        <a class="text-green-600 underline font-bold" href="{{ route('customers.conversations.show', ['conversation' => $conversation->id]) }}">{{ $conversation->cpea_id }}</a>
                                     </td>
                                     <td></td>
                                     <td></td>
@@ -466,8 +473,8 @@
                                     <td>{{ $conversation->created_at->format('d/m/Y H:i') }}</td>
                                     <td>{{ $conversation->updated_at->format('d/m/Y H:i') }}</td>
                                     <td>
-                                        <span class="w-24 py-1 @if($child->status == "active") badge-success @elseif($child->status == 'inactive') badge-danger @endif" >
-                                            {{ __($child->status) }}
+                                        <span class="w-24 py-1 @if($conversation->status == "active") badge-success @elseif($conversation->status == 'inactive') badge-danger @endif" >
+                                            {{ __($conversation->status) }}
                                         </span>
                                     </td>
                                 </tr>
@@ -490,7 +497,7 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap mt-2">
-                            <table class="table-contacts table table-responsive md:table w-full" x-data="showContacts()">
+                            <table class="table-contacts table table-responsive md:table w-full">
                                 <thead>
                                     <tr class="thead-light">
                                         <th scope="col"  class="custom-th">{{ __('Empresa') }}</th>
@@ -574,17 +581,9 @@
             open: false,
             show() {
                 this.open = true;
-                setTimeout(() => document.getElementById("show_all_contacts").scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end'
-                }), 100);
             },
             close() {
                 this.open = false;
-                setTimeout(() => document.getElementById("show_all_contacts").scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end'
-                }), 100);
             },
             isOpen() {
                 return this.open === true
@@ -597,17 +596,9 @@
             open: false,
             show() {
                 this.open = true;
-                setTimeout(() => document.getElementById("show_all_contacts").scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end'
-                }), 100);
             },
             close() {
                 this.open = false;
-                setTimeout(() => document.getElementById("show_all_contacts").scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'end'
-                }), 100);
             },
             isOpen() {
                 return this.open === true
