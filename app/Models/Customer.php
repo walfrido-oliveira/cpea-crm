@@ -93,6 +93,14 @@ class Customer extends Model
         return $this->hasMany(DetailedContact::class);
     }
 
+    /**
+     * The Conversations
+    */
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
      /**
      * The Addresses
     */
