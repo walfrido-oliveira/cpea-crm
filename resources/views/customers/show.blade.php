@@ -278,7 +278,7 @@
                         </div>
                     </div>
                     @foreach ($customer->detailedContats as $contact)
-                        <div class="w-full flex" x-data="showInfosContact()">
+                        <div class="w-full flex mb-3" x-data="showInfosContact()">
                             <div class="w-full">
                                 <div class="flex flex-wrap">
                                     <div class="w-full md:w-3/12">
