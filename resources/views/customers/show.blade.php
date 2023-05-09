@@ -436,9 +436,11 @@
                                 @csrf
                                 @method("POST")
                                 <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-                                <button type="submit" class="btn-outline-info" id="add_conversation">
-                                    Nova interação
-                                </button>
+                                @if($customer->customer_id)
+                                    <button type="submit" class="btn-outline-info" id="add_conversation">
+                                        Nova interação
+                                    </button>
+                                @endif
                             </form>
                         </div>
                     </div>
@@ -447,6 +449,9 @@
                             <thead>
                                 <tr class="thead-light">
                                     <th scope="col"  class="custom-th">{{ __('Cód. da Interação') }}</th>
+                                    @if(!$customer->customer_id)
+                                        <th scope="col"  class="custom-th">{{ __('Empresa') }}</th>
+                                    @endif
                                     <th scope="col"  class="custom-th">{{ __('IDCPEA') }}</th>
                                     <th scope="col"  class="custom-th">{{ __('Aditivo?') }}</th>
                                     <th scope="col"  class="custom-th">{{ __('IDCPEA Vinculado') }}</th>
@@ -457,28 +462,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach ($customer->conversations as $conversation)
-                                <tr>
-                                    <td>
-                                        <a class="text-green-600 underline font-bold" href="{{ route('customers.conversations.show', ['conversation' => $conversation->id]) }}">
-                                            {{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="text-green-600 underline font-bold" href="{{ route('customers.conversations.show', ['conversation' => $conversation->id]) }}">{{ $conversation->cpea_id }}</a>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>{{ $conversation->created_at->format('d/m/Y H:i') }}</td>
-                                    <td>{{ $conversation->updated_at->format('d/m/Y H:i') }}</td>
-                                    <td>
-                                        <span class="w-24 py-1 @if($conversation->status == "active") badge-success @elseif($conversation->status == 'inactive') badge-danger @endif" >
-                                            {{ __($conversation->status) }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                @if(!$customer->customer_id)
+                                    @foreach ($customer->customers as $child)
+                                        @include('customers.conversation', ['child' => $child])
+                                    @endforeach
+                                @else
+                                    @include('customers.conversation', ['child' => $customer])
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -489,10 +479,10 @@
                 <div class="py-2 my-2 bg-white rounded-lg">
                     <div class="mx-4 px-3 py-2 mt-4">
                         <div class="w-full flex">
-                            <h2 class="w-full">Filiais</h2>
+                            <h2 class="w-full">Empresas</h2>
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
                                 <a class="btn-outline-info" href="{{ route('customers.create', ['customer' => $customer->id ]) }}" id="add_customer">
-                                    Nova filial
+                                    Nova empresa
                                 </a>
                             </div>
                         </div>

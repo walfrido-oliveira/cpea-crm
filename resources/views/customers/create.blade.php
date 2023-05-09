@@ -4,9 +4,10 @@
             <form method="POST" action="{{ route('customers.store') }}">
                 @csrf
                 @method("POST")
+                <input type="hidden" name="customer_id" id="customer_id" value="{{ app('request')->get('customer') }}">
                 <div class="flex md:flex-row flex-col">
                     <div class="w-full flex items-center">
-                        <h1>{{ __('Cliente') }}</h1>
+                        <h1>{{ __('Novo') . (app('request')->get('customer') ? " Empresa" : " Cliente") }}</h1>
                     </div>
                     <div class="w-full flex justify-end">
                         <div class="m-2 ">
@@ -23,7 +24,7 @@
                 </div>
 
                 <div class="py-2 my-2 bg-white rounded-lg">
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4"><h2 class="px-3 mb-6 md:mb-0">Dados do Cliente</h2></div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4"><h2 class="px-3 mb-6 md:mb-0">Dados {{ (app('request')->get('customer') ? " da Empresa" : " do Cliente") }}</h2></div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="name" value="{{ __('Nome do Cliente') }}" required/>
@@ -42,15 +43,11 @@
                     </div>
 
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
-                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="customer_id" value="{{ __('Matriz') }}" required/>
-                            <x-custom-select :options="$customers" value="{{ app('request')->get('customer') }}" name="customer_id" id="customer_id" class="mt-1"/>
-                        </div>
-                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="sector_id" value="{{ __('Setor') }}" required/>
                             <x-custom-select :options="$sectors" value="" name="sector_id" id="sector_id" class="mt-1" value="{{ old('sector_id') }}"/>
                         </div>
-                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="segment_id" value="{{ __('Segmento') }}" required/>
                             <x-custom-select :options="$segments" value="" name="segment_id" id="segment_id" class="mt-1" value="{{ old('segment_id') }}"/>
                         </div>

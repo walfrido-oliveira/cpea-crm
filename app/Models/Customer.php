@@ -128,6 +128,8 @@ class Customer extends Model
         $orderBy = isset($query['order_by']) ? $query['order_by'] : DEFAULT_ORDER_BY_COLUMN;
 
         $result = self::where(function($q) use ($query) {
+            $q->whereNull("customer_id");
+
             if(isset($query['id']))
             {
                 if(!is_null($query['id']))
