@@ -3,7 +3,7 @@
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
             <div class="flex md:flex-row flex-col">
                 <div class="w-full flex items-center">
-                    <h1>{{ __('Cliente') }} - {{ $customer->name }}</h1>
+                    <h1>{{ $customer->customer_id ? "Empresa" : "Cliente" }} - {{ $customer->name }}</h1>
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2 ">
@@ -21,7 +21,7 @@
             <div class="py-2 my-2 bg-white rounded-lg" x-data="showInfos()">
                 <div class="mx-4 px-3 py-2 mt-4">
                     <div class="flex mb-4">
-                        <h2 class="w-full">Dados do Cliente</h2>
+                        <h2 class="w-full">Dados {{ ($customer->customer_id ? "da Empresa" : "do Cliente") }}</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
                             <button class="btn-transition-primary" type="button" id="show_all_infos" @click="isOpen() ? close() : show();">
                                 <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -32,7 +32,7 @@
                     </div>
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Cód. Cliente') }}</p>
+                            <p class="font-bold">{{ __('Cód.') }} {{ ($customer->customer_id ? "Empresa" : "Cliente") }}</p>
                         </div>
 
                         <div class="w-full md:w-1/2">
@@ -42,7 +42,7 @@
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Nome do cliente') }}</p>
+                            <p class="font-bold">{{ __('Nome') }} {{ ($customer->customer_id ? "da Empresa" : "do Cliente") }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
                             <p class="text-gray-500 font-bold">{{ $customer->name }}</p>
@@ -270,7 +270,7 @@
             <div class="py-2 my-2 bg-white rounded-lg">
                 <div class="mx-4 px-3 py-2 mt-4">
                     <div class="w-full flex">
-                        <h2 class="w-full">Contatos do Cliente</h2>
+                        <h2 class="w-full">Contatos {{ ($customer->customer_id ? "da Empresa" : "do Cliente") }}</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
                             <a class="btn-outline-info" href="{{ route('customers.detailed-contacts.create', ['customer' => $customer->id ]) }}" id="add_contact">
                                 Nova contato
