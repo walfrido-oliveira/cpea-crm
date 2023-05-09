@@ -90,8 +90,12 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="detailed_contact_id" value="{{ __('Diretoria') }}" required/>
+                            <x-jet-label for="direction_id" value="{{ __('Diretoria') }}" required/>
                             <x-custom-select :options="$directions" value="{{ old('direction_id') }}" name="direction_id" id="direction_id" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
+                            <x-custom-select :options="[]" value="{{ old('employee_id') }}" name="employee_id" id="employee_id" class="mt-1"/>
                         </div>
                     </div>
                 </div>

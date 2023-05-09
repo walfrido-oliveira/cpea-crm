@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('colacoradores')->name('employees.')->group(function(){
         Route::post('/filter', [EmployeeController::class, 'filter'])->name('filter');
+        Route::post('/get-by-direction/{direction}', [EmployeeController::class, 'getByDirection'])->name('get-by-direction');
     });
 
     Route::resource('departamentos', DepartmentController::class, [

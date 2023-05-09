@@ -22,7 +22,7 @@ class EmployeeController extends Controller
             'direction_id' => ['required', 'exists:directions,id'],
             'department_id' => ['required', 'exists:departments,id'],
             'name' => ['required', 'string', 'max:255'],
-            'manager_id' => ['required', 'exists:employees,id'],
+            'manager_id' => ['nullable', 'exists:employees,id'],
             'employee_id' => ['required', 'string'],
         ]);
 
@@ -164,6 +164,13 @@ class EmployeeController extends Controller
             'message' => __('Colaborador Apagado com Sucesso!!'),
             'alert-type' => 'success'
         ]);
+    }
+
+    public function getByDirection($id)
+    {
+        $employees = Employee::where("direction_id", $id)->get();
+
+        return response()->json($employees);
     }
 
     /**

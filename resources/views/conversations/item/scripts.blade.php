@@ -56,6 +56,44 @@
         }
     });
 
+    document.querySelector("#direction_id").addEventListener("change", function() {
+        const dataForm = new FormData();
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const id = this.value;
+        const employees = document.querySelector("#employee_id");
+
+        dataForm.append("_method", "POST");
+        dataForm.append("_token", token);
+
+        fetch("{{ route('employees.get-by-direction', ['direction' => '#']) }}".replace("#", id), {
+            method: 'POST',
+            body: dataForm
+        })
+        .then(res => res.text())
+        .then(data => {
+            const response = JSON.parse(data);
+
+            var i, L = employees.options.length - 1;
+            for(i = L; i >= 0; i--) {
+                employees.remove(i);
+            }
+
+            for (let index = 0; index < response.length; index++) {
+                const element = response[index];
+
+                var option = document.createElement("option");
+                option.text = element.name;
+                option.value = element.id;
+
+                employees.add(option);
+           }
+
+           window.customSelectArray["employee_id"].update();
+        }).catch(err => {
+            console.log(err);
+        });
+    });
+
     function showFieldsSchedule() {
         return {
             open: false,

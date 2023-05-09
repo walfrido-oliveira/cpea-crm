@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Employee;
+use App\Models\Direction;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 use App\Models\ProjectStatus;
 use App\Models\ProposedStatus;
 use App\Models\ConversationItem;
-use App\Models\Direction;
 use App\Models\ProspectingStatus;
 
 class ConversationItemController extends Controller
@@ -31,10 +32,11 @@ class ConversationItemController extends Controller
             'conversation_id' => ['required', 'exists:conversations,id'],
             'project_status_id' => ['nullable', 'exists:project_statuses,id'],
             'proposed_status_id' => ['nullable', 'exists:proposed_statuses,id'],
-            'prospecting_status_id' => ['nullable', 'exists:prospecting_statuses,id'],
+            'prospecting_status_id' => ['nullable', 'exists:prospecting_statusses,id'],
             'detailed_contact_id' => ['required', 'exists:detailed_contacts,id'],
             'organizer_id' => ['required', 'exists:users,id'],
             'direction_id' => ['nullable', 'exists:directions,id'],
+            'employee_id' => ['nullable', 'exists:employees,id'],
         ]);
     }
 
@@ -57,10 +59,11 @@ class ConversationItemController extends Controller
         $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
         $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
         $directions = Direction::pluck("name", "id");
+        $employees = Employee::pluck("name", "id");
 
         return view('conversations.item.create', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
                                                          'projectStatus', 'detailedContacts', 'products', 'organizers',
-                                                         'cpeaIds', 'checkproposed', 'checkproject', 'directions'));
+                                                         'cpeaIds', 'checkproposed', 'checkproject', 'directions', 'employees'));
     }
 
     /**
@@ -94,6 +97,7 @@ class ConversationItemController extends Controller
             'optional_addressees' => $input['optional_addressees'],
             'schedule_details' => $input['schedule_details'],
             'direction_id' => $input['direction_id'],
+            'employee_id' => $input['employee_id'],
             'user_id'=> auth()->user()->id,
         ]);
 
@@ -132,10 +136,11 @@ class ConversationItemController extends Controller
         $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
         $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
         $directions = Direction::pluck("name", "id");
+        $employees = Employee::pluck("name", "id");
 
         return view('conversations.item.edit', compact('conversation', 'prospectingStatuses', 'proposedsStatuses', 'projectStatus',
                                                        'detailedContacts', 'products', 'organizers', 'conversationItem', 'cpeaIds',
-                                                       'checkproposed', 'directions'));
+                                                       'checkproposed', 'directions', 'employees'));
     }
 
     /**
@@ -172,6 +177,7 @@ class ConversationItemController extends Controller
             'optional_addressees' => $input['optional_addressees'],
             'schedule_details' => $input['schedule_details'],
             'direction_id' => $input['direction_id'],
+            'employee_id' => $input['employee_id'],
             'user_id'=> auth()->user()->id,
         ]);
 
