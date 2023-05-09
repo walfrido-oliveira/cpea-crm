@@ -5,8 +5,34 @@
                 item2.classList.add("hidden");
             });
             document.querySelector(`.${item.value}-status`).classList.remove("hidden");
+
+            toggleProspectsFiedls(false);
+            toggleProposedFiedls(false);
+
+            switch (item.value) {
+                case "Prospect":
+                    toggleProspectsFiedls(true);
+                    break;
+                case "Proposta":
+                    toggleProposedFiedls(true);
+                    break;
+            }
         });
     });
+
+    function toggleProspectsFiedls(show) {
+        document.querySelectorAll(".prospects-fields").forEach(field => {
+            if(show)field.classList.remove("hidden")
+            if(!show)field.classList.add("hidden")
+        });
+    }
+
+    function toggleProposedFiedls(show) {
+        document.querySelectorAll(".proposed-fields").forEach(field => {
+            if(show)field.classList.remove("hidden")
+            if(!show)field.classList.add("hidden")
+        });
+    }
 
     document.querySelector("#schedule_type").addEventListener("change", function() {
         if(this.value == "internal") {

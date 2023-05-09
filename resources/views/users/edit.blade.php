@@ -59,33 +59,6 @@
                             <x-custom-select class="mt-1" :options="$status" name="status" id="status" :value="$user->status" required/>
                         </div>
                     </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="occupation_id" value="{{ __('Cargo') }}" required/>
-                            <x-custom-select :options="$occupations" name="occupation_id" id="occupation_id" required :value="$user->occupation_id"/>
-                        </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="department_id" value="{{ __('Departamento') }}" required/>
-                            <x-custom-select :options="$departments" name="department_id" id="department_id" required :value="$user->department_id"/>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="crq" value="{{ __('CRQ IV') }}"/>
-                            <x-jet-input id="crq" class="form-control block mt-1 w-full" type="text" name="crq" maxlength="255" autofocus autocomplete="crq" :value="$user->crq"/>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        @if($user->signer)
-                            <div class="w-full px-3 mb-6 md:mb-0">
-                                <img src="{{ asset($user->signer) }}" alt="Logo formulário">
-                            </div>
-                        @endif
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <input id="signer" type="file" class="form-control @error('avatar') is-invalid @enderror" name="signer" value="{{ old('signer') }}">
-                        </div>
-                    </div>
                 </div>
             </form>
         </div>

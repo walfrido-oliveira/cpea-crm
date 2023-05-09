@@ -32,8 +32,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'last_name', 'phone', 'password', 'status',
-        'crq', 'department_id', 'signer', 'occupation_id'
+        'name', 'email', 'last_name', 'phone', 'password', 'status'
     ];
 
     /**
@@ -66,17 +65,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function occupation()
-    {
-        return $this->belongsTo(Occupation::class);
-    }
-
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
-
-    /**
+     /**
      * Send update mail to user
      *
      * @return void

@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OccupationController;
@@ -63,6 +64,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
             Route::resource('templates', TemplateEmailController::class);
             Route::get('templates/mail-preview/{template}', [TemplateEmailController::class, 'show'])->name("templates.mail-preview");
         });
+    });
+
+    Route::resource('colacoradores', EmployeeController::class, [
+        'names' => 'employees'])->parameters([
+        'colacoradores' => 'employee'
+    ]);
+
+    Route::prefix('colacoradores')->name('employees.')->group(function(){
+        Route::post('/filter', [EmployeeController::class, 'filter'])->name('filter');
     });
 
     Route::resource('departamentos', DepartmentController::class, [

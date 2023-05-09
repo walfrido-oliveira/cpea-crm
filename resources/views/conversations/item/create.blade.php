@@ -78,16 +78,22 @@
                             <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter"/>
                         </div>
                     </div>
-                        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
-                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
-                                <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ old('additive') }}" name="additive" id="additive" class="mt-1"/>
-                            </div>
-                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                <x-jet-label for="cpea_linked_id" value="{{ __('IDCPEA Vinculado') }}"/>
-                                <x-custom-select :options="$cpeaIds" value="{{ old('cpea_linked_id') }}" name="cpea_linked_id" id="cpea_linked_id" class="mt-1" disabled/>
-                            </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 prospects-fields">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
+                            <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ old('additive') }}" name="additive" id="additive" class="mt-1"/>
                         </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="cpea_linked_id" value="{{ __('IDCPEA Vinculado') }}"/>
+                            <x-custom-select :options="$cpeaIds" value="{{ old('cpea_linked_id') }}" name="cpea_linked_id" id="cpea_linked_id" class="mt-1" disabled/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="detailed_contact_id" value="{{ __('Diretoria') }}" required/>
+                            <x-custom-select :options="$directions" value="{{ old('direction_id') }}" name="direction_id" id="direction_id" class="mt-1"/>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="py-2 my-2 bg-white rounded-lg">

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ProjectStatus;
 use App\Models\ProposedStatus;
 use App\Models\ConversationItem;
+use App\Models\Direction;
 use App\Models\ProspectingStatus;
 
 class ConversationItemController extends Controller
@@ -33,6 +34,7 @@ class ConversationItemController extends Controller
             'prospecting_status_id' => ['nullable', 'exists:prospecting_statuses,id'],
             'detailed_contact_id' => ['required', 'exists:detailed_contacts,id'],
             'organizer_id' => ['required', 'exists:users,id'],
+            'direction_id' => ['nullable', 'exists:directions,id'],
         ]);
     }
 
@@ -54,9 +56,11 @@ class ConversationItemController extends Controller
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
         $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
         $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
+        $directions = Direction::pluck("name", "id");
 
         return view('conversations.item.create', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
-                                                         'projectStatus', 'detailedContacts', 'products', 'organizers', 'cpeaIds', 'checkproposed', 'checkproject'));
+                                                         'projectStatus', 'detailedContacts', 'products', 'organizers',
+                                                         'cpeaIds', 'checkproposed', 'checkproject', 'directions'));
     }
 
     /**
@@ -89,6 +93,7 @@ class ConversationItemController extends Controller
             'addressees' => $input['addressees'],
             'optional_addressees' => $input['optional_addressees'],
             'schedule_details' => $input['schedule_details'],
+            'direction_id' => $input['direction_id'],
             'user_id'=> auth()->user()->id,
         ]);
 
@@ -126,9 +131,11 @@ class ConversationItemController extends Controller
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
         $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
         $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
+        $directions = Direction::pluck("name", "id");
 
         return view('conversations.item.edit', compact('conversation', 'prospectingStatuses', 'proposedsStatuses', 'projectStatus',
-                                                       'detailedContacts', 'products', 'organizers', 'conversationItem', 'cpeaIds', 'checkproposed'));
+                                                       'detailedContacts', 'products', 'organizers', 'conversationItem', 'cpeaIds',
+                                                       'checkproposed', 'directions'));
     }
 
     /**
@@ -164,6 +171,7 @@ class ConversationItemController extends Controller
             'addressees' => $input['addressees'],
             'optional_addressees' => $input['optional_addressees'],
             'schedule_details' => $input['schedule_details'],
+            'direction_id' => $input['direction_id'],
             'user_id'=> auth()->user()->id,
         ]);
 
