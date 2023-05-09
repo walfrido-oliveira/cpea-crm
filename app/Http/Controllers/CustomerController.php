@@ -17,7 +17,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'cnpj' => ['required', 'string', 'max:18'],
+            'cnpj' => ['nullable', 'string', 'max:18'],
             'corporate_name' => ['required', 'string', 'max:255'],
             'obs' => ['nullable', 'string', 'max:255'],
             'competitors' => ['nullable', 'string', 'max:255'],

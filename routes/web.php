@@ -194,7 +194,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
             Route::prefix('item')->name('item.')->group(function(){
                 Route::get('/create/{conversation}', [ConversationItemController::class, 'create'])->name('create');
+                Route::get('/edit/{item}', [ConversationItemController::class, 'edit'])->name('edit');
                 Route::post('/store', [ConversationItemController::class, 'store'])->name('store');
+                Route::put('/update/{item}', [ConversationItemController::class, 'update'])->name('update');
             });
         });
 

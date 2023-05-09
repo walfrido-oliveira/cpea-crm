@@ -1,13 +1,13 @@
 <x-app-layout>
     <div class="py-6 create-contact-type">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
-            <form method="POST" action="{{ route('customers.conversations.item.store') }}">
+            <form method="POST" action="{{ route('customers.conversations.item.update', ['']) }}">
                 @csrf
-                @method('POST')
+                @method('PUT')
                 <input type="hidden" name="conversation_id" value="{{ $conversation->id }}">
                 <div class="flex md:flex-row flex-col">
                     <div class="w-full flex items-center">
-                        <h1>{{ __('Nova interação') }} - {{ $conversation->customer->name }}</h1>
+                        <h1>{{ __('Editar interação') }} - {{ $conversation->customer->name }}</h1>
                     </div>
                     <div class="w-full flex justify-end">
                         <div class="m-2 ">
@@ -30,18 +30,27 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-1 py-1 mt-0 custom-radio ml-3">
                         <div class="bg-gray-200 radios-container">
-                            <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="prospect" checked hidden value="Prospect"/>
-                                <label for="prospect" class="radio">Prospect</label>
-                            </div>
-                            <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if(!$checkproposed) disabled @endif/>
-                                <label for="proposta" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Proposta</label>
-                            </div>
-                            <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if(!$checkproject) disabled @endif/>
-                                <label for="projeto" class="radio" style="@if(!$checkproject) cursor: not-allowed; @endif">Projeto</label>
-                            </div>
+                            @switch($conversationItem->item_type)
+                                @case("Prospect")
+                                    <div class="inline-flex inner-item p-2">
+                                        <input type="radio" name="item_type" id="prospect" checked hidden value="Prospect"/>
+                                        <label for="prospect" class="radio">Prospect</label>
+                                    </div>
+                                    @break
+                                @case("Proposta")
+                                    <div class="inline-flex inner-item p-2">
+                                        <input type="radio" name="item_type" id="proposta" hidden value="Proposta"/>
+                                        <label for="proposta" class="radio">Proposta</label>
+                                    </div>
+                                    @break
+
+                                @case("Projeto")
+                                    <div class="inline-flex inner-item p-2">
+                                        <input type="radio" name="item_type" id="projeto" hidden value="Projeto"/>
+                                        <label for="projeto" class="radio">Projeto</label>
+                                    </div>
+                                    @break
+                            @endswitch
                         </div>
                     </div>
                 </div>
@@ -78,16 +87,16 @@
                             <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter"/>
                         </div>
                     </div>
-                        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
-                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
-                                <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ old('additive') }}" name="additive" id="additive" class="mt-1"/>
-                            </div>
-                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                <x-jet-label for="cpea_linked_id" value="{{ __('IDCPEA Vinculado') }}"/>
-                                <x-custom-select :options="$cpeaIds" value="{{ old('cpea_linked_id') }}" name="cpea_linked_id" id="cpea_linked_id" class="mt-1" disabled/>
-                            </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
+                            <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ old('additive') }}" name="additive" id="additive" class="mt-1"/>
                         </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden cpea-linked-id">
+                            <x-jet-label for="cpea_linked_id" value="{{ __('IDCPEA Vinculado') }}"/>
+                            <x-custom-select :options="$cpeaIds" value="{{ old('cpea_linked_id') }}" name="cpea_linked_id" id="cpea_linked_id" class="mt-1"/>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="py-2 my-2 bg-white rounded-lg">

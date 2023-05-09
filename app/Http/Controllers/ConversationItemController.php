@@ -51,8 +51,12 @@ class ConversationItemController extends Controller
         $detailedContacts = $conversation->customer->detailedContats->pluck("contact", "id");
         $products = Product::pluck("name", "id");
         $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
+        $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
+        $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
+        $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
 
-        return view('conversations.item.create', compact('conversation', 'prospectingStatuses', 'proposedsStatuses', 'projectStatus', 'detailedContacts', 'products', 'organizers'));
+        return view('conversations.item.create', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
+                                                         'projectStatus', 'detailedContacts', 'products', 'organizers', 'cpeaIds', 'checkproposed', 'checkproject'));
     }
 
     /**
@@ -101,5 +105,75 @@ class ConversationItemController extends Controller
 
         return redirect()->route('customers.conversations.show', ['conversation' => $input['conversation_id']])->with($resp);
 
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $conversationItem = ConversationItem::findOrFail($id);
+        $conversation = $conversationItem->conversation;
+        $prospectingStatuses = ProspectingStatus::pluck("name", "id");
+        $proposedsStatuses = ProposedStatus::pluck("name", "id");
+        $projectStatus = ProjectStatus::pluck("name", "id");
+        $detailedContacts = $conversation->customer->detailedContats->pluck("contact", "id");
+        $products = Product::pluck("name", "id");
+        $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
+        $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
+        $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
+        $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
+
+        return view('conversations.item.edit', compact('conversation', 'prospectingStatuses', 'proposedsStatuses', 'projectStatus',
+                                                       'detailedContacts', 'products', 'organizers', 'conversationItem', 'cpeaIds', 'checkproposed'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validation($request);
+
+        $conversationItem = ConversationItem::findOrFail($id);
+
+        $input = $request->all();
+
+        $conversationItem = ConversationItem::create([
+            'conversation_id' => $input['conversation_id'],
+            'item_type' => $input['item_type'],
+            'interaction_at' => $input['interaction_at'],
+            'project_status_id' => $input['project_status_id'],
+            'proposed_status_id' => $input['proposed_status_id'],
+            'prospecting_status_id' => $input['prospecting_status_id'],
+            'detailed_contact_id' => $input['detailed_contact_id'],
+            'additive' => $input['additive'] == "y" ? true : false,
+            'cpea_linked_id' => $input['cpea_linked_id'],
+            'item_details' => $input['item_details'],
+            'schedule_type' => $input['schedule_type'],
+            'schedule_name' => $input['schedule_name'],
+            'schedule_at' => $input['schedule_at'],
+            'organizer_id' => $input['organizer_id'],
+            'addressees' => $input['addressees'],
+            'optional_addressees' => $input['optional_addressees'],
+            'schedule_details' => $input['schedule_details'],
+            'user_id'=> auth()->user()->id,
+        ]);
+
+        $conversationItem->products()->sync($input['products']);
+
+        $resp = [
+            'message' => __('Interação  Atualizada com Sucesso!'),
+            'alert-type' => 'success'
+        ];
+
+        return redirect()->route('customers.conversations.show', ['conversation' => $input['conversation_id']])->with($resp);
     }
 }

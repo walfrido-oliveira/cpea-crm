@@ -38,7 +38,11 @@
                         <tbody>
                         @foreach ($conversation->items as $key => $item)
                             <tr>
-                                <td>{{ $key + 1 }}</td>
+                                <td>
+                                    <a class="text-green-600 underline font-bold" href="{{ route("customers.conversations.item.edit", ["item" => $item->id]) }}">
+                                        {{ $key + 1 }}
+                                    </a>
+                                </td>
                                 <td>{{ $item->item_type }}</td>
                                 <td>{{ $item->conversation->cpea_id ? $item->conversation->cpea_id : '-' }}</td>
                                 <td>{{ $conversation->updated_at->format('d/m/Y H:i') }}</td>
