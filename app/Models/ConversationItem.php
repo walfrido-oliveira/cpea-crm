@@ -76,4 +76,11 @@ class ConversationItem extends Model
     {
         return $this->belongsTo(ProspectingStatus::class);
     }
+
+    /**
+     * Products
+     */
+    public function products(){
+        return $this->belongsToMany(Product::class);
+    }
 }

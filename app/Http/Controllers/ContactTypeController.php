@@ -47,7 +47,7 @@ class ContactTypeController extends Controller
 
         $input = $request->all();
 
-       ContactType::create([
+        ContactType::create([
             'name' => $input['name'],
         ]);
 

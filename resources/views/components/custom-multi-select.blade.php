@@ -1,6 +1,5 @@
 <div class="inline-block relative w-full {{ $attributes['class'] }}">
     <select class="{{ $attributes['select-class'] }} block w-full @if(!isset($attributes['default'])) custom-select @endif focus:outline-none focus:shadow-outline @if(!isset($attributes['no-filter'])) filter-field @endif" {{ $attributes }}>
-        <option value="">{{ $attributes['placeholder'] }}</option>
         @php
             $index = 0;
         @endphp

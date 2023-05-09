@@ -20,7 +20,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="flex mx-4 px-3 py-2 mt-4">
+                <div class="flex py-2 mt-4">
                     <table class="table-items table table-responsive md:table w-full">
                         <thead>
                             <tr class="thead-light">

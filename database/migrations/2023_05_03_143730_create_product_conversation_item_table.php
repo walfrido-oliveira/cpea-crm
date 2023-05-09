@@ -13,7 +13,7 @@ class CreateProductConversationItemTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_conversation_item', function (Blueprint $table) {
+        Schema::create('conversation_item_product', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('conversation_item_id')->constrained()->cascadeOnDelete();
