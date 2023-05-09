@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\NewScheduleNotification;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
@@ -197,5 +198,15 @@ class User extends Authenticatable
         ], false));
 
         $this->notify(new NewUserNotification($this, $url));
+    }
+
+    /**
+     * Send new schedule notification
+     *
+     * @return void
+     */
+    public function sendScheduleNotification($notificationItem)
+    {
+        $this->notify(new NewScheduleNotification($notificationItem));
     }
 }

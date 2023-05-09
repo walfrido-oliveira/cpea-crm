@@ -122,7 +122,7 @@
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_type" value="{{ __('Tipo de Agenda') }}"/>
-                                <x-custom-select :options="array('internal' => 'Reunião Externa', 'external' => 'Notificação Interna')" value="{{ old('schedule_type') }}" name="schedule_type" id="schedule_type" class="mt-1"/>
+                                <x-custom-select :options="array('internal' => 'Reunião Interna', 'external' => 'Reunião Externa')" value="{{ old('schedule_type') }}" name="schedule_type" id="schedule_type" class="mt-1"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
@@ -175,6 +175,18 @@
                 });
                 document.querySelector(`.${item.value}-status`).classList.remove("hidden");
             });
+        });
+
+        document.querySelector("#schedule_type").addEventListener("change", function() {
+            if(this.value == "internal") {
+                document.querySelector("#addressees").disabled = true;
+                document.querySelector("#addressees").value = "";
+                document.querySelector("#optional_addressees").disabled = true;
+                document.querySelector("#optional_addressees").value = "";
+            } else {
+                document.querySelector("#addressees").disabled = false;
+                document.querySelector("#optional_addressees").disabled = false;
+            }
         });
 
         function showFieldsSchedule() {

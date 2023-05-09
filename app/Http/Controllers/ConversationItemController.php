@@ -90,6 +90,10 @@ class ConversationItemController extends Controller
 
         $conversationItem->products()->sync($input['products']);
 
+        if($input['schedule_type'] == 'internal') {
+            $conversationItem->user->sendScheduleNotification($conversationItem);
+        }
+
         $resp = [
             'message' => __('Interação  Cadastrada com Sucesso!'),
             'alert-type' => 'success'
