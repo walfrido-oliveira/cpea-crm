@@ -23,7 +23,7 @@
                 <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->id }}</a>
             </td>
             <td>
-                <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->customer ? $customer->customer->name : '-' }}</a>
+                <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->customer->name }}</a>
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->segment->name }}</a>
