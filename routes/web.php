@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
@@ -208,6 +209,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
                 Route::get('/edit/{item}', [ConversationItemController::class, 'edit'])->name('edit');
                 Route::post('/store', [ConversationItemController::class, 'store'])->name('store');
                 Route::put('/update/{item}', [ConversationItemController::class, 'update'])->name('update');
+
+                Route::prefix('anexos')->name('attachments.')->group(function(){
+                    Route::post('/store', [AttachmentController::class, 'store'])->name('store');
+                    Route::delete('/delete/{attachment}', [AttachmentController::class, 'destroy'])->name('delete');
+                });
             });
         });
 

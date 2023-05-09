@@ -5,6 +5,7 @@
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="conversation_id" value="{{ $conversation->id }}">
+                <input type="hidden" name="conversation_item_id" id="conversation_item_id" value="{{ $conversationItem->id }}">
                 <div class="flex md:flex-row flex-col">
                     <div class="w-full flex items-center">
                         <h1>{{ __('Editar interação') }} - {{ $conversation->customer->name }}</h1>
@@ -39,14 +40,14 @@
                                     @break
                                 @case("Proposta")
                                     <div class="inline-flex inner-item p-2">
-                                        <input type="radio" name="item_type" id="proposta" hidden value="Proposta"/>
+                                        <input type="radio" name="item_type" id="proposta" checked hidden value="Proposta"/>
                                         <label for="proposta" class="radio">Proposta</label>
                                     </div>
                                     @break
 
                                 @case("Projeto")
                                     <div class="inline-flex inner-item p-2">
-                                        <input type="radio" name="item_type" id="projeto" hidden value="Projeto"/>
+                                        <input type="radio" name="item_type" id="projeto" checked hidden value="Projeto"/>
                                         <label for="projeto" class="radio">Projeto</label>
                                     </div>
                                     @break
@@ -87,14 +88,14 @@
                             <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter"/>
                         </div>
                     </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
-                            <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ old('additive') }}" name="additive" id="additive" class="mt-1"/>
+                            <x-jet-label for="direction_id" value="{{ __('Diretoria') }}" required/>
+                            <x-custom-select :options="$directions" value="{{ old('direction_id') }}" name="direction_id" id="direction_id" class="mt-1"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden cpea-linked-id">
-                            <x-jet-label for="cpea_linked_id" value="{{ __('IDCPEA Vinculado') }}"/>
-                            <x-custom-select :options="$cpeaIds" value="{{ old('cpea_linked_id') }}" name="cpea_linked_id" id="cpea_linked_id" class="mt-1"/>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
+                            <x-custom-select :options="[]" value="{{ old('employee_id') }}" name="employee_id" id="employee_id" class="mt-1"/>
                         </div>
                     </div>
                 </div>
@@ -106,6 +107,48 @@
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full px-3 mb-6 md:mb-0">
                             <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('item_details') }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields @if($conversationItem->item_type != "Proposta")hidden @endif">
+                    <div class="flex mx-4 px-3 py-2 mt-4">
+                        <h2 class="w-full px-3 mb-6 md:mb-0">Anexos</h2>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                                <button class="btn-outline-info" type="button"  id="add_attachment">
+                                    Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mt-2 table-responsive">
+                        <table class="table-attachments table md:table w-full">
+                            <thead>
+                                <tr class="thead-light">
+                                    <th scope="col"  class="custom-th">{{ __('Nome do Arquivo') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($conversationItem->attachments as $attachment)
+                                    @include('conversations.item.attachment-content', ['attachment' => $attachment])
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields @if($conversationItem->item_type != "Proposta")hidden @endif">
+                    <div class="flex mx-4 px-3 py-2 mt-4">
+                        <h2 class="w-full px-3 mb-6 md:mb-0">Valores</h2>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                                <button class="btn-outline-info" type="button"  id="add_value">
+                                    Adicionar
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,5 +219,13 @@
         </form>
     </div>
 
+    <x-modal title="{{ __('Excluir Anexo') }}"
+            msg="{{ __('Deseja realmente apagar esse anexo?') }}"
+            confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_attachment_modal"
+            confirm_id="confirm_attachment_delete" cancel_modal="cancel_attachment_delete"
+            method="DELETE"
+            redirect-url="{{ route('customers.conversations.item.edit', ['item' => $conversationItem->id]) }}"/>
+
+    @include("conversations.item.attachment-modal")
     @include('conversations.item.scripts')
 </x-app-layout>

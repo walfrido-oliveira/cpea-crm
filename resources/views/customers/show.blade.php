@@ -444,8 +444,8 @@
                             </form>
                         </div>
                     </div>
-                    <div class="flex flex-wrap mt-2">
-                        <table class="table-contacts table table-responsive md:table w-full">
+                    <div class="flex flex-wrap mt-2 table-responsive">
+                        <table class="table-contacts table md:table w-full">
                             <thead>
                                 <tr class="thead-light">
                                     <th scope="col"  class="custom-th">{{ __('Cód. da Interação') }}</th>

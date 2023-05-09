@@ -46,15 +46,17 @@
         }
     });
 
-    document.querySelector("#additive").addEventListener("change", function() {
-        document.querySelector("#cpea_linked_id").value = "";
-        window.customSelectArray["cpea_linked_id"].update();
-        if(this.value == "y") {
-            document.querySelector("#cpea_linked_id").disabled = false;
-        } else {
-            document.querySelector("#cpea_linked_id").disabled = true;
-        }
-    });
+    if(document.querySelector("#additive")) {
+        document.querySelector("#additive").addEventListener("change", function() {
+            document.querySelector("#cpea_linked_id").value = "";
+            window.customSelectArray["cpea_linked_id"].update();
+            if(this.value == "y") {
+                document.querySelector("#cpea_linked_id").disabled = false;
+            } else {
+                document.querySelector("#cpea_linked_id").disabled = true;
+            }
+        });
+    }
 
     document.querySelector("#direction_id").addEventListener("change", function() {
         const dataForm = new FormData();
@@ -108,4 +110,85 @@
             },
         }
     }
+
+    function toggleAttachmentModal(show = false) {
+        const modal = document.querySelector("#attachment_modal");
+        if(show) modal.classList.remove("hidden");
+        if(!show) modal.classList.add("hidden");
+    }
+
+    function addAttachment() {
+        const dataForm = new FormData();
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        dataForm.append("conversation_item_id", document.querySelector("#conversation_item_id").value);
+        dataForm.append("name", document.querySelector("#attachment_modal #name").value);
+        dataForm.append("obs", document.querySelector("#attachment_modal #obs").value);
+        dataForm.append("file", document.querySelector("#attachment_modal #file").files[0]);
+        dataForm.append("_method", "POST");
+        dataForm.append("_token", token);
+
+        fetch("{{ route('customers.conversations.item.attachments.store') }}", {
+            method: 'POST',
+            body: dataForm
+        })
+        .then(res => res.text())
+        .then(data => {
+            const response = JSON.parse(data);
+
+            console.log(response);
+
+            toggleAttachmentModal(false);
+
+            toastr.success(response.message);
+
+            var table = document.querySelector(".table-attachments");
+
+            var row = table.insertRow();
+            row.innerHTML = response.attachment;
+
+            deleteModalHandle();
+
+        }).catch(err => {
+            console.log(err);
+            toastr.error(err);
+        });
+    }
+
+    document.querySelector("#confirm_attachment_modal").addEventListener("click", function() {
+        addAttachment();
+    });
+
+    document.querySelector("#add_attachment").addEventListener("click", function() {
+        toggleAttachmentModal(true);
+    });
+
+    document.querySelector("#cancel_attachment_modal").addEventListener("click", function() {
+        toggleAttachmentModal(false);
+    });
+
+    function toggleDeleteAttachmentModal(show = false) {
+        const modal = document.querySelector("#delete_attachment_modal");
+        if(show) modal.classList.remove("hidden");
+        if(!show) modal.classList.add("hidden");
+    }
+
+    function deleteModalHandle() {
+        document.querySelectorAll(".delete-attachment").forEach(item => {
+            item.addEventListener("click", function(e) {
+                e.preventDefault();
+                toggleDeleteAttachmentModal(true);
+
+                const modal = document.querySelector("#delete_attachment_modal");
+                modal.dataset.id = item.dataset.id;
+                modal.dataset.row = item.parentElement.parentElement.rowIndex;
+            });
+        });
+    }
+
+    deleteModalHandle();
+
+    document.querySelector("#cancel_attachment_delete").addEventListener("click", function() {
+        toggleDeleteAttachmentModal(false);
+    });
 </script>

@@ -99,4 +99,12 @@ class ConversationItem extends Model
     public function products(){
         return $this->belongsToMany(Product::class);
     }
+
+    /**
+     * The Attachments
+    */
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
 }
