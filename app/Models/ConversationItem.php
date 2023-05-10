@@ -107,4 +107,12 @@ class ConversationItem extends Model
     {
         return $this->hasMany(Attachment::class);
     }
+
+    /**
+     * The Values
+    */
+    public function values()
+    {
+        return $this->hasMany(Value::class);
+    }
 }

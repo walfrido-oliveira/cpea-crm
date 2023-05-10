@@ -21,7 +21,7 @@ class CreateConversationItemsTable extends Migration
             $table->string("cpea_linked_id")->nullable()->index();
             $table->text("item_details")->nullable();
 
-            $table->string("schedule_type")->nullable();
+            $table->string("schedule_type")->nullable()->index();
             $table->string("schedule_name")->nullable();
             $table->timestamp('schedule_at')->nullable();
             $table->string("addressees")->nullable();

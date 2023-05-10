@@ -24,6 +24,7 @@ use App\Http\Controllers\DetailedContactController;
 use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\GeneralContactTypeController;
+use App\Http\Controllers\ValueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -213,6 +214,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
                 Route::prefix('anexos')->name('attachments.')->group(function(){
                     Route::post('/store', [AttachmentController::class, 'store'])->name('store');
                     Route::delete('/delete/{attachment}', [AttachmentController::class, 'destroy'])->name('delete');
+                });
+
+                Route::prefix('valores')->name('values.')->group(function(){
+                    Route::post('/store', [ValueController::class, 'store'])->name('store');
+                    Route::put('/update/{value}', [ValueController::class, 'update'])->name('update');
+                    Route::delete('/delete/{value}', [ValueController::class, 'destroy'])->name('delete');
                 });
             });
         });

@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-6 create-contact-type">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
-            <form method="POST" action="{{ route('customers.conversations.item.update', ['']) }}">
+            <form method="POST" action="{{ route('customers.conversations.item.update', [$conversationItem->id]) }}">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="conversation_id" value="{{ $conversation->id }}">
@@ -152,6 +152,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="flex mx-4 px-3 py-2 mt-4 table-responsive">
+                        <table class="table-values table md:table w-full">
+                            <thead>
+                                <tr class="thead-light">
+                                    <th scope="col"  class="custom-th">{{ __('Tipo de valor') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('Descrição do valor') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('Valor') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($conversationItem->values as $value)
+                                    @include('conversations.item.value-content', ['value' => $value])
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="py-2 my-2 bg-white rounded-lg" x-data="showFieldsSchedule()">
@@ -227,6 +245,14 @@
             method="DELETE"
             redirect-url="{{ route('customers.conversations.item.edit', ['item' => $conversationItem->id]) }}"/>
 
+    <x-modal title="{{ __('Excluir Valor') }}"
+            msg="{{ __('Deseja realmente valor esse anexo?') }}"
+            confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_value_modal"
+            confirm_id="confirm_value_delete" cancel_modal="cancel_value_delete"
+            method="DELETE"
+            redirect-url="{{ route('customers.conversations.item.edit', ['item' => $conversationItem->id]) }}"/>
+
     @include("conversations.item.attachment-modal")
+    @include("conversations.item.value-modal")
     @include('conversations.item.scripts')
 </x-app-layout>

@@ -21,7 +21,7 @@ class ConversationItemController extends Controller
             'item_type' => ['required', 'in:Prospect,Proposta,Projeto'],
             'interaction_at' => ['required'],
             'schedule_at' => ['nullable'],
-            'additive' => ['required', 'in:y,n'],
+            'additive' => ['nullable', 'in:y,n'],
             'schedule_type' => ['nullable', 'in:internal,external'],
             'cpea_linked_id' => ['nullable', 'string', 'max:255'],
             'schedule_name' => ['nullable', 'string', 'max:255'],
@@ -159,7 +159,7 @@ class ConversationItemController extends Controller
 
         $input = $request->all();
 
-        $conversationItem = ConversationItem::create([
+        $conversationItem->update([
             'conversation_id' => $input['conversation_id'],
             'item_type' => $input['item_type'],
             'interaction_at' => $input['interaction_at'],

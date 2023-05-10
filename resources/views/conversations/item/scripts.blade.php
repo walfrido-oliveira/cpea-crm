@@ -116,6 +116,12 @@
         if(!show) modal.classList.add("hidden");
     }
 
+    function toggleValueModal(show = false) {
+        const modal = document.querySelector("#value_modal");
+        if(show) modal.classList.remove("hidden");
+        if(!show) modal.classList.add("hidden");
+    }
+
     function addAttachment() {
         const dataForm = new FormData();
         const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -146,7 +152,46 @@
             var row = table.insertRow();
             row.innerHTML = response.attachment;
 
-            deleteModalHandle();
+            deleteAttachmentModalHandle();
+
+        }).catch(err => {
+            console.log(err);
+            toastr.error(err);
+        });
+    }
+
+    function addValue() {
+        const dataForm = new FormData();
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        dataForm.append("conversation_item_id", document.querySelector("#conversation_item_id").value);
+        dataForm.append("value_type", document.querySelector("#value_modal #value_type").value);
+        dataForm.append("description", document.querySelector("#value_modal #description").value);
+        dataForm.append("value", document.querySelector("#value_modal #value").value);
+        dataForm.append("obs", document.querySelector("#value_modal #obs").value);
+        dataForm.append("_method", "POST");
+        dataForm.append("_token", token);
+
+        fetch("{{ route('customers.conversations.item.values.store') }}", {
+            method: 'POST',
+            body: dataForm
+        })
+        .then(res => res.text())
+        .then(data => {
+            const response = JSON.parse(data);
+
+            console.log(response);
+
+            toggleValueModal(false);
+
+            toastr.success(response.message);
+
+            var table = document.querySelector(".table-values");
+
+            var row = table.insertRow();
+            row.innerHTML = response.value;
+
+            deleteValueModalHandle();
 
         }).catch(err => {
             console.log(err);
@@ -160,9 +205,21 @@
         });
     }
 
+    if(document.querySelector("#confirm_value_modal")) {
+        document.querySelector("#confirm_value_modal").addEventListener("click", function() {
+            addValue();
+        });
+    }
+
     if(document.querySelector("#add_attachment")) {
         document.querySelector("#add_attachment").addEventListener("click", function() {
             toggleAttachmentModal(true);
+        });
+    }
+
+    if(document.querySelector("#add_value")) {
+        document.querySelector("#add_value").addEventListener("click", function() {
+            toggleValueModal(true);
         });
     }
 
@@ -172,26 +229,54 @@
         });
     }
 
+    if(document.querySelector("#cancel_value_modal")) {
+        document.querySelector("#cancel_value_modal").addEventListener("click", function() {
+            toggleValueModal(false);
+        });
+    }
+
     function toggleDeleteAttachmentModal(show = false) {
         const modal = document.querySelector("#delete_attachment_modal");
         if(show) modal.classList.remove("hidden");
         if(!show) modal.classList.add("hidden");
     }
 
-    function deleteModalHandle() {
+    function toggleDeleteValueModal(show = false) {
+        const modal = document.querySelector("#delete_value_modal");
+        if(show) modal.classList.remove("hidden");
+        if(!show) modal.classList.add("hidden");
+    }
+
+    function deleteAttachmentModalHandle() {
         document.querySelectorAll(".delete-attachment").forEach(item => {
             item.addEventListener("click", function(e) {
                 e.preventDefault();
                 toggleDeleteAttachmentModal(true);
 
                 const modal = document.querySelector("#delete_attachment_modal");
+                modal.dataset.url = this.dataset.url;
                 modal.dataset.id = item.dataset.id;
                 modal.dataset.row = item.parentElement.parentElement.rowIndex;
             });
         });
     }
 
-    deleteModalHandle();
+    function deleteValueModalHandle() {
+        document.querySelectorAll(".delete-value").forEach(item => {
+            item.addEventListener("click", function(e) {
+                e.preventDefault();
+                toggleDeleteValueModal(true);
+
+                const modal = document.querySelector("#delete_value_modal");
+                modal.dataset.url = this.dataset.url;
+                modal.dataset.id = item.dataset.id;
+                modal.dataset.row = item.parentElement.parentElement.rowIndex;
+            });
+        });
+    }
+
+    deleteAttachmentModalHandle();
+    deleteValueModalHandle();
 
     if(document.querySelector("#cancel_attachment_delete")) {
         document.querySelector("#cancel_attachment_delete").addEventListener("click", function() {
@@ -199,4 +284,15 @@
         });
     }
 
+    if(document.querySelector("#cancel_value_delete")) {
+        document.querySelector("#cancel_value_delete").addEventListener("click", function() {
+            toggleDeleteValueModal(false);
+        });
+    }
+
+    if(document.querySelector("#confirm_value_delete")) {
+        document.querySelector("#confirm_value_delete").addEventListener("resp", function(e) {
+            console.log(e);
+        })
+    }
 </script>
