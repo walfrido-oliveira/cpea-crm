@@ -31,27 +31,18 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-1 py-1 mt-0 custom-radio ml-3">
                         <div class="bg-gray-200 radios-container">
-                            @switch($conversationItem->item_type)
-                                @case("Prospect")
-                                    <div class="inline-flex inner-item p-2">
-                                        <input type="radio" name="item_type" id="prospect" checked hidden value="Prospect"/>
-                                        <label for="prospect" class="radio">Prospect</label>
-                                    </div>
-                                    @break
-                                @case("Proposta")
-                                    <div class="inline-flex inner-item p-2">
-                                        <input type="radio" name="item_type" id="proposta" checked hidden value="Proposta"/>
-                                        <label for="proposta" class="radio">Proposta</label>
-                                    </div>
-                                    @break
-
-                                @case("Projeto")
-                                    <div class="inline-flex inner-item p-2">
-                                        <input type="radio" name="item_type" id="projeto" checked hidden value="Projeto"/>
-                                        <label for="projeto" class="radio">Projeto</label>
-                                    </div>
-                                    @break
-                            @endswitch
+                            <div class="inline-flex inner-item p-2">
+                                <input type="radio" name="item_type" id="prospect" @if($conversationItem->item_type == "Prospect") checked @endif hidden value="Prospect"/>
+                                <label for="prospect" class="radio">Prospect</label>
+                            </div>
+                            <div class="inline-flex inner-item p-2">
+                                <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if($conversationItem->item_type == "Proposta") checked @endif @if(!$checkproposed) disabled @endif/>
+                                <label for="proposta" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Proposta</label>
+                            </div>
+                            <div class="inline-flex inner-item p-2">
+                                <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if($conversationItem->item_type == "Projeto") checked @endif @if(!$checkproject) disabled @endif/>
+                                <label for="projeto" class="radio" style="@if(!$checkproject) cursor: not-allowed; @endif">Projeto</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,39 +54,49 @@
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="interaction_at" value="{{ __('Data/Hora da Interação') }}" required/>
-                            <x-jet-input id="interaction_at" class="form-control block mt-1 w-full" type="datetime-local" name="interaction_at" required autofocus value="{{ old('interaction_at') }}"/>
+                            <x-jet-input id="interaction_at" class="form-control block mt-1 w-full" type="datetime-local" name="interaction_at" required autofocus value="{{ $conversationItem->interaction_at }}"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Prospect-status status">
                             <x-jet-label for="prospecting_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$prospectingStatuses" value="{{ old('prospecting_status_id') }}" name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
+                            <x-custom-select :options="$prospectingStatuses" value="{{ $conversationItem->prospecting_status_id }}" name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden Proposta-status status">
                             <x-jet-label for="proposed_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$proposedsStatuses" value="{{ old('proposed_status_id') }}" name="proposed_status_id" id="proposed_status_id" class="mt-1"/>
+                            <x-custom-select :options="$proposedsStatuses" value="{{ $conversationItem->proposed_status_id }}" name="proposed_status_id" id="proposed_status_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden Projeto-status status">
                             <x-jet-label for="project_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$projectStatus" value="{{ old('project_status_id') }}" name="project_status_id" id="project_status_id" class="mt-1"/>
+                            <x-custom-select :options="$projectStatus" value="{{ $conversationItem->project_status_id }}" name="project_status_id" id="project_status_id" class="mt-1"/>
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="detailed_contact_id" value="{{ __('Contato') }}" required/>
-                            <x-custom-select :options="$detailedContacts" value="{{ old('detailed_contact_id') }}" name="detailed_contact_id" id="detailed_contact_id" class="mt-1"/>
+                            <x-custom-select :options="$detailedContacts" value="{{ $conversationItem->detailed_contact_id }}" name="detailed_contact_id" id="detailed_contact_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="products" value="{{ __('Produtos') }}" required/>
-                            <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter"/>
+                            <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="$conversationItemProduts" select-class="form-input" class="" no-filter="no-filter"/>
                         </div>
                     </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 prospects-fields @if($conversationItem->item_type != "Prospect") hidden @endif">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
+                            <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ $conversationItem->additive }}" name="additive" id="additive" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="cpea_linked_id" value="{{ __('IDCPEA Vinculado') }}"/>
+                            <x-custom-select :options="$cpeaIds" value="{{ $conversationItem->cpea_linked_id }}" name="cpea_linked_id" id="cpea_linked_id" class="mt-1" disabled/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields @if($conversationItem->item_type != "Proposta") hidden @endif">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="direction_id" value="{{ __('Diretoria') }}" required/>
-                            <x-custom-select :options="$directions" value="{{ old('direction_id') }}" name="direction_id" id="direction_id" class="mt-1"/>
+                            <x-custom-select :options="$directions" value="{{ $conversationItem->direction_id }}" name="direction_id" id="direction_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
-                            <x-custom-select :options="[]" value="{{ old('employee_id') }}" name="employee_id" id="employee_id" class="mt-1"/>
+                            <x-custom-select :options="[]" value="{{ $conversationItem->employee_id }}" name="employee_id" id="employee_id" class="mt-1"/>
                         </div>
                     </div>
                 </div>
@@ -106,7 +107,7 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('item_details') }}</textarea>
+                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ $conversationItem->item_details }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -122,7 +123,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-wrap mt-2 table-responsive">
+                    <div class="flex mx-4 px-3 py-2 mt-4 table-responsive">
                         <table class="table-attachments table md:table w-full">
                             <thead>
                                 <tr class="thead-light">
@@ -174,43 +175,43 @@
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_type" value="{{ __('Tipo de Agenda') }}"/>
-                                <x-custom-select :options="array('internal' => 'Reunião Interna', 'external' => 'Reunião Externa')" value="{{ old('schedule_type') }}" name="schedule_type" id="schedule_type" class="mt-1"/>
+                                <x-custom-select :options="array('internal' => 'Reunião Interna', 'external' => 'Reunião Externa')" value="{{ $conversationItem->schedule_type }}" name="schedule_type" id="schedule_type" class="mt-1"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_name" value="{{ __('Nome da Agenda') }}"/>
-                                <x-jet-input id="schedule_name" class="form-control block mt-1 w-full" type="text" name="schedule_name" maxlength="255" autofocus autocomplete="schedule_name" value="{{ old('schedule_name') }}"/>
+                                <x-jet-input id="schedule_name" class="form-control block mt-1 w-full" type="text" name="schedule_name" maxlength="255" autofocus autocomplete="schedule_name" value="{{ $conversationItem->schedule_name }}"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_at" value="{{ __('Data/Hora da Reunião') }}"/>
-                                <x-jet-input id="schedule_at" class="form-control block mt-1 w-full" type="datetime-local" name="schedule_at" autofocus value="{{ old('schedule_at') }}"/>
+                                <x-jet-input id="schedule_at" class="form-control block mt-1 w-full" type="datetime-local" name="schedule_at" autofocus value="{{$conversationItem->schedule_at }}"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="organizer_id" value="{{ __('Organizador') }}"/>
-                                <x-custom-select :options="$organizers" value="{{ old('organizer_id') }}" name="organizer_id" id="organizer_id" class="mt-1"/>
+                                <x-custom-select :options="$organizers" value="{{ $conversationItem->organizer_id }}" name="organizer_id" id="organizer_id" class="mt-1"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="addressees" value="{{ __('Destinatários') }}"/>
-                                <x-jet-input id="addressees" class="form-control block mt-1 w-full" type="text" name="addressees" maxlength="255" autofocus autocomplete="addressees" value="{{ old('addressees') }}"/>
+                                <x-jet-input id="addressees" class="form-control block mt-1 w-full" type="text" name="addressees" maxlength="255" autofocus autocomplete="addressees" value="{{ $conversationItem->addressees }}"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="optional_addressees" value="{{ __('Destinatários Opcionais') }}"/>
-                                <x-jet-input id="optional_addressees" class="form-control block mt-1 w-full" type="text" name="optional_addressees" maxlength="255" autofocus autocomplete="optional_addressees" value="{{ old('optional_addressees') }}"/>
+                                <x-jet-input id="optional_addressees" class="form-control block mt-1 w-full" type="text" name="optional_addressees" maxlength="255" autofocus autocomplete="optional_addressees" value="{{ $conversationItem->optional_addressees }}"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_details" value="{{ __('Detalhes do Agendamento') }}"/>
-                                <textarea name="schedule_details" id="schedule_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('schedule_details') }}</textarea>
+                                <textarea name="schedule_details" id="schedule_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ $conversationItem->schedule_details }}</textarea>
                             </div>
                         </div>
                     </div>

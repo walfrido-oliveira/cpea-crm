@@ -32,9 +32,9 @@ class ConversationItemController extends Controller
             'conversation_id' => ['required', 'exists:conversations,id'],
             'project_status_id' => ['nullable', 'exists:project_statuses,id'],
             'proposed_status_id' => ['nullable', 'exists:proposed_statuses,id'],
-            'prospecting_status_id' => ['nullable', 'exists:prospecting_statusses,id'],
+            'prospecting_status_id' => ['nullable', 'exists:prospecting_statuses,id'],
             'detailed_contact_id' => ['required', 'exists:detailed_contacts,id'],
-            'organizer_id' => ['required', 'exists:users,id'],
+            'organizer_id' => ['nullable', 'exists:users,id'],
             'direction_id' => ['nullable', 'exists:directions,id'],
             'employee_id' => ['nullable', 'exists:employees,id'],
         ]);
@@ -87,7 +87,7 @@ class ConversationItemController extends Controller
             'prospecting_status_id' => $input['prospecting_status_id'],
             'detailed_contact_id' => $input['detailed_contact_id'],
             'additive' => $input['additive'] == "y" ? true : false,
-            'cpea_linked_id' => $input['cpea_linked_id'],
+            'cpea_linked_id' => isset($input['cpea_linked_id']) ? $input['cpea_linked_id'] : null,
             'item_details' => $input['item_details'],
             'schedule_type' => $input['schedule_type'],
             'schedule_name' => $input['schedule_name'],
@@ -137,10 +137,11 @@ class ConversationItemController extends Controller
         $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
         $directions = Direction::pluck("name", "id");
         $employees = Employee::pluck("name", "id");
+        $conversationItemProduts = $conversationItem->products()->pluck("products.name", "products.id")->toArray();
 
         return view('conversations.item.edit', compact('conversation', 'prospectingStatuses', 'proposedsStatuses', 'projectStatus',
                                                        'detailedContacts', 'products', 'organizers', 'conversationItem', 'cpeaIds',
-                                                       'checkproposed', 'directions', 'employees'));
+                                                       'checkproposed', 'directions', 'employees', 'conversationItemProduts', 'checkproject'));
     }
 
     /**
@@ -167,7 +168,7 @@ class ConversationItemController extends Controller
             'prospecting_status_id' => $input['prospecting_status_id'],
             'detailed_contact_id' => $input['detailed_contact_id'],
             'additive' => $input['additive'] == "y" ? true : false,
-            'cpea_linked_id' => $input['cpea_linked_id'],
+            'cpea_linked_id' => isset($input['cpea_linked_id']) ? $input['cpea_linked_id'] : null,
             'item_details' => $input['item_details'],
             'schedule_type' => $input['schedule_type'],
             'schedule_name' => $input['schedule_name'],

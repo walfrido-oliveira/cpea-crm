@@ -49,7 +49,6 @@
     if(document.querySelector("#additive")) {
         document.querySelector("#additive").addEventListener("change", function() {
             document.querySelector("#cpea_linked_id").value = "";
-            window.customSelectArray["cpea_linked_id"].update();
             if(this.value == "y") {
                 document.querySelector("#cpea_linked_id").disabled = false;
             } else {
@@ -155,17 +154,23 @@
         });
     }
 
-    document.querySelector("#confirm_attachment_modal").addEventListener("click", function() {
-        addAttachment();
-    });
+    if(document.querySelector("#confirm_attachment_modal")) {
+        document.querySelector("#confirm_attachment_modal").addEventListener("click", function() {
+            addAttachment();
+        });
+    }
 
-    document.querySelector("#add_attachment").addEventListener("click", function() {
-        toggleAttachmentModal(true);
-    });
+    if(document.querySelector("#add_attachment")) {
+        document.querySelector("#add_attachment").addEventListener("click", function() {
+            toggleAttachmentModal(true);
+        });
+    }
 
-    document.querySelector("#cancel_attachment_modal").addEventListener("click", function() {
-        toggleAttachmentModal(false);
-    });
+    if(document.querySelector("#cancel_attachment_modal")) {
+        document.querySelector("#cancel_attachment_modal").addEventListener("click", function() {
+            toggleAttachmentModal(false);
+        });
+    }
 
     function toggleDeleteAttachmentModal(show = false) {
         const modal = document.querySelector("#delete_attachment_modal");
@@ -188,7 +193,10 @@
 
     deleteModalHandle();
 
-    document.querySelector("#cancel_attachment_delete").addEventListener("click", function() {
-        toggleDeleteAttachmentModal(false);
-    });
+    if(document.querySelector("#cancel_attachment_delete")) {
+        document.querySelector("#cancel_attachment_delete").addEventListener("click", function() {
+            toggleDeleteAttachmentModal(false);
+        });
+    }
+
 </script>
