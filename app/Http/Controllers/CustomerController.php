@@ -112,11 +112,16 @@ class CustomerController extends Controller
         }
 
         $resp = [
-            'message' => __('Cliente Cadastrado com Sucesso!'),
+            'message' => __(($input['customer_id'] ? "Empresa Cadastrada " : "Cliente Cadastrado") . ' com Sucesso!'),
             'alert-type' => 'success'
         ];
 
-        return redirect()->route('customers.edit', ['customer' => $customer->id])->with($resp);
+        if($input['customer_id']) {
+            return redirect()->to(route('customers.show', ['customer' => $input['customer_id']]) . "#empresas")->with($resp);
+        } else {
+            return redirect()->route('customers.edit', ['customer' => $customer->id])->with($resp);
+        }
+
     }
 
     /**
@@ -193,7 +198,7 @@ class CustomerController extends Controller
         }
 
         $resp = [
-            'message' => __('Cliente Atualizado com Sucesso!'),
+            'message' => __(($input['customer_id'] ? "Empresa Atulizada " : "Cliente Atulizado") . ' com Sucesso!'),
             'alert-type' => 'success'
         ];
 
@@ -213,7 +218,7 @@ class CustomerController extends Controller
         $customer->delete();
 
         return response()->json([
-            'message' => __('Cliente Apagado com Sucesso!!'),
+            'message' => __(($customer->customer_id ? "Empresa Apagada " : "Cliente Apagado") .' com Sucesso!!'),
             'alert-type' => 'success'
         ]);
     }
