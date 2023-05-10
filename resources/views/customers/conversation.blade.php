@@ -9,17 +9,44 @@
             <td>{{ $conversation->customer->name }}</td>
         @endif
         <td>
-            <a class="text-green-600 underline font-bold" href="{{ route('customers.conversations.show', ['conversation' => $conversation->id]) }}">{{ $conversation->cpea_id }}</a>
+            {{ $conversation->cpea_id }}
         </td>
         <td></td>
-        <td></td>
-        <td></td>
+        <td>
+            @php
+                $isAdditive = false;
+            @endphp
+            @foreach ($conversation->items as $item)
+                @php if($item->additive) $isAdditive = true; @endphp
+            @endforeach
+            <span class="w-24 py-1 @if($isAdditive) badge-success @else badge-danger @endif" >
+                {{ $isAdditive ? "Sim" : "Não" }}
+            </span>
+        </td>
+        <td>
+            @foreach ($conversation->items as $item)
+                @foreach ($item->products as $product)
+                    {{ $product->name }}<br>
+                @endforeach
+            @endforeach
+        </td>
         <td>{{ $conversation->created_at->format('d/m/Y H:i') }}</td>
         <td>{{ $conversation->updated_at->format('d/m/Y H:i') }}</td>
         <td>
-            <span class="w-24 py-1 @if($conversation->status == "active") badge-success @elseif($conversation->status == 'inactive') badge-danger @endif" >
-                {{ __($conversation->status) }}
-            </span>
+
+            @if(count($conversation->items) > 0)
+                @if($conversation->items[count($conversation->items) - 1]->projectStatus)
+                    {{ $conversation->items[count($conversation->items) - 1]->projectStatus->name }}
+                @endif
+
+                @if($conversation->items[count($conversation->items) - 1]->proposedStatus)
+                    {{ $conversation->items[count($conversation->items) - 1]->proposedStatus->name }}
+                @endif
+
+                @if($conversation->items[count($conversation->items) - 1]->prospectingStatus)
+                    {{ $conversation->items[count($conversation->items) - 1]->prospectingStatus->name }}
+                @endif
+            @endif
         </td>
     </tr>
 @endforeach

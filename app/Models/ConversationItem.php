@@ -115,4 +115,13 @@ class ConversationItem extends Model
     {
         return $this->hasMany(Value::class);
     }
+
+    public function totalValues()
+    {
+        $sum = 0;
+        foreach ($this->values as $value) {
+            $sum += $value->value;
+        }
+        return $sum;
+    }
 }

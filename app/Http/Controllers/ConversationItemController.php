@@ -28,7 +28,7 @@ class ConversationItemController extends Controller
             'addressees' => ['nullable', 'string', 'max:255'],
             'optional_addressees' => ['nullable', 'string', 'max:255'],
             'schedule_details' => ['nullable', 'string', 'max:255'],
-            'item_details' => ['nullable', 'string', 'max:255'],
+            'item_details' => ['nullable', 'string'],
             'conversation_id' => ['required', 'exists:conversations,id'],
             'project_status_id' => ['nullable', 'exists:project_statuses,id'],
             'proposed_status_id' => ['nullable', 'exists:proposed_statuses,id'],
@@ -105,6 +105,12 @@ class ConversationItemController extends Controller
 
         if($input['schedule_type'] == 'internal') {
             $conversationItem->user->sendScheduleNotification($conversationItem);
+        }
+
+        $conversation = Conversation::findOrFail($input['conversation_id']);
+        if($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
+            $conversation->cpea_id = $conversation->id;
+            $conversation->save();
         }
 
         $resp = [

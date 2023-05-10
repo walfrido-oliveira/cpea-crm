@@ -44,46 +44,7 @@
                             <p class="font-bold">{{ __('Colaborador') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $employee->user->full_name }}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap">
-                        <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Email') }}</p>
-                        </div>
-                        <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $employee->user->email }}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap">
-                        <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Nível de Acesso') }}</p>
-                        </div>
-                        <div class="w-full md:w-1/2">
-                            @php
-                                $roles = $employee->user->roles->pluck("name")->all();
-                                $rolesResult = [];
-                                foreach ($roles as $key => $value)
-                                {
-                                    $rolesResult[ $key ] = __($value);
-                                }
-                            @endphp
-                            <p class="text-gray-500 font-bold">{{ implode(", ", $rolesResult) }}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap">
-                        <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Situação') }}</p>
-                        </div>
-                        <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">
-                                <span class="w-24 py-1 @if($employee->user->status == "active") badge-success @elseif($employee->user->status == 'inactive') badge-danger @endif" >
-                                    {{ __($employee->user->status) }}
-                                </span>
-                            </p>
+                            <p class="text-gray-500 font-bold">{{ $employee->name }}</p>
                         </div>
                     </div>
 
@@ -92,7 +53,7 @@
                             <p class="font-bold">{{ __('Gestor Imediato') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $employee->manager->full_name }}</p>
+                            <p class="text-gray-500 font-bold">{{ $employee->manager ? $employee->manager->full_name : '-' }}</p>
                         </div>
                     </div>
 

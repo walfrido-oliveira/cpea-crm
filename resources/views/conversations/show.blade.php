@@ -44,8 +44,14 @@
                                     </a>
                                 </td>
                                 <td>{{ $item->item_type }}</td>
-                                <td>{{ $item->conversation->cpea_id ? $item->conversation->cpea_id : '-' }}</td>
-                                <td>{{ $conversation->updated_at->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    @if($item->item_type == "Proposta")
+                                        {{ $item->conversation->cpea_id ? $item->conversation->cpea_id : '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>{{ $item->updated_at->format('d/m/Y H:i') }}</td>
                                 <td>{{ $item->user->full_name }}</td>
                                 <td>{{ $item->schedule_details }}</td>
                                 <td>{{ $item->detailedContact->contact }}</td>
@@ -62,7 +68,13 @@
                                             @break
                                     @endswitch
                                 </td>
-                                <td>-</td>
+                                <td>
+                                    @if($item->item_type == "Proposta")
+                                       R$ {{ number_format($item->totalValues(), 2, ",", ".") }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
