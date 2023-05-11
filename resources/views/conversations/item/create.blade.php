@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-6 create-contact-type">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
-            <form method="POST" action="{{ route('customers.conversations.item.store') }}">
+            <form method="POST" action="{{ route('customers.conversations.item.store') }}" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
                 <input type="hidden" name="conversation_id" value="{{ $conversation->id }}">
@@ -48,7 +48,7 @@
 
                 <div class="py-2 my-2 bg-white rounded-lg">
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        <h2 class="px-3 mb-6 md:mb-0">Dados de Integração</h2>
+                        <h2 class="px-3 mb-6 md:mb-0">Dados da Interação</h2>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -97,6 +97,60 @@
                             <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
                             <x-custom-select :options="[]" value="{{ old('employee_id') }}" name="employee_id" id="employee_id" class="mt-1"/>
                         </div>
+                    </div>
+                </div>
+
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields hidden">
+                    <div class="flex mx-4 px-3 py-2 mt-4">
+                        <h2 class="w-full px-3 mb-6 md:mb-0">Anexos</h2>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                                <button class="btn-outline-info" type="button"  id="add_attachment">
+                                    Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex mx-4 px-3 py-2 mt-4 table-responsive">
+                        <table class="table-attachments table md:table w-full">
+                            <thead>
+                                <tr class="thead-light">
+                                    <th scope="col"  class="custom-th">{{ __('Nome do Arquivo') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields hidden">
+                    <div class="flex mx-4 px-3 py-2 mt-4">
+                        <h2 class="w-full px-3 mb-6 md:mb-0">Valores</h2>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                                <button class="btn-outline-info" type="button"  id="add_value">
+                                    Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex mx-4 px-3 py-2 mt-4 table-responsive">
+                        <table class="table-values table md:table w-full">
+                            <thead>
+                                <tr class="thead-light">
+                                    <th scope="col"  class="custom-th">{{ __('Tipo de valor') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('Descrição do valor') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('Valor') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
+                                    <th scope="col"  class="custom-th">{{ __('') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -177,5 +231,8 @@
         </form>
     </div>
 
+
+    @include("conversations.item.attachment-modal")
+    @include("conversations.item.value-modal")
     @include('conversations.item.scripts')
 </x-app-layout>

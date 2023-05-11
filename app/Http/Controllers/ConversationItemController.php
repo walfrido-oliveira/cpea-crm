@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Value;
 use App\Models\Product;
 use App\Models\Employee;
 use App\Models\Direction;
+use App\Models\Attachment;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 use App\Models\ProjectStatus;
@@ -78,6 +80,8 @@ class ConversationItemController extends Controller
 
         $input = $request->all();
 
+        //dd($input);
+
         $conversationItem = ConversationItem::create([
             'conversation_id' => $input['conversation_id'],
             'item_type' => $input['item_type'],
@@ -102,6 +106,27 @@ class ConversationItemController extends Controller
         ]);
 
         $conversationItem->products()->sync($input['products']);
+
+        foreach ($input['files'] as $file) {
+            $path = $file['file']->store('public/files');
+
+            Attachment::create([
+                'conversation_item_id' => $conversationItem->id,
+                'name' => $file['name'],
+                'obs' => $file['obs'],
+                'path' => $path,
+            ]);
+        }
+
+        foreach ($input['values'] as $value) {
+            Value::create([
+                'conversation_item_id' => $conversationItem->id,
+                'description' => $value['description'],
+                'obs' => $value['obs'],
+                'value_type' => $value['value_type'],
+                'value' => $value['value'],
+            ]);
+        }
 
         if($input['schedule_type'] == 'internal') {
             $conversationItem->user->sendScheduleNotification($conversationItem);

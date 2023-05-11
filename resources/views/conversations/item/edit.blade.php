@@ -49,7 +49,7 @@
 
                 <div class="py-2 my-2 bg-white rounded-lg">
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        <h2 class="px-3 mb-6 md:mb-0">Dados de Integração</h2>
+                        <h2 class="px-3 mb-6 md:mb-0">Dados da Interação</h2>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">

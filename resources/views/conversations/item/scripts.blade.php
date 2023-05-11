@@ -201,13 +201,74 @@
 
     if(document.querySelector("#confirm_attachment_modal")) {
         document.querySelector("#confirm_attachment_modal").addEventListener("click", function() {
-            addAttachment();
+            var table = document.querySelector(".table-attachments");
+            var row = table.insertRow();
+            const file = document.querySelector("#attachment_modal #file").files;
+            const name = document.querySelector("#attachment_modal #name").value;
+            const obs = document.querySelector("#attachment_modal #obs").value;
+            const rowLength = table.rows.length;
+            var index = rowLength - 2;
+            row.innerHTML = `<tr data-row="${index}">
+                                <td>
+                                    ${name}
+                                    <input type="hidden" name="files[${index}][name]" value="${name}">
+                                    <input type="file" class="hidden" name="files[${index}][file]"  value="${file}">
+                                </td>
+                                <td>
+                                    ${obs}
+                                    <input type="hidden" name="files[${index}][obs]" value="${obs}">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn-transition-danger delete-attachment" data-row="${index}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>`;
+            toggleAttachmentModal(false);
+            document.querySelector(`input[type="file"][name="files[${index}][file]"]`).files = file;
+            deleteAttachmentModalHandle();
         });
     }
 
     if(document.querySelector("#confirm_value_modal")) {
         document.querySelector("#confirm_value_modal").addEventListener("click", function() {
-            addValue();
+            var table = document.querySelector(".table-values");
+            var row = table.insertRow();
+            const value_type = document.querySelector("#value_modal #value_type").value;
+            const value = document.querySelector("#value_modal #value").value;
+            const description = document.querySelector("#value_modal #description").value;
+            const obs = document.querySelector("#value_modal #obs").value;
+            const rowLength = table.rows.length;
+            var index = rowLength - 2;
+            row.innerHTML = `<tr data-row="${index}">
+                                <td>
+                                    ${value_type}
+                                    <input type="hidden" name="values[${index}][value_type]" value="${value_type}">
+                                </td>
+                                <td>
+                                    ${description}
+                                    <input type="hidden" name="values[${index}][description]" value="${description}">
+                                </td>
+                                <td>
+                                    ${value}
+                                    <input type="hidden" name="values[${index}][value]" value="${value}">
+                                </td>
+                                <td>
+                                    ${obs}
+                                    <input type="hidden" name="values[${index}][obs]" value="${obs}">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn-transition-danger delete-value" data-row="${index}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>`;
+            toggleValueModal(false);
+            deleteValueModalHandle();
         });
     }
 
@@ -251,12 +312,15 @@
         document.querySelectorAll(".delete-attachment").forEach(item => {
             item.addEventListener("click", function(e) {
                 e.preventDefault();
-                toggleDeleteAttachmentModal(true);
+                var table = document.querySelector(".table-attachments");
+                table.deleteRow(item.dataset.row + 1);
+
+                /*toggleDeleteAttachmentModal(true);
 
                 const modal = document.querySelector("#delete_attachment_modal");
                 modal.dataset.url = this.dataset.url;
                 modal.dataset.id = item.dataset.id;
-                modal.dataset.row = item.parentElement.parentElement.rowIndex;
+                modal.dataset.row = item.parentElement.parentElement.rowIndex;*/
             });
         });
     }
@@ -265,12 +329,15 @@
         document.querySelectorAll(".delete-value").forEach(item => {
             item.addEventListener("click", function(e) {
                 e.preventDefault();
-                toggleDeleteValueModal(true);
+                var table = document.querySelector(".table-valuets");
+                table.deleteRow(item.dataset.row + 1);
+
+                /*toggleDeleteValueModal(true);
 
                 const modal = document.querySelector("#delete_value_modal");
                 modal.dataset.url = this.dataset.url;
                 modal.dataset.id = item.dataset.id;
-                modal.dataset.row = item.parentElement.parentElement.rowIndex;
+                modal.dataset.row = item.parentElement.parentElement.rowIndex;*/
             });
         });
     }
