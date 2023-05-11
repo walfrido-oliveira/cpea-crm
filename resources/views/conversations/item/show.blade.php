@@ -199,10 +199,10 @@
                     <div class="flex mb-4">
                         <h2 class="w-full">{{ __('Detalhes da Conversa') }}</h2>
                     </div>
-                </div>
-                <div class="flex flex-wrap">
-                    <div class="w-full md:w-1/2">
-                        <p class="text-gray-500 font-bold">{{ $conversationItem->item_details }}</p>
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->item_details }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
