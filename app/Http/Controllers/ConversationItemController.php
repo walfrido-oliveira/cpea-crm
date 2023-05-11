@@ -79,8 +79,7 @@ class ConversationItemController extends Controller
         $this->validation($request);
 
         $input = $request->all();
-
-        //dd($input);
+        $conversation = Conversation::findOrFail($input['conversation_id']);
 
         $conversationItem = ConversationItem::create([
             'conversation_id' => $input['conversation_id'],
@@ -103,36 +102,42 @@ class ConversationItemController extends Controller
             'direction_id' => $input['direction_id'],
             'employee_id' => $input['employee_id'],
             'user_id'=> auth()->user()->id,
+            'order' => count($conversation->items) + 1,
         ]);
 
-        $conversationItem->products()->sync($input['products']);
+        if(isset($input['products'])) :
+            $conversationItem->products()->sync($input['products']);
+        endif;
 
-        foreach ($input['files'] as $file) {
-            $path = $file['file']->store('public/files');
+        if(isset($input['files'])) :
+            foreach ($input['files'] as $file) {
+                $path = $file['file']->store('public/files');
 
-            Attachment::create([
-                'conversation_item_id' => $conversationItem->id,
-                'name' => $file['name'],
-                'obs' => $file['obs'],
-                'path' => $path,
-            ]);
-        }
+                Attachment::create([
+                    'conversation_item_id' => $conversationItem->id,
+                    'name' => $file['name'],
+                    'obs' => $file['obs'],
+                    'path' => $path,
+                ]);
+            }
+        endif;
 
-        foreach ($input['values'] as $value) {
-            Value::create([
-                'conversation_item_id' => $conversationItem->id,
-                'description' => $value['description'],
-                'obs' => $value['obs'],
-                'value_type' => $value['value_type'],
-                'value' => $value['value'],
-            ]);
-        }
+        if(isset($input['values'])) :
+            foreach ($input['values'] as $value) {
+                Value::create([
+                    'conversation_item_id' => $conversationItem->id,
+                    'description' => $value['description'],
+                    'obs' => $value['obs'],
+                    'value_type' => $value['value_type'],
+                    'value' => $value['value'],
+                ]);
+            }
+        endif;
 
         if($input['schedule_type'] == 'internal') {
             $conversationItem->user->sendScheduleNotification($conversationItem);
         }
 
-        $conversation = Conversation::findOrFail($input['conversation_id']);
         if($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
             $conversation->cpea_id = $conversation->id;
             $conversation->save();
@@ -145,6 +150,19 @@ class ConversationItemController extends Controller
 
         return redirect()->route('customers.conversations.show', ['conversation' => $input['conversation_id']])->with($resp);
 
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $conversationItem = ConversationItem::findOrFail($id);
+
+        return view('conversations.item.show', compact('conversationItem'));
     }
 
     /**
