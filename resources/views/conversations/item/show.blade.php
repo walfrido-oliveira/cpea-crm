@@ -7,7 +7,7 @@
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2 ">
-                        <a class="btn-outline-danger" href="{{ route('project-statuss.index') }}">{{ __('Voltar') }}</a>
+                        <a class="btn-outline-danger" href="{{ route('customers.conversations.show', ['conversation' => $conversationItem->conversation_id]) }}">{{ __('Voltar') }}</a>
                     </div>
                 </div>
             </div>
@@ -169,7 +169,7 @@
                             <p class="font-bold">{{ __('Produtos') }}</p>
                         </div>
                         <div class="w-full md:w-1/2 flex">
-                            <div class="w-auto mx-4">
+                            <div class="w-auto mr-4">
                                 @foreach ($conversationItem->products as $key => $product)
                                     <p class="text-gray-500 font-bold" @if($key > 2) x-show="isOpen()"
                                     x-transition:enter="transition ease-out duration-300"
