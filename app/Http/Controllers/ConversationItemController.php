@@ -59,7 +59,7 @@ class ConversationItemController extends Controller
         $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
         $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
-        $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
+        $checkproject = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
         $directions = Direction::pluck("name", "id");
         $employees = Employee::pluck("name", "id");
 
