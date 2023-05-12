@@ -207,7 +207,7 @@
                 </div>
             </div>
 
-            @if($conversationItem->item_type == "Prosposta" || $conversationItem->item_type == "Projeto")
+            @if($conversationItem->item_type == "Proposta" || $conversationItem->item_type == "Projeto")
                 <div class="py-2 my-2 bg-white rounded-lg">
                     <div class="mx-4 px-3 py-2 mt-4">
                         <div class="flex mb-4">
@@ -258,7 +258,7 @@
                 </div>
             @endif
 
-            @if($conversationItem->item_type == "Prosposta")
+            @if($conversationItem->item_type == "Proposta")
                 <div class="py-2 my-2 bg-white rounded-lg">
                     <div class="mx-4 px-3 py-2 mt-4">
                         <div class="flex mb-4">
