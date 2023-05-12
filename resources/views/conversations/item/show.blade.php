@@ -270,10 +270,10 @@
                                     <table class="table-values table md:table w-full">
                                         <thead>
                                             <tr class="thead-light">
-                                                <th scope="col"  class="custom-th">{{ __('Tipo de valor') }}</th>
-                                                <th scope="col"  class="custom-th">{{ __('Descrição do valor') }}</th>
-                                                <th scope="col"  class="custom-th">{{ __('Valor') }}</th>
-                                                <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
+                                                <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('Tipo de valor') }}</th>
+                                                <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('Descrição do valor') }}</th>
+                                                <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('Valor') }}</th>
+                                                <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('Observações') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -291,7 +291,7 @@
                                                     <td>
                                                         {{ $value->description }}
                                                     </td>
-                                                    <td>
+                                                    <td style="white-space: nowrap;">
                                                         R$ {{ number_format($value->value, 2, ",", ".") }}
                                                     </td>
                                                     <td>
