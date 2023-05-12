@@ -18,7 +18,7 @@
                             <div class="flex flex-wrap mt-2 w-full">
                                 <div class="w-full pr-3 mb-6 md:mb-1">
                                     <x-jet-label for="value_type" value="{{ __('Tipo de valor') }}" />
-                                    <x-custom-select :options="array('proposed' => 'Proposta', 'outhers' => 'Outros')" value="" name="value_type" id="value_type" class="mt-1"/>
+                                    <x-custom-select :options="array('proposed' => 'Proposta', 'others' => 'Outros')" value="" name="value_type" id="value_type" class="mt-1"/>
                                     </div>
                                 <div class="w-full pr-3 mb-6 md:mb-1">
                                     <x-jet-label for="description" value="{{ __('Descrição do valor') }}" />
