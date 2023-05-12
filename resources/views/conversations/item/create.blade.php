@@ -100,6 +100,17 @@
                     </div>
                 </div>
 
+                <div class="py-2 my-2 bg-white rounded-lg">
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
+                        <h2 class="px-3 mb-6 md:mb-0">Detalhes da Conversa</h2>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('item_details') }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="py-2 my-2 bg-white rounded-lg proposed-fields hidden">
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <h2 class="w-full px-3 mb-6 md:mb-0">Anexos</h2>
@@ -151,17 +162,6 @@
                             <tbody>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-
-                <div class="py-2 my-2 bg-white rounded-lg">
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        <h2 class="px-3 mb-6 md:mb-0">Detalhes da Conversa</h2>
-                    </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
-                        <div class="w-full px-3 mb-6 md:mb-0">
-                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('item_details') }}</textarea>
-                        </div>
                     </div>
                 </div>
 

@@ -237,6 +237,7 @@
             var table = document.querySelector(".table-values");
             var row = table.insertRow();
             const value_type = document.querySelector("#value_modal #value_type").value;
+            const value_type_text = document.querySelector("#value_modal #value_type").options[document.querySelector("#value_modal #value_type").selectedIndex].text;
             const value = document.querySelector("#value_modal #value").value;
             const description = document.querySelector("#value_modal #description").value;
             const obs = document.querySelector("#value_modal #obs").value;
@@ -249,7 +250,7 @@
 
             row.innerHTML = `<tr data-row="${index}">
                                 <td>
-                                    ${value_type}
+                                    ${value_type_text}
                                     <input type="hidden" name="values[${index}][value_type]" value="${value_type}">
                                 </td>
                                 <td>
