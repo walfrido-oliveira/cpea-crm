@@ -43,7 +43,7 @@
                         <div class="w-full md:w-1/2">
                             <h2 class="px-3 mb-6 md:mb-0">Tipo de Interação</h2>
                         </div>
-                        <div class="w-full md:w-1/2 justify-end flex text-center">
+                        <div class="w-full md:w-1/2 justify-end flex text-center" style="min-height: 54px">
                             <div class="@if(!$conversation->cpea_id) hidden @endif">
                                 <h2 class="px-3 mb-6 md:mb-0">IDCPEA</h2>
                                 <h2 class="px-3 mb-6 md:mb-0 text-green-600" style="font-size: 2rem !important;">{{ $conversation->cpea_id }}</h2>
