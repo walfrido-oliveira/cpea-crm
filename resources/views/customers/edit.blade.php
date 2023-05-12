@@ -31,8 +31,8 @@
                             <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" name="name" maxlength="255" required autofocus autocomplete="name" value="{{ $customer->name }}"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="cnpj" value="{{ __('CNPJ') }}" required/>
-                            <x-jet-input id="cnpj" class="form-control block mt-1 w-full" type="text" name="cnpj" maxlength="18" required autofocus autocomplete="cnpj" value="{{ $customer->formatted_cnpj }}"/>
+                            <x-jet-label for="cnpj" value="{{ __('CNPJ') }}" />
+                            <x-jet-input id="cnpj" class="form-control block mt-1 w-full" type="text" name="cnpj" maxlength="18" autofocus autocomplete="cnpj" value="{{ $customer->formatted_cnpj }}"/>
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">

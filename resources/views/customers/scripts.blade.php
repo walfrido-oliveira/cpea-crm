@@ -13,11 +13,13 @@
         .then(data => {
         const response = JSON.parse(data);
 
-        if(response.resultado != "2")  document.querySelector("#district").value = response.bairro;
-        document.querySelector("#city").value = response.cidade;
-        if(response.resultado != "2") document.querySelector("#address").value = `${response.tipo_logradouro} ${response.logradouro}`;
-        document.querySelector("#state").value = response.uf;
-        window.customSelectArray['state'].update()
+        if(response.resultado != "0") {
+            if(response.resultado != "2")  document.querySelector("#district").value = response.bairro;
+            document.querySelector("#city").value = response.cidade;
+            if(response.resultado != "2") document.querySelector("#address").value = `${response.tipo_logradouro} ${response.logradouro}`;
+            document.querySelector("#state").value = response.uf;
+            window.customSelectArray['state'].update();
+        }
 
         }).catch(err => {
             console.log(err);

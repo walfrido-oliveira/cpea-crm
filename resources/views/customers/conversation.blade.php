@@ -30,8 +30,16 @@
                 @endforeach
             @endif
         </td>
-        <td>{{ $conversation->created_at->format('d/m/Y H:i') }}</td>
-        <td>{{ $conversation->updated_at->format('d/m/Y H:i') }}</td>
+        <td>
+            @if(count($conversation->items) > 0)
+                {{ $conversation->items[0]->updated_at->format('d/m/Y H:i') }}
+            @endif
+        </td>
+        <td>
+            @if(count($conversation->items) > 0)
+                {{ $conversation->items[count($conversation->items) - 1]->updated_at->format('d/m/Y H:i') }}
+            @endif
+        </td>
         <td>
             @if(count($conversation->items) > 0)
                 @if($conversation->items[count($conversation->items) - 1]->projectStatus)
