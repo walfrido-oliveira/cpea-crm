@@ -51,11 +51,11 @@
                                         -
                                     @endif
                                 </td>
-                                <td>{{ $item->updated_at->format('d/m/Y H:i') }}</td>
+                                <td style="white-space: nowrap;">{{ $item->updated_at->format('d/m/Y H:i') }}</td>
                                 <td>{{ $item->user->full_name }}</td>
                                 <td>{{ $item->item_details }}</td>
                                 <td>{{ $item->detailedContact->contact }}</td>
-                                <td>
+                                <td style="white-space: nowrap;">
                                     @switch($item->item_type)
                                         @case("Prospect")
                                             {{ $item->prospectingStatus ? $item->prospectingStatus->name : "-" }}
@@ -68,7 +68,7 @@
                                             @break
                                     @endswitch
                                 </td>
-                                <td>
+                                <td style="white-space: nowrap;">
                                     @if($item->item_type == "Proposta")
                                        R$ {{ number_format($item->totalValues(), 2, ",", ".") }}
                                     @else
