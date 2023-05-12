@@ -242,6 +242,11 @@
             const obs = document.querySelector("#value_modal #obs").value;
             const rowLength = table.rows.length;
             var index = rowLength - 2;
+            var USDollar = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            });
+
             row.innerHTML = `<tr data-row="${index}">
                                 <td>
                                     ${value_type}
@@ -252,7 +257,7 @@
                                     <input type="hidden" name="values[${index}][description]" value="${description}">
                                 </td>
                                 <td>
-                                    ${value}
+                                    ${USDollar.format(value)}
                                     <input type="hidden" name="values[${index}][value]" value="${value}">
                                 </td>
                                 <td>
