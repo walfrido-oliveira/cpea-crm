@@ -11,29 +11,28 @@
         <td>
             {{ $conversation->cpea_id }}
         </td>
-        <td></td>
         <td>
-            @php
-                $isAdditive = false;
-            @endphp
-            @foreach ($conversation->items as $item)
-                @php if($item->additive) $isAdditive = true; @endphp
-            @endforeach
-            <span class="w-24 py-1 @if($isAdditive) badge-success @else badge-danger @endif" >
-                {{ $isAdditive ? "Sim" : "Não" }}
-            </span>
+            @if(count($conversation->items) > 0)
+                <span class="w-24 py-1 @if($conversation->items[count($conversation->items) - 1]->additive) badge-success @else badge-danger @endif" >
+                    {{ $conversation->items[count($conversation->items) - 1]->additive ? "Sim" : "Não" }}
+                </span>
+            @endif
         </td>
         <td>
-            @foreach ($conversation->items as $item)
-                @foreach ($item->products as $product)
+            @if(count($conversation->items) > 0)
+                {{ $conversation->items[count($conversation->items) - 1]->cpea_linked_id }}
+            @endif
+        </td>
+        <td>
+            @if(count($conversation->items) > 0)
+                @foreach ($conversation->items[count($conversation->items) - 1]->products as $product)
                     {{ $product->name }}<br>
                 @endforeach
-            @endforeach
+            @endif
         </td>
         <td>{{ $conversation->created_at->format('d/m/Y H:i') }}</td>
         <td>{{ $conversation->updated_at->format('d/m/Y H:i') }}</td>
         <td>
-
             @if(count($conversation->items) > 0)
                 @if($conversation->items[count($conversation->items) - 1]->projectStatus)
                     {{ $conversation->items[count($conversation->items) - 1]->projectStatus->name }}
