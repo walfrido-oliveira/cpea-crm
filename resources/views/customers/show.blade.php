@@ -430,7 +430,7 @@
             <div class="py-2 my-2 bg-white rounded-lg">
                 <div class="mx-4 px-3 py-2 mt-4">
                     <div class="w-full flex">
-                        <h2 class="w-full">IDCPEA</h2>
+                        <h2 class="w-full">Interações</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
                             <form method="POST" action="{{ route('customers.conversations.store') }}">
                                 @csrf
@@ -438,7 +438,7 @@
                                 <input type="hidden" name="customer_id" value="{{ $customer->id }}">
                                 @if($customer->customer_id)
                                     <button type="submit" class="btn-outline-info" id="add_conversation">
-                                        Nova interação
+                                        Nova Conversa
                                     </button>
                                 @endif
                             </form>

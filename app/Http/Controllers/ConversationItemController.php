@@ -39,6 +39,7 @@ class ConversationItemController extends Controller
             'organizer_id' => ['nullable', 'exists:users,id'],
             'direction_id' => ['nullable', 'exists:directions,id'],
             'employee_id' => ['nullable', 'exists:employees,id'],
+            'products' => ['required']
         ]);
     }
 

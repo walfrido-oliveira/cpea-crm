@@ -232,18 +232,29 @@
         });
     }
 
+    document.querySelector("#value_modal #value").addEventListener("keyup", function() {
+        var value = this.value.replace('.', '').replace(',', '').replace(/\D/g, '');
+
+        const options = { minimumFractionDigits: 2 }
+        const result = new Intl.NumberFormat('pt-BR', options).format(
+            parseFloat(value) / 100
+        );
+
+        this.value = result;
+    });
+
     if(document.querySelector("#confirm_value_modal")) {
         document.querySelector("#confirm_value_modal").addEventListener("click", function() {
             var table = document.querySelector(".table-values");
             var row = table.insertRow();
             const value_type = document.querySelector("#value_modal #value_type").value;
             const value_type_text = document.querySelector("#value_modal #value_type").options[document.querySelector("#value_modal #value_type").selectedIndex].text;
-            const value = document.querySelector("#value_modal #value").value;
+            const value = document.querySelector("#value_modal #value").value.replace(".", "").replace(",", ".");
             const description = document.querySelector("#value_modal #description").value;
             const obs = document.querySelector("#value_modal #obs").value;
             const rowLength = table.rows.length;
             var index = rowLength - 2;
-            var USDollar = new Intl.NumberFormat('pt-BR', {
+            var brl = new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
             });
@@ -258,7 +269,7 @@
                                     <input type="hidden" name="values[${index}][description]" value="${description}">
                                 </td>
                                 <td>
-                                    ${USDollar.format(value)}
+                                    ${brl.format(value)}
                                     <input type="hidden" name="values[${index}][value]" value="${value}">
                                 </td>
                                 <td>

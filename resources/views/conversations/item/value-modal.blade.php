@@ -12,7 +12,7 @@
                     </div>
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Novo Anexo
+                            Novo Valor
                         </h3>
                         <div class="mt-2">
                             <div class="flex flex-wrap mt-2 w-full">
@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="w-full pr-3 mb-6 md:mb-1">
                                     <x-jet-label for="value" value="{{ __('Valor') }}" />
-                                    <x-jet-input id="value" class="form-control block mt-1 w-full" type="number" value="" stype="any" name="value" />
+                                    <x-jet-input id="value" class="form-control block mt-1 w-full" type="text" value="" stype="any" name="value" />
                                 </div>
                                 <div class="w-full pr-3 mb-6 md:mb-1">
                                     <x-jet-label for="obs" value="{{ __('Observações') }}" />

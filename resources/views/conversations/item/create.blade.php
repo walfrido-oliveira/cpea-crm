@@ -26,24 +26,35 @@
 
                 <div class="py-2 my-2 bg-white rounded-lg">
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        <h2 class="px-3 mb-6 md:mb-0">Tipo de Interação</h2>
-                    </div>
-                    <div class="flex flex-wrap mx-4 px-1 py-1 mt-0 custom-radio ml-3">
-                        <div class="bg-gray-200 radios-container">
-                            <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="prospect" checked hidden value="Prospect"/>
-                                <label for="prospect" class="radio">Prospect</label>
-                            </div>
-                            <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if(!$checkproposed) disabled @endif/>
-                                <label for="proposta" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Proposta</label>
-                            </div>
-                            <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if(!$checkproject) disabled @endif/>
-                                <label for="projeto" class="radio" style="@if(!$checkproject) cursor: not-allowed; @endif">Projeto</label>
+                        <div class="w-full md:w-1/2">
+                            <h2 class="px-3 mb-6 md:mb-0">Tipo de Interação</h2>
+                        </div>
+                        <div class="w-full md:w-1/2 justify-end flex text-center">
+                            <div class="@if(!$conversation->cpea_id) hidden @endif">
+                                <h2 class="px-3 mb-6 md:mb-0">IDCPEA</h2>
+                                <h2 class="px-3 mb-6 md:mb-0 text-green-600" style="font-size: 2rem !important;">{{ $conversation->cpea_id }}</h2>
                             </div>
                         </div>
                     </div>
+                    <div class="flex flex-wrap" style="margin-top: -29px;">
+                        <div class="w-1/2 custom-radio mx-4 px-1 py-1 mt-0 ml-3 flex items-center" style="max-height: 59px">
+                            <div class="bg-gray-200 radios-container">
+                                <div class="inline-flex inner-item p-2">
+                                    <input type="radio" name="item_type" id="prospect" checked hidden value="Prospect"/>
+                                    <label for="prospect" class="radio">Prospect</label>
+                                </div>
+                                <div class="inline-flex inner-item p-2">
+                                    <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if(!$checkproposed) disabled @endif/>
+                                    <label for="proposta" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Proposta</label>
+                                </div>
+                                <div class="inline-flex inner-item p-2">
+                                    <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if(!$checkproject) disabled @endif/>
+                                    <label for="projeto" class="radio" style="@if(!$checkproject) cursor: not-allowed; @endif">Projeto</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="py-2 my-2 bg-white rounded-lg">
@@ -75,7 +86,7 @@
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="products" value="{{ __('Produtos') }}" required/>
-                            <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter"/>
+                            <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter" required/>
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 prospects-fields">
@@ -106,7 +117,7 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('item_details') }}</textarea>
+                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full" required>{{ old('item_details') }}</textarea>
                         </div>
                     </div>
                 </div>
