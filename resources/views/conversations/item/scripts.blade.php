@@ -3,8 +3,10 @@
         item.addEventListener("change", function(e) {
             document.querySelectorAll(`.status`).forEach(item2 => {
                 item2.classList.add("hidden");
+                item2.querySelector("select").removeAttribute("required");
             });
             document.querySelector(`.${item.value}-status`).classList.remove("hidden");
+            document.querySelector(`.${item.value}-status`).querySelector("select").setAttribute("required", "");
 
             toggleProspectsFiedls(false);
             toggleProposedFiedls(false);

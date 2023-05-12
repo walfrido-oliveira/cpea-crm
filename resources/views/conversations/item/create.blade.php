@@ -1,3 +1,17 @@
+<style>
+    select.custom-select:not([disabled]) {
+        height: 0px !important;
+        width: 0px !important;
+        max-width: 0px !important;
+        padding: 0px !important;
+        margin: 0px !important;
+        z-index: -1 !important;
+        position: relative !important;
+        left: 50% !important;
+        display: block !important;
+    }
+</style>
+
 <x-app-layout>
     <div class="py-6 create-contact-type">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
@@ -68,7 +82,7 @@
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Prospect-status status">
                             <x-jet-label for="prospecting_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$prospectingStatuses" value="{{ old('prospecting_status_id') }}" name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
+                            <x-custom-select :options="$prospectingStatuses" value="{{ old('prospecting_status_id') }}" required name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden Proposta-status status">
                             <x-jet-label for="proposed_status_id" value="{{ __('Status da Interação') }}" required/>
@@ -82,7 +96,7 @@
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="detailed_contact_id" value="{{ __('Contato') }}" required/>
-                            <x-custom-select :options="$detailedContacts" value="{{ old('detailed_contact_id') }}" name="detailed_contact_id" id="detailed_contact_id" class="mt-1"/>
+                            <x-custom-select :options="$detailedContacts" value="{{ old('detailed_contact_id') }}" required name="detailed_contact_id" id="detailed_contact_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="products" value="{{ __('Produtos') }}" required/>
