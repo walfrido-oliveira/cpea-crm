@@ -53,7 +53,7 @@
                                 </td>
                                 <td>{{ $item->updated_at->format('d/m/Y H:i') }}</td>
                                 <td>{{ $item->user->full_name }}</td>
-                                <td>{{ $item->schedule_details }}</td>
+                                <td>{{ $item->item_details }}</td>
                                 <td>{{ $item->detailedContact->contact }}</td>
                                 <td>
                                     @switch($item->item_type)
