@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Employee;
 use App\Models\Direction;
 use App\Models\Attachment;
+use App\Models\Department;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 use App\Models\ProjectStatus;
@@ -62,11 +63,11 @@ class ConversationItemController extends Controller
         $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
         $checkproject = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
         $directions = Direction::pluck("name", "id");
-        $employees = Employee::pluck("name", "id");
+        $departments = Department::all()->pluck('name', 'id');
 
         return view('conversations.item.create', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
                                                          'projectStatus', 'detailedContacts', 'products', 'organizers',
-                                                         'cpeaIds', 'checkproposed', 'checkproject', 'directions', 'employees'));
+                                                         'cpeaIds', 'checkproposed', 'checkproject', 'directions','departments'));
     }
 
     /**

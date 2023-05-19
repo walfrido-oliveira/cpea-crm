@@ -166,9 +166,17 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function getByDirection($id)
+    public function getByParams(Request $request)
     {
-        $employees = Employee::where("direction_id", $id)->get();
+        $employees = Employee::where(function($q) use ($request) {
+            if($request->get("direction_id")) {
+                $q->where('direction_id', $request->get("direction_id"));
+            }
+
+            if($request->get("department_id")) {
+                $q->where('department_id', $request->get("department_id"));
+            }
+        })->get();
 
         return response()->json($employees);
     }

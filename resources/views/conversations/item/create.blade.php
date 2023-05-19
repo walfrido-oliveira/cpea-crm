@@ -1,5 +1,5 @@
 <style>
-    select.custom-select:not([disabled]) {
+    select.custom-select:not([disabled]):not(.no-hide) {
         height: 0px !important;
         width: 0px !important;
         max-width: 0px !important;
@@ -54,8 +54,8 @@
                         <div class="w-1/2 custom-radio mx-4 px-1 py-1 mt-0 ml-3 flex items-center" style="max-height: 59px">
                             <div class="bg-gray-200 radios-container">
                                 <div class="inline-flex inner-item p-2">
-                                    <input type="radio" name="item_type" id="prospect" checked hidden value="Prospect"/>
-                                    <label for="prospect" class="radio">Prospect</label>
+                                    <input type="radio" name="item_type" id="prospect" @if(!$checkproposed) checked @endif hidden value="Prospect" @if($checkproposed) disabled @endif/>
+                                    <label for="prospect" class="radio" style="@if($checkproposed) cursor: not-allowed; @endif">Prospect</label>
                                 </div>
                                 <div class="inline-flex inner-item p-2">
                                     <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if(!$checkproposed) disabled @endif/>
@@ -110,15 +110,19 @@
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="cpea_linked_id" value="{{ __('IDCPEA Vinculado') }}"/>
-                            <x-custom-select :options="$cpeaIds" value="{{ old('cpea_linked_id') }}" name="cpea_linked_id" id="cpea_linked_id" class="mt-1" disabled/>
+                            <x-custom-select :options="$cpeaIds" value="{{ old('cpea_linked_id') }}" name="cpea_linked_id" id="cpea_linked_id" select-class="no-nice-select no-hide" class="mt-1 no-nice-select" disabled/>
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="direction_id" value="{{ __('Diretoria') }}" required/>
                             <x-custom-select :options="$directions" value="{{ old('direction_id') }}" name="direction_id" id="direction_id" class="mt-1"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="department_id" value="{{ __('Departamento') }}" required/>
+                            <x-custom-select :options="$departments" name="department_id" id="department_id" class="mt-1" value=""/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
                             <x-custom-select :options="[]" value="{{ old('employee_id') }}" name="employee_id" id="employee_id" class="mt-1"/>
                         </div>
@@ -131,12 +135,12 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full" required>{{ old('item_details') }}</textarea>
+                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="ckeditor" required>{{ old('item_details') }}</textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="py-2 my-2 bg-white rounded-lg proposed-fields hidden">
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields prospects-fields hidden">
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <h2 class="w-full px-3 mb-6 md:mb-0">Anexos</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
@@ -147,7 +151,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex mx-4 px-3 py-2 mt-4 table-responsive">
+                    <div class="flex mx-4 px-3 py-2 mt-4">
                         <table class="table-attachments table md:table w-full">
                             <thead>
                                 <tr class="thead-light">
@@ -162,7 +166,7 @@
                     </div>
                 </div>
 
-                <div class="py-2 my-2 bg-white rounded-lg proposed-fields hidden">
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields prospects-fields hidden">
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <h2 class="w-full px-3 mb-6 md:mb-0">Valores</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
@@ -173,7 +177,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex mx-4 px-3 py-2 mt-4 table-responsive">
+                    <div class="flex mx-4 px-3 py-2 mt-4">
                         <table class="table-values table md:table w-full">
                             <thead>
                                 <tr class="thead-light">
@@ -255,7 +259,7 @@
             </div>
         </form>
     </div>
-
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 
     @include("conversations.item.attachment-modal")
     @include("conversations.item.value-modal")

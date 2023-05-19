@@ -70,7 +70,7 @@
                                 </td>
                                 <td style="white-space: nowrap;">
                                     @if($item->item_type == "Proposta")
-                                       R$ {{ number_format($item->totalValues(), 2, ",", ".") }}
+                                       R$ {{ number_format($item->totalValues("proposed"), 2, ",", ".") }}
                                     @else
                                         -
                                     @endif

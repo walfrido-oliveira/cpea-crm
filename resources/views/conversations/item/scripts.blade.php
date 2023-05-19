@@ -59,7 +59,7 @@
         });
     }
 
-    document.querySelector("#direction_id").addEventListener("change", function() {
+    function getEmployees(direction_id, department_id) {
         const dataForm = new FormData();
         const token = document.querySelector('meta[name="csrf-token"]').content;
         const id = this.value;
@@ -67,8 +67,10 @@
 
         dataForm.append("_method", "POST");
         dataForm.append("_token", token);
+        dataForm.append("direction_id", direction_id);
+        dataForm.append("department_id", department_id);
 
-        fetch("{{ route('employees.get-by-direction', ['direction' => '#']) }}".replace("#", id), {
+        fetch("{{ route('employees.get-by-params') }}".replace("#", id), {
             method: 'POST',
             body: dataForm
         })
@@ -95,6 +97,14 @@
         }).catch(err => {
             console.log(err);
         });
+    }
+
+    document.querySelector("#direction_id").addEventListener("change", function() {
+        getEmployees(this.value, document.querySelector("#department_id").value);
+    });
+
+    document.querySelector("#department_id").addEventListener("change", function() {
+        getEmployees(document.querySelector("#direction_id").value, this.value);
     });
 
     function showFieldsSchedule() {

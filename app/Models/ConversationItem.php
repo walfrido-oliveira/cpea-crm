@@ -22,6 +22,16 @@ class ConversationItem extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'interaction_at' => 'datetime',
+        'schedule_at' => 'datetime',
+    ];
+
+    /**
      * The Conversation
     */
     public function conversation()
@@ -116,11 +126,15 @@ class ConversationItem extends Model
         return $this->hasMany(Value::class);
     }
 
-    public function totalValues()
+    public function totalValues($type = null)
     {
         $sum = 0;
         foreach ($this->values as $value) {
-            $sum += $value->value;
+            if($type && $type == $value->value_type) {
+                $sum +=    $value->value;
+            } else {
+                $sum +=    $value->value;
+            }
         }
         return $sum;
     }

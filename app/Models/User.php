@@ -194,8 +194,8 @@ class User extends Authenticatable
      *
      * @return void
      */
-    public function sendScheduleNotification($notificationItem)
+    public function sendScheduleNotification($conversationItem)
     {
-        $this->notify(new NewScheduleNotification($notificationItem));
+        $this->notify(new NewScheduleNotification($conversationItem));
     }
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\GeneralContactTypeController;
 use App\Http\Controllers\ValueController;
+use App\Models\ConversationItem;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,10 @@ use App\Http\Controllers\ValueController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('invite', function() {
+    auth()->user()->sendScheduleNotification(ConversationItem::find(6));
+});
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -75,7 +80,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('colacoradores')->name('employees.')->group(function(){
         Route::post('/filter', [EmployeeController::class, 'filter'])->name('filter');
-        Route::post('/get-by-direction/{direction}', [EmployeeController::class, 'getByDirection'])->name('get-by-direction');
+        Route::post('/get', [EmployeeController::class, 'getByParams'])->name('get-by-params');
     });
 
     Route::resource('departamentos', DepartmentController::class, [

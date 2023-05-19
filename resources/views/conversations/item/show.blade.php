@@ -144,7 +144,7 @@
                         </div>
                     @endif
 
-                    @if($conversationItem->item_type == "Prosposta")
+                    @if($conversationItem->item_type == "Proposta")
                         <div class="flex flex-wrap">
                             <div class="w-full md:w-2/12">
                                 <p class="font-bold">{{ __('Diretoria') }}</p>
@@ -243,15 +243,16 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="w-full md:w-2/12">
-                                    @if(count($conversationItem->attachments) > 4 )
+
+                                @if(count($conversationItem->attachments) > 4 )
+                                    <div class="w-full md:w-2/12">
                                         <button class="btn-transition-primary" type="button" id="show_all_products" @click="isOpen() ? close() : show();">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
                                             </svg>
                                         </button>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -302,15 +303,16 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="w-full md:w-2/12">
-                                    @if(count($conversationItem->values) > 4 )
+
+                                @if(count($conversationItem->values) > 4 )
+                                    <div class="w-full md:w-2/12">
                                         <button class="btn-transition-primary" type="button" id="show_all_products" @click="isOpen() ? close() : show();">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
                                             </svg>
                                         </button>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

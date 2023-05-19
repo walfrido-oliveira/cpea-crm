@@ -7,7 +7,9 @@
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2 ">
-                        <a class="btn-outline-info" href="{{ route('customers.index') }}">{{ __('Listar') }}</a>
+                        <a class="btn-outline-info" href="{{ !$customer->customer_id ? route('customers.index') : route('customers.show', ['customer' => $customer->customer_id]) }}">
+                            {{ !$customer->customer_id ? __('Listar') : __('Voltar') }}
+                        </a>
                     </div>
                     <div class="m-2">
                         <a class="btn-outline-warning" href="{{ route('customers.edit', ['customer' => $customer->id]) }}">{{ __('Editar') }}</a>
@@ -281,7 +283,7 @@
                         <div class="w-full flex mb-3" x-data="showInfosContact()">
                             <div class="w-full">
                                 <div class="flex flex-wrap">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Nome') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -290,7 +292,7 @@
                                 </div>
 
                                 <div class="flex flex-wrap">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Cargo') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -305,7 +307,7 @@
                                 x-transition:leave="transition ease-in duration-300"
                                 x-transition:leave-start="opacity-100 transform scale-100"
                                 x-transition:leave-end="opacity-0 transform scale-90 hidden">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('E-mail') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -320,7 +322,7 @@
                                 x-transition:leave="transition ease-in duration-300"
                                 x-transition:leave-start="opacity-100 transform scale-100"
                                 x-transition:leave-end="opacity-0 transform scale-90 hidden">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('telefone') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -335,7 +337,7 @@
                                 x-transition:leave="transition ease-in duration-300"
                                 x-transition:leave-start="opacity-100 transform scale-100"
                                 x-transition:leave-end="opacity-0 transform scale-90 hidden">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Celular') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -350,7 +352,7 @@
                                 x-transition:leave="transition ease-in duration-300"
                                 x-transition:leave-start="opacity-100 transform scale-100"
                                 x-transition:leave-end="opacity-0 transform scale-90 hidden">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Linkedin') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -365,7 +367,7 @@
                                 x-transition:leave="transition ease-in duration-300"
                                 x-transition:leave-start="opacity-100 transform scale-100"
                                 x-transition:leave-end="opacity-0 transform scale-90 hidden">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Nome Secretária') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -380,7 +382,7 @@
                                 x-transition:leave="transition ease-in duration-300"
                                 x-transition:leave-start="opacity-100 transform scale-100"
                                 x-transition:leave-end="opacity-0 transform scale-90 hidden">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Telefone Secretária') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -395,7 +397,7 @@
                                 x-transition:leave="transition ease-in duration-300"
                                 x-transition:leave-start="opacity-100 transform scale-100"
                                 x-transition:leave-end="opacity-0 transform scale-90 hidden">
-                                    <div class="w-full md:w-3/12">
+                                    <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Observações') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
@@ -403,7 +405,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0 flex justify-center place-items-start mt-2">
+                            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0 flex justify-center place-items-start mt-2" style="position: absolute; right: -6%;">
                                 <button class="btn-transition-primary" type="button" id="show_all_infos" @click="isOpen() ? close() : show();">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
@@ -427,11 +429,18 @@
                 </div>
             </div>
 
-            <div class="py-2 my-2 bg-white rounded-lg">
+            <div class="py-2 my-2 bg-white rounded-lg" x-data="{ showInterations: false }">
                 <div class="mx-4 px-3 py-2 mt-4">
                     <div class="w-full flex">
                         <h2 class="w-full">Interações</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
+                                <button class="btn-transition-primary" type="button" id="show_all_infos" @click="showInterations ? showInterations = false : showInterations = true;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': showInterations, 'rotate-0': !showInterations }" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
                             <form method="POST" action="{{ route('customers.conversations.store') }}">
                                 @csrf
                                 @method("POST")
@@ -448,22 +457,22 @@
                         <table class="table-contacts table md:table w-full">
                             <thead>
                                 <tr class="thead-light">
-                                    <th scope="col"  class="custom-th">{{ __('Cód. da Interação') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Cód. da Interação') }}</th>
                                     @if(!$customer->customer_id)
-                                        <th scope="col"  class="custom-th">{{ __('Empresa') }}</th>
+                                        <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Empresa') }}</th>
                                     @endif
-                                    <th scope="col"  class="custom-th">{{ __('IDCPEA') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Aditivo?') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('IDCPEA Vinculado') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Produtos') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Data da Primeira Interação') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Data da Última Interação') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Status da Última Interação') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('IDCPEA') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Aditivo?') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('IDCPEA Vinculado') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Produtos') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Data da Primeira Interação') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Data da Última Interação') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Status da Última Interação') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if(!$customer->customer_id)
-                                    @foreach ($customer->customers as $child)
+                                    @foreach ($customer->customers as $key => $child)
                                         @include('customers.conversation', ['child' => $child])
                                     @endforeach
                                 @else
