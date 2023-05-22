@@ -176,7 +176,7 @@ class ConversationItemController extends Controller
     public function edit($id)
     {
         $conversationItem = ConversationItem::findOrFail($id);
-        $conversation = $conversationItem->conversation;
+        $conversation = Conversation::findOrFail($id);
         $prospectingStatuses = ProspectingStatus::pluck("name", "id");
         $proposedsStatuses = ProposedStatus::pluck("name", "id");
         $projectStatus = ProjectStatus::pluck("name", "id");
@@ -185,14 +185,15 @@ class ConversationItemController extends Controller
         $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
         $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
-        $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
+        $checkproject = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
         $directions = Direction::pluck("name", "id");
-        $employees = Employee::pluck("name", "id");
+        $departments = Department::all()->pluck('name', 'id');
         $conversationItemProduts = $conversationItem->products()->pluck("products.name", "products.id")->toArray();
 
-        return view('conversations.item.edit', compact('conversation', 'prospectingStatuses', 'proposedsStatuses', 'projectStatus',
-                                                       'detailedContacts', 'products', 'organizers', 'conversationItem', 'cpeaIds',
-                                                       'checkproposed', 'directions', 'employees', 'conversationItemProduts', 'checkproject'));
+        return view('conversations.item.edit', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
+                                                        'projectStatus', 'detailedContacts', 'products', 'organizers',
+                                                        'cpeaIds', 'checkproposed', 'checkproject', 'directions','departments',
+                                                        'conversationItem', 'conversationItemProduts'));
     }
 
     /**
@@ -234,6 +235,35 @@ class ConversationItemController extends Controller
         ]);
 
         $conversationItem->products()->sync($input['products']);
+
+        if(isset($input['products'])) :
+            $conversationItem->products()->sync($input['products']);
+        endif;
+
+        if(isset($input['files'])) :
+            foreach ($input['files'] as $file) {
+                $path = $file['file']->store('public/files');
+
+                Attachment::create([
+                    'conversation_item_id' => $conversationItem->id,
+                    'name' => $file['name'],
+                    'obs' => $file['obs'],
+                    'path' => $path,
+                ]);
+            }
+        endif;
+
+        if(isset($input['values'])) :
+            foreach ($input['values'] as $value) {
+                Value::create([
+                    'conversation_item_id' => $conversationItem->id,
+                    'description' => $value['description'],
+                    'obs' => $value['obs'],
+                    'value_type' => $value['value_type'],
+                    'value' => $value['value'],
+                ]);
+            }
+        endif;
 
         $resp = [
             'message' => __('Interação  Atualizada com Sucesso!'),

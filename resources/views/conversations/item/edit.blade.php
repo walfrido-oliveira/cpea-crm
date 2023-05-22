@@ -1,3 +1,5 @@
+@include('conversations.item.styles')
+
 <x-app-layout>
     <div class="py-6 create-contact-type">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
@@ -36,12 +38,12 @@
                                 <label for="prospect" class="radio">Prospect</label>
                             </div>
                             <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if($conversationItem->item_type == "Proposta") checked @endif @if(!$checkproposed) disabled @endif/>
-                                <label for="proposta" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Proposta</label>
+                                <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if($conversationItem->item_type == "Proposta") checked @endif/>
+                                <label for="proposta" class="radio">Proposta</label>
                             </div>
                             <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if($conversationItem->item_type == "Projeto") checked @endif @if(!$checkproject) disabled @endif/>
-                                <label for="projeto" class="radio" style="@if(!$checkproject) cursor: not-allowed; @endif">Projeto</label>
+                                <input type="radio" name="item_type" id="projeto" @if($conversationItem->item_type == "Projeto") checked @endif hidden value="Projeto"/>
+                                <label for="projeto" class="radio">Projeto</label>
                             </div>
                         </div>
                     </div>
@@ -58,7 +60,7 @@
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Prospect-status status">
                             <x-jet-label for="prospecting_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$prospectingStatuses" value="{{ $conversationItem->prospecting_status_id }}" name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
+                            <x-custom-select :options="$prospectingStatuses" value="{{ $conversationItem->prospecting_status_id }}" required name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden Proposta-status status">
                             <x-jet-label for="proposed_status_id" value="{{ __('Status da Interação') }}" required/>
@@ -72,29 +74,33 @@
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="detailed_contact_id" value="{{ __('Contato') }}" required/>
-                            <x-custom-select :options="$detailedContacts" value="{{ $conversationItem->detailed_contact_id }}" name="detailed_contact_id" id="detailed_contact_id" class="mt-1"/>
+                            <x-custom-select :options="$detailedContacts" value="{{ $conversationItem->detailed_contact_id }}" required name="detailed_contact_id" id="detailed_contact_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="products" value="{{ __('Produtos') }}" required/>
-                            <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="$conversationItemProduts" select-class="form-input" class="" no-filter="no-filter"/>
+                            <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="$conversationItemProduts" select-class="form-input" class="" no-filter="no-filter" required/>
                         </div>
                     </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 prospects-fields @if($conversationItem->item_type != "Prospect") hidden @endif">
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 prospects-fields">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
                             <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ $conversationItem->additive }}" name="additive" id="additive" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="cpea_linked_id" value="{{ __('IDCPEA Vinculado') }}"/>
-                            <x-custom-select :options="$cpeaIds" value="{{ $conversationItem->cpea_linked_id }}" name="cpea_linked_id" id="cpea_linked_id" class="mt-1" disabled/>
+                            <x-custom-select :options="$cpeaIds" value="{{ $conversationItem->cpea_linked_id }}" name="cpea_linked_id" id="cpea_linked_id" select-class="no-nice-select no-hide" class="mt-1 no-nice-select" disabled/>
                         </div>
                     </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields @if($conversationItem->item_type != "Proposta") hidden @endif">
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="direction_id" value="{{ __('Diretoria') }}" required/>
                             <x-custom-select :options="$directions" value="{{ $conversationItem->direction_id }}" name="direction_id" id="direction_id" class="mt-1"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="department_id" value="{{ __('Departamento') }}" required/>
+                            <x-custom-select :options="$departments" name="department_id" id="department_id" class="mt-1" value=""/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
                             <x-custom-select :options="[]" value="{{ $conversationItem->employee_id }}" name="employee_id" id="employee_id" class="mt-1"/>
                         </div>
@@ -107,12 +113,12 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ $conversationItem->item_details }}</textarea>
+                            <textarea name="item_details" id="item_details" cols="30" rows="5" class="ckeditor" required>{{ $conversationItem->item_details }}</textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="py-2 my-2 bg-white rounded-lg proposed-fields @if($conversationItem->item_type != "Proposta")hidden @endif">
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields prospects-fields">
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <h2 class="w-full px-3 mb-6 md:mb-0">Anexos</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
@@ -123,7 +129,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex mx-4 px-3 py-2 mt-4 table-responsive">
+                    <div class="flex mx-4 px-3 py-2 mt-4">
                         <table class="table-attachments table md:table w-full">
                             <thead>
                                 <tr class="thead-light">
@@ -134,14 +140,14 @@
                             </thead>
                             <tbody>
                                 @foreach ($conversationItem->attachments as $attachment)
-                                    @include('conversations.item.attachment-content', ['attachment' => $attachment])
+                                    @include('conversatoins.item.attachment-content', ['attachment' => $attachment])
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="py-2 my-2 bg-white rounded-lg proposed-fields @if($conversationItem->item_type != "Proposta")hidden @endif">
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields prospects-fields">
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <h2 class="w-full px-3 mb-6 md:mb-0">Valores</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
@@ -152,7 +158,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex mx-4 px-3 py-2 mt-4 table-responsive">
+                    <div class="flex mx-4 px-3 py-2 mt-4">
                         <table class="table-values table md:table w-full">
                             <thead>
                                 <tr class="thead-light">
@@ -164,9 +170,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($conversationItem->values as $value)
-                                    @include('conversations.item.value-content', ['value' => $value])
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -205,7 +208,7 @@
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_at" value="{{ __('Data/Hora da Reunião') }}"/>
-                                <x-jet-input id="schedule_at" class="form-control block mt-1 w-full" type="datetime-local" name="schedule_at" autofocus value="{{$conversationItem->schedule_at }}"/>
+                                <x-jet-input id="schedule_at" class="form-control block mt-1 w-full" type="datetime-local" name="schedule_at" autofocus value="{{ $conversationItem->schedule_at }}"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
@@ -251,6 +254,8 @@
             confirm_id="confirm_value_delete" cancel_modal="cancel_value_delete"
             method="DELETE"
             redirect-url="{{ route('customers.conversations.item.edit', ['item' => $conversationItem->id]) }}"/>
+
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 
     @include("conversations.item.attachment-modal")
     @include("conversations.item.value-modal")

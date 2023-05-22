@@ -4,10 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Observable;
 
 class ConversationItem extends Model
 {
     use HasFactory;
+
+    use Observable;
+
+    /**
+     * String to describe the model being updated / deleted / created
+     * @param Model $model
+     * @return string
+     */
+    public static function logSubject(Model $model): string
+    {
+        return sprintf( "User [id:%d] %s/%s",
+            $model->id, $model->name, $model->email
+        );
+    }
 
     /**
      * The attributes that are mass assignable.

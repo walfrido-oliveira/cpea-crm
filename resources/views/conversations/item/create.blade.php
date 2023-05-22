@@ -1,16 +1,4 @@
-<style>
-    select.custom-select:not([disabled]):not(.no-hide) {
-        height: 0px !important;
-        width: 0px !important;
-        max-width: 0px !important;
-        padding: 0px !important;
-        margin: 0px !important;
-        z-index: -1 !important;
-        position: relative !important;
-        left: 50% !important;
-        display: block !important;
-    }
-</style>
+@include('conversations.item.styles')
 
 <x-app-layout>
     <div class="py-6 create-contact-type">
@@ -140,7 +128,7 @@
                     </div>
                 </div>
 
-                <div class="py-2 my-2 bg-white rounded-lg proposed-fields prospects-fields hidden">
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields prospects-fields">
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <h2 class="w-full px-3 mb-6 md:mb-0">Anexos</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
@@ -166,7 +154,7 @@
                     </div>
                 </div>
 
-                <div class="py-2 my-2 bg-white rounded-lg proposed-fields prospects-fields hidden">
+                <div class="py-2 my-2 bg-white rounded-lg proposed-fields prospects-fields">
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <h2 class="w-full px-3 mb-6 md:mb-0">Valores</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
