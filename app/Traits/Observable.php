@@ -50,6 +50,7 @@ trait Observable
     {
         return static::logImplodeAssoc($model->attributesToArray());
     }
+
     public static function logImplodeAssoc(array $attrs): string
     {
         $l = '';

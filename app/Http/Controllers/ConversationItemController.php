@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Value;
 use App\Models\Product;
-use App\Models\Employee;
 use App\Models\Direction;
 use App\Models\Attachment;
 use App\Models\Department;
@@ -233,8 +232,6 @@ class ConversationItemController extends Controller
             'employee_id' => $input['employee_id'],
             'user_id'=> auth()->user()->id,
         ]);
-
-        $conversationItem->products()->sync($input['products']);
 
         if(isset($input['products'])) :
             $conversationItem->products()->sync($input['products']);

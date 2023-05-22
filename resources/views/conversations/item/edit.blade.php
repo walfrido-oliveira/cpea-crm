@@ -3,7 +3,7 @@
 <x-app-layout>
     <div class="py-6 create-contact-type">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
-            <form method="POST" action="{{ route('customers.conversations.item.update', [$conversationItem->id]) }}">
+            <form method="POST" action="{{ route('customers.conversations.item.update', [$conversationItem->id]) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="conversation_id" value="{{ $conversation->id }}">
