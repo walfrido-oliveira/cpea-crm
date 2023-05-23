@@ -52,12 +52,12 @@ class NewScheduleNotification extends Notification
         $calendar = Calendar::create()
             ->productIdentifier('Kutac.cz')
             ->event(function (Event $event) {
-                $event->name("Email with iCal 101")
-                    ->attendee("attendee@gmail.com")
-                    ->startsAt(Carbon::parse("2021-12-15 08:00:00"))
-                    ->endsAt(Carbon::parse("2021-12-19 17:00:00"))
+                $event->name($this->conversationItem->schedule_name ? $this->conversationItem->schedule_name : '-')
+                    ->attendee( $this->conversationItem->user->email)
+                    ->startsAt($this->conversationItem->schedule_at ? $this->conversationItem->schedule_at : null)
+                    ->endsAt($this->conversationItem->schedule_at ? $this->conversationItem->schedule_at : null)
                     ->fullDay()
-                    ->address('Online - Google Meet');
+                    ->address($this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-');
             });
         $calendar->appendProperty(TextProperty::create('METHOD', 'REQUEST'));
 
