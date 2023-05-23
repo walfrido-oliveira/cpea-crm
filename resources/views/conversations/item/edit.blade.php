@@ -140,7 +140,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($conversationItem->attachments as $attachment)
-                                    @include('conversatoins.item.attachment-content', ['attachment' => $attachment])
+                                    @include('conversations.item.attachment-content', ['attachment' => $attachment])
                                 @endforeach
                             </tbody>
                         </table>

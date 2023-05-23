@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use Carbon\Carbon;
 use App\Models\Config;
+use App\Models\ConversationItem;
 use App\Models\TemplateEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\HtmlString;
@@ -128,5 +129,18 @@ class NewScheduleNotification extends Notification
         return [
             //
         ];
+    }
+
+    /**
+     * Create a notification instance.
+     *
+     * @return NewUserNotification
+     */
+    public static function create()
+    {
+        $conversationItem = ConversationItem::find(6);
+
+        $notification = new NewScheduleNotification($conversationItem);
+        return $notification;
     }
 }

