@@ -175,7 +175,7 @@ class ConversationItemController extends Controller
     public function edit($id)
     {
         $conversationItem = ConversationItem::findOrFail($id);
-        $conversation = Conversation::findOrFail($id);
+        $conversation = $conversationItem->conversation;
         $prospectingStatuses = ProspectingStatus::pluck("name", "id");
         $proposedsStatuses = ProposedStatus::pluck("name", "id");
         $projectStatus = ProjectStatus::pluck("name", "id");
