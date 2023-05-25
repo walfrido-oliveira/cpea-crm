@@ -474,7 +474,10 @@
                                 @if(!$customer->customer_id)
                                     @php    $index = 0 @endphp
                                     @foreach ($customer->customers as $key => $child)
-                                        @include('customers.conversation', ['child' => $child, 'index' => $index])
+                                        @foreach ($child->conversations as $key => $conversation)
+                                            @include('customers.conversation', ['conversation' => $conversation])
+                                            @php $index++ @endphp
+                                        @endforeach
                                     @endforeach
                                 @else
                                     @include('customers.conversation', ['child' => $customer])
