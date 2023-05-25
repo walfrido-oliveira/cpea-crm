@@ -1,4 +1,3 @@
-@php    $index = 0 @endphp
 @foreach ($child->conversations as $key => $conversation)
     <tr @if($index > 4) x-show="showInterations"
         x-transition:enter="transition ease-out duration-300"
