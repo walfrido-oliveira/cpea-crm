@@ -33,6 +33,14 @@ class Employee extends Model
     }
 
     /**
+     * The occupation type
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    /**
      * The manager
      */
     public function manager()

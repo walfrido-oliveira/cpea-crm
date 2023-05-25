@@ -61,53 +61,46 @@ class NewScheduleNotification extends Notification
             });
         $calendar->appendProperty(TextProperty::create('METHOD', 'REQUEST'));
 
-        $tags = [
-            "{\$conversation_id}",
-            "{\$customer_name}",
-            "{\$company_name}",
-            "{\$user_first_name}",
-            "{\$signature}",
-            "{\$item_type}",
-            "{\$interaction_at}",
-            "{\$schedule_at}",
-            "{\$additive}",
-            "{\$cpea_linked_id}",
-            "{\$schedule_type}",
-            "{\$schedule_name}",
-            "{\$addressees}",
-            "{\$optional_addressees}",
-            "{\$schedule_details}",
-            "{\$item_details}",
-            "{\$project_status}",
-            "{\$proposed_status}",
-            "{\$prospecting_status}",
-            "{\$detailed_contact}",
-            "{\$organizer}",
-            "{\$products}",
-        ];
+        $tags = TemplateEmail::where("name", "new_schedule")->first()->tags;
+        $tags = explode(",", $tags);
+
+        $status = '-';
+
+        if($this->conversationItem->projectStatus) $status = $this->conversationItem->projectStatus->name;
+        if($this->conversationItem->proposedStatus) $status = $this->conversationItem->proposedStatus->name;
+        if($this->conversationItem->prospectingStatus) $status = $this->conversationItem->prospectingStatus->name;
+
         $values = [
-            str_pad($this->conversationItem->conversation_id, 5, 0, STR_PAD_LEFT),
-            $this->conversationItem->conversation->customer->customer ? $this->conversationItem->conversation->customer->customer->name : '-',
-            $this->conversationItem->conversation->customer->name,
-            $this->conversationItem->user->full_name,
-            Config::get("mail_signature"),
-            $this->conversationItem->item_type,
-            $this->conversationItem->interaction_at ? $this->conversationItem->interaction_at->format("d/m/Y H:i") : '-',
-            $this->conversationItem->schedule_at ? $this->conversationItem->schedule_at->format("d/m/Y H:i") : '-',
-            $this->conversationItem->additive ? 'SIM' : 'NÃO',
-            $this->conversationItem->conversation->cpea_linked_id ? $this->conversationItem->conversation->cpea_linked_id : '-',
-            $this->conversationItem->schedule_type ? $this->conversationItem->schedule_type : '-',
-            $this->conversationItem->schedule_name ? $this->conversationItem->schedule_name : '-',
-            $this->conversationItem->addressees ? $this->conversationItem->addressees : '-',
-            $this->conversationItem->optional_addressees ? $this->conversationItem->optional_addressees : '-',
-            $this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-',
-            $this->conversationItem->item_details ? $this->conversationItem->item_details : '-',
-            $this->conversationItem->projectStatus ? $this->conversationItem->projectStatus->name : '-',
-            $this->conversationItem->proposedStatus ? $this->conversationItem->proposedStatus->name : '-',
-            $this->conversationItem->prospectingStatus ? $this->conversationItem->prospectingStatus->name : '-',
-            $this->conversationItem->detailed_contact ? $this->conversationItem->prospecting_status->contact : '-',
             $this->conversationItem->organizer ? $this->conversationItem->organizer->full_name : '-',
+            $this->conversationItem->schedule_name ? $this->conversationItem->schedule_name : '-',
+            $this->conversationItem->schedule_at ? $this->conversationItem->schedule_at->format("d/m/Y H:i") : '-',
+            $this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-',
+
+            $this->conversationItem->conversation->customer->customer ? $this->conversationItem->conversation->customer->customer->name : '-',
+            route('customers.show', ['customer' => $this->conversationItem->conversation->customer->customer_id]),
+            $this->conversationItem->conversation->customer->name,
+            route('customers.show', ['customer' => $this->conversationItem->conversation->customer_id]),
+            str_pad($this->conversationItem->conversation_id, 5, 0, STR_PAD_LEFT),
+            route('customers.conversations.show', ['conversation' => $this->conversationItem->conversation_id]),
+            str_pad($this->conversationItem->order, 5, 0, STR_PAD_LEFT),
+            route('customers.conversations.item.show', ['item' => $this->conversationItem->id]),
+
+            $this->conversationItem->user->full_name,
+            $this->conversationItem->interaction_at ? $this->conversationItem->interaction_at->format("d/m/Y H:i") : '-',
+            $this->conversationItem->item_type,
+            $status,
+            $this->conversationItem->detailed_contact ? $this->conversationItem->prospecting_status->contact : '-',
             implode(",", $this->conversationItem->products->pluck('name')->toArray()),
+            $this->conversationItem->direction ? $this->conversationItem->direction->name : '-',
+            $this->conversationItem->employee ? $this->conversationItem->employee->department->name : '-',
+            $this->conversationItem->employee ? $this->conversationItem->employee->name : '-',
+            Config::get("mail_signature"),
+            #$this->conversationItem->additive ? 'SIM' : 'NÃO',
+            #$this->conversationItem->conversation->cpea_linked_id ? $this->conversationItem->conversation->cpea_linked_id : '-',
+            #$this->conversationItem->schedule_type ? $this->conversationItem->schedule_type : '-',
+            #$this->conversationItem->addressees ? $this->conversationItem->addressees : '-',
+            #$this->conversationItem->optional_addressees ? $this->conversationItem->optional_addressees : '-',
+            #$this->conversationItem->item_details ? $this->conversationItem->item_details : '-',
         ];
         return (new MailMessage())
             ->subject("Invitation")

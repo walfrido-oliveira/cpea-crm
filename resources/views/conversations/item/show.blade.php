@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="w-full md:w-1/2">
-                            <p class=   "text-gray-500 font-bold">{{ $conversationItem->conversation->customer->customer ? $conversationItem->conversation->customer->customer->name : '-'  }}</p>
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->conversation->customer->customer ? $conversationItem->conversation->customer->customer->name : '-'  }}</p>
                         </div>
                     </div>
 
