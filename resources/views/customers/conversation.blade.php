@@ -1,5 +1,6 @@
+@php    $index = 0 @endphp
 @foreach ($child->conversations as $key => $conversation)
-    <tr @if($key > 4) x-show="showInterations"
+    <tr @if($index > 4) x-show="showInterations"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-90"
         x-transition:enter-end="opacity-100 transform scale-100"
@@ -64,4 +65,5 @@
             @endif
         </td>
     </tr>
+    @php $index++ @endphp
 @endforeach

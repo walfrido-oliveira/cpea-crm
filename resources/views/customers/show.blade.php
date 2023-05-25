@@ -405,18 +405,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0 flex justify-center place-items-start mt-2" style="position: absolute; right: -6%;">
-                                <button class="btn-transition-primary" type="button" id="show_all_infos" @click="isOpen() ? close() : show();">
+                            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0 flex justify-center place-items-start mt-2">
+                                <button class="btn-transition-primary" type="button" id="show_all_infos" @click="isOpen() ? close() : show();" style="position: relative;left: 70px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
                                     </svg>
                                 </button>
-                                <a class="btn-transition-warning" href="{{ route('customers.detailed-contacts.edit', ['detailed_contact' => $contact->id]) }}">
+                                <a class="btn-transition-warning" href="{{ route('customers.detailed-contacts.edit', ['detailed_contact' => $contact->id]) }}" style="position: relative;left: 70px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                 </a>
-                                <button class="btn-transition-danger delete-contacts" data-url="{!! route('customers.detailed-contacts.destroy', ['detailed_contact' => $contact->id]) !!}">
+                                <button class="btn-transition-danger delete-contacts" data-url="{!! route('customers.detailed-contacts.destroy', ['detailed_contact' => $contact->id]) !!}" style="position: relative;left: 70px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
