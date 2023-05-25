@@ -471,16 +471,19 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php $index = 0 @endphp
                                 @if(!$customer->customer_id)
-                                    @php    $index = 0 @endphp
                                     @foreach ($customer->customers as $key => $child)
                                         @foreach ($child->conversations as $key => $conversation)
-                                            @include('customers.conversation', ['conversation' => $conversation])
+                                            @include('customers.conversation', ['conversation' => $conversation, 'index' => $index])
                                             @php $index++ @endphp
                                         @endforeach
                                     @endforeach
                                 @else
-                                    @include('customers.conversation', ['child' => $customer])
+                                    @foreach ($customer->conversations as $key => $conversation)
+                                        @include('customers.conversation', ['conversation' => $conversation, 'index' => $index])
+                                        @php $index++ @endphp
+                                    @endforeach
                                 @endif
                             </tbody>
                         </table>

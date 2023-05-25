@@ -24,6 +24,7 @@ use App\Http\Controllers\DetailedContactController;
 use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\GeneralContactTypeController;
+use App\Http\Controllers\ScheduleAddressController;
 use App\Http\Controllers\ValueController;
 use App\Models\ConversationItem;
 
@@ -231,6 +232,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
                     Route::post('/store', [ValueController::class, 'store'])->name('store');
                     Route::put('/update/{value}', [ValueController::class, 'update'])->name('update');
                     Route::delete('/delete/{value}', [ValueController::class, 'destroy'])->name('delete');
+                });
+
+                Route::prefix('destinatario')->name('address.')->group(function(){
+                    Route::post('/store', [ScheduleAddressController::class, 'store'])->name('store');
+                    Route::put('/update/{address}', [ScheduleAddressController::class, 'update'])->name('update');
+                    Route::delete('/delete/{address}', [ScheduleAddressController::class, 'destroy'])->name('delete');
                 });
             });
         });

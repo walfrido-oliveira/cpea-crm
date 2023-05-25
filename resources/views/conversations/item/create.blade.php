@@ -42,16 +42,19 @@
                         <div class="w-1/2 custom-radio mx-4 px-1 py-1 mt-0 ml-3 flex items-center" style="max-height: 59px">
                             <div class="bg-gray-200 radios-container">
                                 <div class="inline-flex inner-item p-2">
-                                    <input type="radio" name="item_type" id="prospect" @if(!$checkproposed) checked @endif hidden value="Prospect" @if($checkproposed) disabled @endif/>
-                                    <label for="prospect" class="radio" style="@if($checkproposed) cursor: not-allowed; @endif">Prospect</label>
+                                    <input type="radio" name="item_type" id="prospect" @if(!$checkprospect) checked @endif hidden value="Prospect"
+                                    @if($checkproject) disabled @endif/>
+                                    <label for="prospect" class="radio" style="@if($checkproject) cursor: not-allowed; @endif">Prospect</label>
                                 </div>
                                 <div class="inline-flex inner-item p-2">
-                                    <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if(!$checkproposed) disabled @endif/>
-                                    <label for="proposta" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Proposta</label>
+                                    <input type="radio" name="item_type" id="proposta" hidden value="Proposta"
+                                    @if(!$checkprospect || $checkproject) disabled @endif/>
+                                    <label for="proposta" class="radio" style="@if(!$checkprospect || $checkproject) cursor: not-allowed; @endif">Proposta</label>
                                 </div>
                                 <div class="inline-flex inner-item p-2">
-                                    <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if(!$checkproject) disabled @endif/>
-                                    <label for="projeto" class="radio" style="@if(!$checkproject) cursor: not-allowed; @endif">Projeto</label>
+                                    <input type="radio" name="item_type" id="projeto" hidden value="Projeto"
+                                    @if(!$checkproposed) disabled @endif/>
+                                    <label for="projeto" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Projeto</label>
                                 </div>
                             </div>
                         </div>
@@ -213,6 +216,20 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                <x-jet-label for="meeting_form" value="{{ __('Forma de Reunião') }}"/>
+                                <x-custom-select :options="array('online' => 'Online', 'presential' => 'Presencial')" value="{{ old('meeting_form') }}" name="meeting_form" id="meeting_form" class="mt-1"/>
+                            </div>
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden meeting-place">
+                                <x-jet-label for="meeting_place" value="{{ __('Local') }}"/>
+                                <x-jet-input id="meeting_place" class="form-control block mt-1 w-full" type="text" name="meeting_place" maxlength="255" autofocus autocomplete="meeting_place" value="{{ old('meeting_place') }}"/>
+                            </div>
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden teams-url">
+                                <x-jet-label for="teams_url" value="{{ __('Link do Teams') }}"/>
+                                <x-jet-input id="teams_url" class="form-control block mt-1 w-full" type="text" name="teams_url" maxlength="255" autofocus autocomplete="teams_url" value="{{ old('teams_url') }}"/>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_at" value="{{ __('Data/Hora da Reunião') }}"/>
                                 <x-jet-input id="schedule_at" class="form-control block mt-1 w-full" type="datetime-local" name="schedule_at" autofocus value="{{ old('schedule_at') }}"/>
@@ -226,15 +243,32 @@
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
-                                <x-jet-label for="addressees" value="{{ __('Destinatários') }}"/>
-                                <x-jet-input id="addressees" class="form-control block mt-1 w-full" type="text" name="addressees" maxlength="255" autofocus autocomplete="addressees" value="{{ old('addressees') }}"/>
+                                <div class="flex py-2 mt-4">
+                                    <h2 class="w-full mb-6 md:mb-0">Destinatários</h2>
+                                    <div class="w-full md:w-1/2 mb-6 md:mb-0 flex justify-end align-baseline">
+                                        <div class="w-full md:w-1/2 mb-6 md:mb-0 flex justify-end align-baseline">
+                                            <button class="btn-outline-info" type="button"  id="add_address">
+                                                Adicionar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex py-2">
+                                    <table class="table-address table md:table w-full">
+                                        <thead>
+                                            <tr class="thead-light">
+                                                <th scope="col"  class="custom-th">{{ __('Nome') }}</th>
+                                                <th scope="col"  class="custom-th">{{ __('Email') }}</th>
+                                                <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
+                                                <th scope="col"  class="custom-th">{{ __('') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
-                            <div class="w-full px-3 mb-6 md:mb-0">
-                                <x-jet-label for="optional_addressees" value="{{ __('Destinatários Opcionais') }}"/>
-                                <x-jet-input id="optional_addressees" class="form-control block mt-1 w-full" type="text" name="optional_addressees" maxlength="255" autofocus autocomplete="optional_addressees" value="{{ old('optional_addressees') }}"/>
-                            </div>
+
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
@@ -249,7 +283,8 @@
     </div>
     <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 
-    @include("conversations.item.attachment-modal")
-    @include("conversations.item.value-modal")
+    @include("conversations.item.attachment-modal", ['type' => 'create'])
+    @include("conversations.item.value-modal", ['type' => 'create'])
+    @include("conversations.item.address-modal", ['type' => 'create'])
     @include('conversations.item.scripts')
 </x-app-layout>

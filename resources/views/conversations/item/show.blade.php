@@ -249,7 +249,7 @@
 
                                 @if(count($conversationItem->attachments) > 4 )
                                     <div class="w-full md:w-2/12">
-                                        <button class="btn-transition-primary" type="button" id="show_all_products" @click="isOpen() ? close() : show();">
+                                        <button class="btn-transition-primary" type="button" id="show_all_attachments" @click="isOpen() ? close() : show();">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
                                             </svg>
@@ -268,7 +268,7 @@
                         <div class="flex mb-4">
                             <h2 class="w-full">{{ __('Valores') }}</h2>
                         </div>
-                        <div class="flex flex-wrap">
+                        <div class="flex flex-wrap"  x-data="showInfosValues()">
                             <div class="w-full flex">
                                 <div class="w-full">
                                     <table class="table-values table md:table w-full">
@@ -309,7 +309,7 @@
 
                                 @if(count($conversationItem->values) > 4 )
                                     <div class="w-full md:w-2/12">
-                                        <button class="btn-transition-primary" type="button" id="show_all_products" @click="isOpen() ? close() : show();">
+                                        <button class="btn-transition-primary" type="button" id="show_all_values" @click="isOpen() ? close() : show();">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
                                             </svg>
@@ -345,6 +345,38 @@
                             <p class="text-gray-500 font-bold">{{ $conversationItem->schedule_name ? $conversationItem->schedule_name : '-' }}</p>
                         </div>
                     </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Forma de Reunião') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->meeting_form ? __($conversationItem->meeting_form) : '-' }}</p>
+                        </div>
+                    </div>
+
+                    @if($conversationItem->meeting_place)
+                        <div class="flex flex-wrap">
+                            <div class="w-full md:w-2/12">
+                                <p class="font-bold">{{ __('Local da Reunião') }}</p>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                                <p class="text-gray-500 font-bold">{{ $conversationItem->meeting_place }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($conversationItem->teams_url)
+                        <div class="flex flex-wrap">
+                            <div class="w-full md:w-2/12">
+                                <p class="font-bold">{{ __('Link do Teams') }}</p>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                                <p class="text-gray-500 font-bold">{{ $conversationItem->teams_url }}</p>
+                            </div>
+                        </div>
+                    @endif
+
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Data/Hora da Reunião') }}</p>
@@ -353,6 +385,7 @@
                             <p class="text-gray-500 font-bold">{{ $conversationItem->schedule_at ? $conversationItem->schedule_at->format('d/m/Y H:i:s') : "-" }}</p>
                         </div>
                     </div>
+
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Organizador') }}</p>
@@ -361,20 +394,58 @@
                             <p class="text-gray-500 font-bold">{{ $conversationItem->organizer ? $conversationItem->organizer->full_name : '-' }}</p>
                         </div>
                     </div>
+
                     <div class="flex flex-wrap">
-                        <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Destinatários') }}</p>
-                        </div>
-                        <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $conversationItem->addresses ? $conversationItem->addresses : '-' }}</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap">
-                        <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Destinatários Opcionais') }}</p>
-                        </div>
-                        <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $conversationItem->optional_addressees ? $conversationItem->optional_addressees : "-" }}</p>
+                        <div>
+                            <div class="flex">
+                                <p class="font-bold">{{ __('Destinatários') }}</p>
+                            </div>
+                            <div class="flex flex-wrap">
+                                <div class="w-full flex">
+                                    <div class="w-full" x-data="{ showaddress: false}">
+                                        <table class="table-address table md:table w-full">
+                                            <thead>
+                                                <tr class="thead-light">
+                                                    <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('Nome') }}</th>
+                                                    <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('E-mail') }}</th>
+                                                    <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('Observações') }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($conversationItem->addresses as $key => $address)
+                                                    <tr @if($key > 3) x-show="showaddress"
+                                                        x-transition:enter="transition ease-out duration-300"
+                                                        x-transition:enter-start="opacity-0 transform scale-90"
+                                                        x-transition:enter-end="opacity-100 transform scale-100"
+                                                        x-transition:leave="transition ease-in duration-300"
+                                                        x-transition:leave-start="opacity-100 transform scale-100"
+                                                        x-transition:leave-end="opacity-0 transform scale-90 hidden" @endif>
+                                                        <td>
+                                                            {{ $address->address_name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $address->address }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $address->obs }}
+                                                        </td>
+                                                    </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    @if(count($conversationItem->addresses) > 4 )
+                                        <div class="w-full md:w-2/12">
+                                            <button class="btn-transition-primary" type="button" id="show_all_address" @click="showaddress ? false : true;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="flex flex-wrap">

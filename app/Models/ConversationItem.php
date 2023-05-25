@@ -31,9 +31,10 @@ class ConversationItem extends Model
      */
     protected $fillable = [
         'item_type', 'interaction_at', 'additive', 'cpea_linked_id', 'schedule_type',
-        'schedule_name', 'schedule_at', 'addressees', 'optional_addressees', 'schedule_details',
+        'schedule_name', 'schedule_at', 'schedule_details',
         'conversation_id', 'project_status_id', 'proposed_status_id', 'prospecting_status_id',
-        'detailed_contact_id', 'organizer_id', 'user_id', 'item_details', 'direction_id', 'employee_id', 'order'
+        'detailed_contact_id', 'organizer_id', 'user_id', 'item_details', 'direction_id', 'employee_id', 'order',
+        'meeting_form', 'meeting_place', 'teams_url'
     ];
 
     /**
@@ -139,6 +140,14 @@ class ConversationItem extends Model
     public function values()
     {
         return $this->hasMany(Value::class);
+    }
+
+    /**
+     * The Addresses
+    */
+    public function addresses()
+    {
+        return $this->hasMany(ScheduleAddress::class);
     }
 
     public function totalValues($type = null)

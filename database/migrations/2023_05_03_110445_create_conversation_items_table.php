@@ -25,7 +25,6 @@ class CreateConversationItemsTable extends Migration
             $table->string("schedule_name")->nullable();
             $table->timestamp('schedule_at')->nullable();
             $table->string("addressees")->nullable();
-            $table->string("optional_addressees")->nullable();
             $table->text("schedule_details")->nullable();
 
             $table->foreignId('conversation_id')->constrained()->cascadeOnDelete();

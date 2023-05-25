@@ -14,6 +14,7 @@ use App\Models\ProjectStatus;
 use App\Models\ProposedStatus;
 use App\Models\ConversationItem;
 use App\Models\ProspectingStatus;
+use App\Models\ScheduleAddress;
 
 class ConversationItemController extends Controller
 {
@@ -27,8 +28,6 @@ class ConversationItemController extends Controller
             'schedule_type' => ['nullable', 'in:internal,external'],
             'cpea_linked_id' => ['nullable', 'string', 'max:255'],
             'schedule_name' => ['nullable', 'string', 'max:255'],
-            'addressees' => ['nullable', 'string', 'max:255'],
-            'optional_addressees' => ['nullable', 'string', 'max:255'],
             'schedule_details' => ['nullable', 'string', 'max:255'],
             'item_details' => ['nullable', 'string'],
             'conversation_id' => ['required', 'exists:conversations,id'],
@@ -59,14 +58,17 @@ class ConversationItemController extends Controller
         $products = Product::pluck("name", "id");
         $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
-        $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
-        $checkproject = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
+
+        $checkprospect = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
+        $checkproposed = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
+        $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
+
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
 
         return view('conversations.item.create', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
                                                          'projectStatus', 'detailedContacts', 'products', 'organizers',
-                                                         'cpeaIds', 'checkproposed', 'checkproject', 'directions','departments'));
+                                                         'cpeaIds', 'checkprospect', 'checkproposed', 'checkproject', 'directions','departments'));
     }
 
     /**
@@ -97,11 +99,12 @@ class ConversationItemController extends Controller
             'schedule_name' => $input['schedule_name'],
             'schedule_at' => $input['schedule_at'],
             'organizer_id' => $input['organizer_id'],
-            'addressees' => isset($input['addressees']) ? $input['addressees'] : null,
-            'optional_addressees' => isset($input['optional_addressees']) ? $input['optional_addressees'] : null,
             'schedule_details' => $input['schedule_details'],
             'direction_id' => $input['direction_id'],
             'employee_id' => $input['employee_id'],
+            'meeting_form' => $input['meeting_form'],
+            'meeting_place' => $input['meeting_place'],
+            'teams_url' => $input['teams_url'],
             'user_id'=> auth()->user()->id,
             'order' => count($conversation->items) + 1,
         ]);
@@ -131,6 +134,17 @@ class ConversationItemController extends Controller
                     'obs' => $value['obs'],
                     'value_type' => $value['value_type'],
                     'value' => $value['value'],
+                ]);
+            }
+        endif;
+
+        if(isset($input['address'])) :
+            foreach ($input['address'] as $address) {
+                ScheduleAddress::create([
+                    'conversation_item_id' => $conversationItem->id,
+                    'address_name' => $address['address_name'],
+                    'obs' => $address['obs'],
+                    'address' => $address['address'],
                 ]);
             }
         endif;
@@ -183,15 +197,18 @@ class ConversationItemController extends Controller
         $products = Product::pluck("name", "id");
         $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
-        $checkproposed = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
-        $checkproject = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
+
+        $checkprospect = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
+        $checkproposed = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
+        $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
+
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
         $conversationItemProduts = $conversationItem->products()->pluck("products.name", "products.id")->toArray();
 
         return view('conversations.item.edit', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
                                                         'projectStatus', 'detailedContacts', 'products', 'organizers',
-                                                        'cpeaIds', 'checkproposed', 'checkproject', 'directions','departments',
+                                                        'cpeaIds', 'checkprospect', 'checkproposed', 'checkproject', 'directions','departments',
                                                         'conversationItem', 'conversationItemProduts'));
     }
 
@@ -225,11 +242,12 @@ class ConversationItemController extends Controller
             'schedule_name' => $input['schedule_name'],
             'schedule_at' => $input['schedule_at'],
             'organizer_id' => $input['organizer_id'],
-            'addressees' => isset($input['addressees']) ? $input['addressees'] : null,
-            'optional_addressees' => isset($input['optional_addressees']) ? $input['optional_addressees'] : null,
             'schedule_details' => $input['schedule_details'],
             'direction_id' => $input['direction_id'],
             'employee_id' => $input['employee_id'],
+            'meeting_form' => $input['meeting_form'],
+            'meeting_place' => $input['meeting_place'],
+            'teams_url' => $input['teams_url'],
             'user_id'=> auth()->user()->id,
         ]);
 
@@ -258,6 +276,17 @@ class ConversationItemController extends Controller
                     'obs' => $value['obs'],
                     'value_type' => $value['value_type'],
                     'value' => $value['value'],
+                ]);
+            }
+        endif;
+
+        if(isset($input['address'])) :
+            foreach ($input['address'] as $address) {
+                ScheduleAddress::create([
+                    'conversation_item_id' => $conversationItem->id,
+                    'address_name' => $address['address_name'],
+                    'obs' => $address['obs'],
+                    'address' => $address['address'],
                 ]);
             }
         endif;

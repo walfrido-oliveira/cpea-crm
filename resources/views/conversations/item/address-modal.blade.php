@@ -1,4 +1,4 @@
-<div class="fixed z-10 inset-0 overflow-y-auto hidden {{ $type }}" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="attachment_modal" data-id="0" data-row="">
+<div class="fixed z-10 inset-0 overflow-y-auto hidden {{ $type }}" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="address_modal" data-id="0" data-row="">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
@@ -12,19 +12,17 @@
                     </div>
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Novo Anexo
+                            Novo Destinatário
                         </h3>
                         <div class="mt-2">
                             <div class="flex flex-wrap mt-2 w-full">
                                 <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="name" value="{{ __('Nome do Arquivo') }}" />
-                                    <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" value="" name="name" />
+                                    <x-jet-label for="address_name" value="{{ __('Nome') }}" />
+                                    <x-jet-input id="address_name" class="form-control block mt-1 w-full" type="text" value="" name="address_name" />
                                 </div>
                                 <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="file" value="{{ __('Selecione uma arquivo') }}" required />
-                                        <input class="form-control block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding
-                                        border border-solid border-gray-300 rounded transition ease-in-out
-                                        m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="file" type="file">
+                                    <x-jet-label for="address" value="{{ __('Email') }}" />
+                                    <x-jet-input id="address" class="form-control block mt-1 w-full" type="email" value="" name="address_name" />
                                 </div>
                                 <div class="w-full pr-3 mb-6 md:mb-1">
                                     <x-jet-label for="obs" value="{{ __('Observações') }}" />
@@ -36,10 +34,10 @@
                 </div>
             </div>
             <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" id="confirm_attachment_modal" class="btn-confirm" data-index="" data-row="">
+                <button type="button" id="confirm_address_modal" class="btn-confirm" data-index="" data-row="">
                     Confirmar
                 </button>
-                <button type="button" id="cancel_attachment_modal" class="btn-cancel" >
+                <button type="button" id="cancel_address_modal" class="btn-cancel" >
                     Cancelar
                 </button>
             </div>
