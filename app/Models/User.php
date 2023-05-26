@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Notifications\NewScheduleNotification;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +10,9 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\NewUserNotification;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use App\Notifications\NewScheduleNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\AppovedProposalNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\UpdateUserInformationNotification;
@@ -64,6 +65,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * The employee
+    */
+    public function employee()
+    {
+        return $this->hasMany(Employee::class);
+    }
 
      /**
      * Send update mail to user
@@ -197,5 +206,15 @@ class User extends Authenticatable
     public function sendScheduleNotification($conversationItem)
     {
         $this->notify(new NewScheduleNotification($conversationItem));
+    }
+
+    /**
+     * Send new spptoved notification
+     *
+     * @return void
+     */
+    public function sendAppovedProposalNotification($conversationItem)
+    {
+        $this->notify(new AppovedProposalNotification($conversationItem));
     }
 }

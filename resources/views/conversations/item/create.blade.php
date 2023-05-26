@@ -90,13 +90,13 @@
                             <x-custom-select :options="$detailedContacts" value="{{ old('detailed_contact_id') }}" required name="detailed_contact_id" id="detailed_contact_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="products" value="{{ __('Produtos') }}" required/>
+                            <x-jet-label for="products" value="{{ __('Produtos') }}"/>
                             <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter" required/>
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 prospects-fields">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
+                            <x-jet-label for="additive" value="{{ __('Aditivo') }}"/>
                             <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ old('additive') }}" name="additive" id="additive" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -106,15 +106,15 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="direction_id" value="{{ __('Diretoria') }}" required/>
+                            <x-jet-label for="direction_id" value="{{ __('Diretoria') }}"/>
                             <x-custom-select :options="$directions" value="{{ old('direction_id') }}" name="direction_id" id="direction_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="department_id" value="{{ __('Departamento') }}" required/>
+                            <x-jet-label for="department_id" value="{{ __('Departamento') }}"/>
                             <x-custom-select :options="$departments" name="department_id" id="department_id" class="mt-1" value=""/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
+                            <x-jet-label for="employee_id" value="{{ __('Gestor') }}"/>
                             <x-custom-select :options="[]" value="{{ old('employee_id') }}" name="employee_id" id="employee_id" class="mt-1"/>
                         </div>
                     </div>

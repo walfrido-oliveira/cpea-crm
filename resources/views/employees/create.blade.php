@@ -24,13 +24,17 @@
 
                 <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="employee_id" value="{{ __('Matrícula') }}" required/>
                             <x-jet-input id="employee_id" class="form-control block mt-1 w-full" type="text" name="employee_id" maxlength="255" required autofocus autocomplete="employee_id" placeholder="{{ __('Matrícula') }}"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="name" value="{{ __('Nome Completo') }}" required/>
                             <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" placeholder="{{ __('Nome Completo') }}"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="user_id" value="{{ __('Usuário') }}" />
+                            <x-custom-select :options="$users" value="{{ old('user_id') }}" name="user_id" id="user_id" class="mt-1"/>
                         </div>
                     </div>
 

@@ -21,6 +21,7 @@ class Employee extends Model
         'name',
         'manager_id',
         'employee_id',
+        'user_id'
     ];
 
 
@@ -46,6 +47,14 @@ class Employee extends Model
     public function manager()
     {
         return $this->belongsTo(Employee::class, 'manager_id', 'id');
+    }
+
+    /**
+     * The user
+    */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 

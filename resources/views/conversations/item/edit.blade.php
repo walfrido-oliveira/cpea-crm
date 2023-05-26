@@ -34,18 +34,15 @@
                     <div class="flex flex-wrap mx-4 px-1 py-1 mt-0 custom-radio ml-3">
                         <div class="bg-gray-200 radios-container">
                             <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="prospect" @if($conversationItem->item_type == "Prospect") checked @endif hidden value="Prospect"
-                                @if($checkproject) disabled @endif/>
+                                <input type="radio" name="item_type" id="prospect" @if($conversationItem->item_type == "Prospect") checked @endif hidden value="Prospect" />
                                 <label for="prospect" class="radio" style="@if($checkproject) cursor: not-allowed; @endif">Prospect</label>
                             </div>
                             <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if($conversationItem->item_type == "Proposta") checked @endif
-                                @if(!$checkprospect || $checkproject) disabled @endif/>
+                                <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if($conversationItem->item_type == "Proposta") checked @endif />
                                 <label for="proposta" class="radio" style="@if(!$checkprospect || $checkproject) cursor: not-allowed; @endif">Proposta</label>
                             </div>
                             <div class="inline-flex inner-item p-2">
-                                <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if($conversationItem->item_type == "Projeto") checked @endif
-                                @if(!$checkproposed) disabled @endif/>
+                                <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if($conversationItem->item_type == "Projeto") checked @endif />
                                 <label for="projeto" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Projeto</label>
                             </div>
                         </div>
@@ -60,17 +57,17 @@
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="interaction_at" value="{{ __('Data/Hora da Interação') }}" required/>
-                            <x-jet-input id="interaction_at" class="form-control block mt-1 w-full" type="datetime-local" name="interaction_at" required autofocus value="{{ $conversationItem->interaction_at }}"/>
+                            <x-jet-input id="interaction_at" class="form-control block mt-1 w-full" type="datetime-local" name="interaction_at" autofocus value="{{ $conversationItem->interaction_at }}"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Prospect-status status">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Prospect-status status @if($conversationItem->item_type != "Prospect") hidden @endif">
                             <x-jet-label for="prospecting_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$prospectingStatuses" value="{{ $conversationItem->prospecting_status_id }}" required name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
+                            <x-custom-select :options="$prospectingStatuses" value="{{ $conversationItem->prospecting_status_id }}" name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden Proposta-status status">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Proposta-status status @if($conversationItem->item_type != "Proposta") hidden @endif">
                             <x-jet-label for="proposed_status_id" value="{{ __('Status da Interação') }}" required/>
                             <x-custom-select :options="$proposedsStatuses" value="{{ $conversationItem->proposed_status_id }}" name="proposed_status_id" id="proposed_status_id" class="mt-1"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden Projeto-status status">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Projeto-status status @if($conversationItem->item_type != "Projeto") hidden @endif">
                             <x-jet-label for="project_status_id" value="{{ __('Status da Interação') }}" required/>
                             <x-custom-select :options="$projectStatus" value="{{ $conversationItem->project_status_id }}" name="project_status_id" id="project_status_id" class="mt-1"/>
                         </div>

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Config;
 use App\Traits\Observable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ConversationItem extends Model
 {
@@ -161,5 +162,43 @@ class ConversationItem extends Model
             }
         }
         return $sum;
+    }
+
+    public function sendScheduleNotification()
+    {
+        $this->user->sendScheduleNotification($this);
+    }
+
+    public function sendAppovedProposalNotification()
+    {
+        $mailConversationApprovedUsersTemp = unserialize(Config::get('mail_conversation_approved_users'));
+        $mailConversationApprovedDepartmentsTemp = unserialize(Config::get('mail_conversation_approved_departments'));
+        $mailConversationApprovedDirectionsTemp = unserialize(Config::get('mail_conversation_approved_directions'));
+
+        $mailConversationApprovedUsers = User::whereIn("id", is_array($mailConversationApprovedUsersTemp) ? $mailConversationApprovedUsersTemp : [])
+        ->OrwhereHas('employee', function($q) use($mailConversationApprovedDepartmentsTemp) {
+            $q->whereIn('department_id', is_array($mailConversationApprovedDepartmentsTemp) ? $mailConversationApprovedDepartmentsTemp : []);
+        })
+        ->OrwhereHas('employee', function($q) use($mailConversationApprovedDirectionsTemp) {
+            $q->whereIn('direction_id', is_array($mailConversationApprovedDirectionsTemp) ? $mailConversationApprovedDirectionsTemp : []);
+        })
+        ->get();
+
+        foreach ($mailConversationApprovedUsers as $user) {
+            $user->sendAppovedProposalNotification($this);
+        }
+    }
+
+    public function notify($isNew = true)
+    {
+        if($this->schedule_type == 'internal' && $isNew) {
+            $this->sendScheduleNotification();
+        }
+        if($this->proposedStatus) {
+            if($this->item_type == "Proposta" && $this->proposedStatus->name == 'Proposta Aprovada') {
+                $this->sendAppovedProposalNotification();
+            }
+        }
+
     }
 }

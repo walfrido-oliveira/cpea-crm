@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Employee;
 use App\Models\Direction;
 use App\Models\Department;
@@ -24,6 +25,7 @@ class EmployeeController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'manager_id' => ['nullable', 'exists:employees,id'],
             'employee_id' => ['required', 'string'],
+            'user_id' => ['nullable', 'exists:users,id'],
         ]);
 
     }
@@ -54,8 +56,9 @@ class EmployeeController extends Controller
         $directions = Direction::all()->pluck('name', 'id');
         $departments = Department::all()->pluck('name', 'id');
         $employees = Employee::all()->pluck('name', 'id');
+        $users = User::all()->pluck('full_name', 'id');
 
-        return view('employees.create', compact('occupations', 'directions', 'departments', 'employees'));
+        return view('employees.create', compact('occupations', 'directions', 'departments', 'employees', 'users'));
     }
 
     /**
@@ -77,6 +80,7 @@ class EmployeeController extends Controller
             'name' => $input['name'],
             'manager_id' => $input['manager_id'],
             'employee_id' => $input['employee_id'],
+            'user_id' => $input['user_id'],
         ]);
 
         $resp = [
@@ -112,8 +116,9 @@ class EmployeeController extends Controller
         $directions = Direction::all()->pluck('name', 'id');
         $departments = Department::all()->pluck('name', 'id');
         $employees = Employee::all()->pluck('name', 'id');
+        $users = User::all()->pluck('full_name', 'id');
 
-        return view('employees.edit', compact('employee', 'occupations', 'directions', 'departments', 'employees'));
+        return view('employees.edit', compact('employee', 'occupations', 'directions', 'departments', 'employees', 'users'));
     }
 
     /**
@@ -138,6 +143,7 @@ class EmployeeController extends Controller
             'name' => $input['name'],
             'manager_id' => $input['manager_id'],
             'employee_id' => $input['employee_id'],
+            'user_id' => $input['user_id'],
         ]);
 
         $resp = [
