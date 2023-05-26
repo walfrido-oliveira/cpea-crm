@@ -149,13 +149,7 @@ class ConversationItemController extends Controller
             }
         endif;
 
-        if($input['schedule_type'] == 'internal') {
-            $conversationItem->user->sendScheduleNotification($conversationItem);
-        }
-
-        if($input['item_type'] == "Proposta") {
-
-        }
+        $conversationItem->notify(true);
 
         if($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
             $conversation->cpea_id = $conversation->id;
@@ -294,6 +288,8 @@ class ConversationItemController extends Controller
                 ]);
             }
         endif;
+
+        $conversationItem->notify(false);
 
         $resp = [
             'message' => __('Interação  Atualizada com Sucesso!'),
