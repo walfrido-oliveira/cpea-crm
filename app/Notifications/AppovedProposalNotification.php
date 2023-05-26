@@ -62,7 +62,7 @@ class AppovedProposalNotification extends Notification
 
         $values = [
             $user->full_name,
-            $this->conversationItem->conversation->cpea_id ? $this->conversationItem->conversation->cpea_id : '-',
+            $this->conversationItem->conversation->cpea_id ? str_pad($this->conversationItem->conversation->cpea_id, 5, 0, STR_PAD_LEFT) : '-',
             $this->conversationItem->conversation->customer->customer ? $this->conversationItem->conversation->customer->customer->name : '-',
             $this->conversationItem->conversation->customer->name,
             str_pad($this->conversationItem->conversation_id, 5, 0, STR_PAD_LEFT),
