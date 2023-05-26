@@ -153,6 +153,10 @@ class ConversationItemController extends Controller
             $conversationItem->user->sendScheduleNotification($conversationItem);
         }
 
+        if($input['item_type'] == "Proposta") {
+
+        }
+
         if($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
             $conversation->cpea_id = $conversation->id;
             $conversation->save();
