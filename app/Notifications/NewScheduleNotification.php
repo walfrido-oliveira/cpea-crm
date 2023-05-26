@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use Carbon\Carbon;
 use App\Models\Config;
 use App\Models\ConversationItem;
 use App\Models\TemplateEmail;
@@ -103,7 +102,6 @@ class NewScheduleNotification extends Notification
             #$this->conversationItem->item_details ? $this->conversationItem->item_details : '-',
         ];
         return (new MailMessage())
-            ->subject("Invitation")
             ->attachData($calendar->get(), 'invite.ics', [
                 'mime' => 'text/calendar; charset=UTF-8; method=REQUEST',
             ])
