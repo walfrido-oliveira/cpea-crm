@@ -169,6 +169,11 @@ class ConversationItem extends Model
         $this->user->sendScheduleNotification($this);
     }
 
+    public function sendExternalMeetingNotification()
+    {
+        $this->user->sendExternalMeetingNotification($this);
+    }
+
     public function sendAppovedProposalNotification()
     {
         $mailConversationApprovedUsersTemp = unserialize(Config::get('mail_conversation_approved_users'));
@@ -194,6 +199,11 @@ class ConversationItem extends Model
         if($this->schedule_type == 'internal' && $isNew) {
             $this->sendScheduleNotification();
         }
+
+        if($this->schedule_type == 'external' && $isNew) {
+            $this->sendExternalMeetingNotification();
+        }
+
         if($this->proposedStatus) {
             if($this->item_type == "Proposta" && $this->proposedStatus->name == 'Proposta Aprovada') {
                 $this->sendAppovedProposalNotification();
