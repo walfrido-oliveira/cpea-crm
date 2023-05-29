@@ -84,16 +84,16 @@
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
                         <h2 class="w-full px-3 mb-6 md:mb-0">Configurações de Conversas</h2>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label :value="__('Usuários')" for="mail_conversation_approved_users" required/>
-                            <x-custom-multi-select multiple :options="$users" name="mail_conversation_approved_users[]" id="mail_conversation_approved_users" :value="$mailConversationApprovedUsers" select-class="form-input" class="" no-filter="no-filter" required/>
+                            <x-jet-label :value="__('Usuários')" for="mail_conversation_approved_users"/>
+                            <x-custom-multi-select multiple :options="$users" name="mail_conversation_approved_users[]" id="mail_conversation_approved_users" :value="$mailConversationApprovedUsers" select-class="form-input" class="" no-filter="no-filter"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="mail_conversation_approved_departments" value="{{ __('Departamentos') }}" required/>
-                            <x-custom-multi-select multiple :options="$departments" name="mail_conversation_approved_departments[]" id="mail_conversation_approved_departments" :value="$mailConversationApprovedDepartments" select-class="form-input" class="" no-filter="no-filter" required/>
+                            <x-jet-label for="mail_conversation_approved_departments" value="{{ __('Departamentos') }}"/>
+                            <x-custom-multi-select multiple :options="$departments" name="mail_conversation_approved_departments[]" id="mail_conversation_approved_departments" :value="$mailConversationApprovedDepartments" select-class="form-input" class="" no-filter="no-filter"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="mail_conversation_approved_directions" value="{{ __('Diretorias') }}" required/>
-                            <x-custom-multi-select multiple :options="$directions" name="mail_conversation_approved_directions[]" id="mail_conversation_approved_directions" :value="$mailConversationApprovedDirections" select-class="form-input" class="" no-filter="no-filter" required/>
+                            <x-jet-label for="mail_conversation_approved_directions" value="{{ __('Diretorias') }}"/>
+                            <x-custom-multi-select multiple :options="$directions" name="mail_conversation_approved_directions[]" id="mail_conversation_approved_directions" :value="$mailConversationApprovedDirections" select-class="form-input" class="" no-filter="no-filter"/>
                         </div>
                     </div>
                 </div>

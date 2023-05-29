@@ -24,7 +24,7 @@ class ConfigRequest extends FormRequest
     public function rules()
     {
         return [
-            '*' => 'required'
+            //'*' => 'required'
         ];
     }
 }
