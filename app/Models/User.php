@@ -13,6 +13,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use App\Notifications\NewScheduleNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\AppovedProposalNotification;
+use App\Notifications\ExternalMeetingNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\UpdateUserInformationNotification;
@@ -209,7 +210,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Send new spptoved notification
+     * Send new external notification
+     *
+     * @return void
+     */
+    public function sendExternalMeetingNotification($conversationItem)
+    {
+        $this->notify(new ExternalMeetingNotification($conversationItem));
+    }
+
+    /**
+     * Send new apptoved notification
      *
      * @return void
      */
