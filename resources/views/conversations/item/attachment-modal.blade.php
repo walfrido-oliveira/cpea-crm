@@ -15,22 +15,24 @@
                             Novo Anexo
                         </h3>
                         <div class="mt-2">
-                            <div class="flex flex-wrap mt-2 w-full">
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="name" value="{{ __('Nome do Arquivo') }}" />
-                                    <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" value="" name="name" />
+                            <form action="" id="attachment_modal_form">
+                                <div class="flex flex-wrap mt-2 w-full">
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="name" value="{{ __('Nome do Arquivo') }}" required/>
+                                        <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" value="" name="name" required/>
+                                    </div>
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="file" value="{{ __('Selecione uma arquivo') }}" required />
+                                            <input class="form-control block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding
+                                            border border-solid border-gray-300 rounded transition ease-in-out
+                                            m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="file" type="file" required>
+                                    </div>
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="obs" value="{{ __('Observações') }}" />
+                                        <textarea name="obs" id="obs" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('obs') }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="file" value="{{ __('Selecione uma arquivo') }}" required />
-                                        <input class="form-control block w-full px-2 py-1 text-sm font-normal text-gray-700 bg-white bg-clip-padding
-                                        border border-solid border-gray-300 rounded transition ease-in-out
-                                        m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="file" type="file">
-                                </div>
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="obs" value="{{ __('Observações') }}" />
-                                    <textarea name="obs" id="obs" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('obs') }}</textarea>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

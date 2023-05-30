@@ -1,5 +1,6 @@
 <tr>
     <td>
+        <input type="hidden" value="{{ $value->value_type }}" class="value-type">
         {{ __($value->value_type) }}
     </td>
     <td>

@@ -141,6 +141,14 @@
     }
 
     function addAttachment() {
+        var form = document.querySelector("#attachment_modal_form");
+        form.reportValidity();
+
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            return;
+        }
+
         const dataForm = new FormData();
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -176,7 +184,28 @@
         });
     }
 
+    function checkValidityValue() {
+        var form = document.querySelector("#value_modal_form");
+        const proposed = document.querySelectorAll(".value-type[value='proposed']").length
+        var valueType = document.querySelector("#value_modal #value_type");
+
+        if(valueType.value == 'proposed' && proposed > 0) {
+            valueType.setCustomValidity(`Não é permitido adicionar mais de um valor do tipo "Proposta", só pode existir apenas um valor do tipo "Proposta"`)
+        } else {
+            valueType.setCustomValidity('');
+        }
+
+        form.reportValidity();
+
+        return form.checkValidity() && !(valueType.value == 'proposed' && proposed > 0);
+    }
+
     function addValue() {
+        if (!checkValidityValue()) {
+            event.preventDefault();
+            return;
+        }
+
         const dataForm = new FormData();
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -214,6 +243,14 @@
     }
 
     function addAddress() {
+        var form = document.querySelector("#address_modal_form");
+        form.reportValidity();
+
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            return;
+        }
+
         const dataForm = new FormData();
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -250,6 +287,14 @@
     }
 
     function addLocalAttachment() {
+        var form = document.querySelector("#attachment_modal_form");
+        form.reportValidity();
+
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            return;
+        }
+
         var table = document.querySelector(".table-attachments");
         var row = table.insertRow();
         const file = document.querySelector("#attachment_modal #file").files;
@@ -281,6 +326,11 @@
     }
 
     function addLocalValue() {
+        if (!checkValidityValue()) {
+            event.preventDefault();
+            return;
+        }
+
         var table = document.querySelector(".table-values");
         var row = table.insertRow();
         const value_type = document.querySelector("#value_modal #value_type").value;
@@ -298,7 +348,7 @@
         row.innerHTML = `<tr data-row="${index}">
                             <td>
                                 ${value_type_text}
-                                <input type="hidden" name="values[${index}][value_type]" value="${value_type}">
+                                <input type="hidden" name="values[${index}][value_type]" value="${value_type}" class="value-type">
                             </td>
                             <td>
                                 ${description}
@@ -325,6 +375,14 @@
     }
 
     function addLocalAddress() {
+        var form = document.querySelector("#address_modal_form");
+        form.reportValidity();
+
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            return;
+        }
+
         var table = document.querySelector(".table-address");
         var row = table.insertRow();
         const address_name = document.querySelector("#address_modal #address_name").value;
@@ -476,7 +534,7 @@
             item.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-attachments");
-                table.deleteRow(item.dataset.row + 1);
+                table.deleteRow(parseInt(item.dataset.row) + 1);
             });
         });
         document.querySelectorAll(".delete-attachment.edit").forEach(item => {
@@ -492,7 +550,7 @@
             item.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-values");
-                table.deleteRow(item.dataset.row + 1);
+                table.deleteRow(parseInt(item.dataset.row) + 1);
             });
         });
         document.querySelectorAll(".delete-value.edit").forEach(item => {
@@ -508,7 +566,7 @@
             item.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-address");
-                table.deleteRow(item.dataset.row + 1);
+                table.deleteRow(parseInt(item.dataset.row) + 1);
             });
         });
         document.querySelectorAll(".delete-address.edit").forEach(item => {

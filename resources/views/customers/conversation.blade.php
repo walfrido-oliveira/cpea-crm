@@ -10,9 +10,14 @@
             {{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }}
         </a>
     </td>
-    @if(!$customer->customer_id)
-        <td class="text-center">{{ $conversation->customer->name }}</td>
-    @endif
+    <td class="text-center">
+        @if(!$conversation->customer->customer_id)
+            {{ $conversation->customer->name }}
+        @else
+        {{ $conversation->customer->customer->name }}
+        @endif
+    </td>
+    <td class="text-center">{{ $conversation->customer->customer_id ? $conversation->customer->name : '-' }}</td>
     <td class="text-center">
         {{ $conversation->cpea_id ? $conversation->cpea_id : '-' }}
     </td>

@@ -15,24 +15,26 @@
                             Novo Valor
                         </h3>
                         <div class="mt-2">
-                            <div class="flex flex-wrap mt-2 w-full">
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="value_type" value="{{ __('Tipo de valor') }}" />
-                                    <x-custom-select :options="array('proposed' => 'Proposta', 'direct_billing' => 'Faturamento Direto')" value="" name="value_type" id="value_type" class="mt-1"/>
+                            <form action="" id="value_modal_form">
+                                <div class="flex flex-wrap mt-2 w-full">
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="value_type" value="{{ __('Tipo de valor') }}" required/>
+                                        <x-custom-select :options="array('proposed' => 'Proposta', 'direct_billing' => 'Faturamento Direto')" value="" name="value_type" id="value_type" class="mt-1" required/>
+                                        </div>
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="description" value="{{ __('Descrição do valor') }}" required/>
+                                        <x-jet-input id="description" class="form-control block mt-1 w-full" type="text" value="" name="description" required/>
                                     </div>
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="description" value="{{ __('Descrição do valor') }}" />
-                                    <x-jet-input id="description" class="form-control block mt-1 w-full" type="text" value="" name="description" />
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="value" value="{{ __('Valor') }}" required/>
+                                        <x-jet-input id="value" class="form-control block mt-1 w-full" type="text" value="" stype="any" name="value" required/>
+                                    </div>
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="obs" value="{{ __('Observações') }}" />
+                                        <textarea name="obs" id="obs" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('obs') }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="value" value="{{ __('Valor') }}" />
-                                    <x-jet-input id="value" class="form-control block mt-1 w-full" type="text" value="" stype="any" name="value" />
-                                </div>
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="obs" value="{{ __('Observações') }}" />
-                                    <textarea name="obs" id="obs" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('obs') }}</textarea>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

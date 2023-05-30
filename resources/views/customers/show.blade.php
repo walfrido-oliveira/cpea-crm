@@ -445,11 +445,9 @@
                                 @csrf
                                 @method("POST")
                                 <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-                                @if($customer->customer_id)
-                                    <button type="submit" class="btn-outline-info" id="add_conversation">
-                                        Nova Conversa
-                                    </button>
-                                @endif
+                                <button type="submit" class="btn-outline-info" id="add_conversation">
+                                    Nova Conversa
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -458,9 +456,8 @@
                             <thead>
                                 <tr class="thead-light">
                                     <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Cód. da Interação') }}</th>
-                                    @if(!$customer->customer_id)
-                                        <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Empresa') }}</th>
-                                    @endif
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Cliente') }}</th>
+                                    <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Empresa') }}</th>
                                     <th scope="col"  class="custom-th" style="text-align: center;">{{ __('IDCPEA') }}</th>
                                     <th scope="col"  class="custom-th" style="text-align: center;">{{ __('Aditivo?') }}</th>
                                     <th scope="col"  class="custom-th" style="text-align: center;">{{ __('IDCPEA Vinculado') }}</th>
@@ -472,19 +469,16 @@
                             </thead>
                             <tbody>
                                 @php $index = 0 @endphp
-                                @if(!$customer->customer_id)
-                                    @foreach ($customer->customers as $key => $child)
-                                        @foreach ($child->conversations as $key => $conversation)
-                                            @include('customers.conversation', ['conversation' => $conversation, 'index' => $index])
-                                            @php $index++ @endphp
-                                        @endforeach
-                                    @endforeach
-                                @else
-                                    @foreach ($customer->conversations as $key => $conversation)
+                                @foreach ($customer->customers as $key => $child)
+                                    @foreach ($child->conversations as $key => $conversation)
                                         @include('customers.conversation', ['conversation' => $conversation, 'index' => $index])
                                         @php $index++ @endphp
                                     @endforeach
-                                @endif
+                                @endforeach
+                                @foreach ($customer->conversations as $key => $conversation)
+                                    @include('customers.conversation', ['conversation' => $conversation, 'index' => $index])
+                                    @php $index++ @endphp
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

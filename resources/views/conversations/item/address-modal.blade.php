@@ -15,20 +15,22 @@
                             Novo Destinatário
                         </h3>
                         <div class="mt-2">
-                            <div class="flex flex-wrap mt-2 w-full">
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="address_name" value="{{ __('Nome') }}" />
-                                    <x-jet-input id="address_name" class="form-control block mt-1 w-full" type="text" value="" name="address_name" />
+                            <form action="" id="address_modal_form">
+                                <div class="flex flex-wrap mt-2 w-full">
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="address_name" value="{{ __('Nome') }}" required/>
+                                        <x-jet-input id="address_name" class="form-control block mt-1 w-full" type="text" value="" name="address_name" required/>
+                                    </div>
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="address" value="{{ __('Email') }}" required/>
+                                        <x-jet-input id="address" class="form-control block mt-1 w-full" type="email" value="" name="address_name" required/>
+                                    </div>
+                                    <div class="w-full pr-3 mb-6 md:mb-1">
+                                        <x-jet-label for="obs" value="{{ __('Observações') }}" />
+                                        <textarea name="obs" id="obs" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('obs') }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="address" value="{{ __('Email') }}" />
-                                    <x-jet-input id="address" class="form-control block mt-1 w-full" type="email" value="" name="address_name" />
-                                </div>
-                                <div class="w-full pr-3 mb-6 md:mb-1">
-                                    <x-jet-label for="obs" value="{{ __('Observações') }}" />
-                                    <textarea name="obs" id="obs" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('obs') }}</textarea>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

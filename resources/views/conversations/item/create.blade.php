@@ -91,7 +91,7 @@
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="products" value="{{ __('Produtos') }}"/>
-                            <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter" required/>
+                            <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="[]" select-class="form-input" class="" no-filter="no-filter" />
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 prospects-fields">

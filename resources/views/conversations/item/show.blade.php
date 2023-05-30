@@ -236,7 +236,7 @@
                                                     x-transition:leave-start="opacity-100 transform scale-100"
                                                     x-transition:leave-end="opacity-0 transform scale-90 hidden" @endif>
                                                     <td>
-                                                        <a class="text-green-600 underline font-bold" href="{{ $attachment->url }}">{{ $attachment->name }}</a>
+                                                        <a class="text-green-600 underline font-bold" href="{{ url($attachment->url) }}">{{ $attachment->name }}</a>
                                                     </td>
                                                     <td>
                                                         {{ $attachment->obs }}
