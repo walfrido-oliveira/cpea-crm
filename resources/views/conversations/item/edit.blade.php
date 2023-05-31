@@ -200,7 +200,7 @@
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_type" value="{{ __('Tipo de Agenda') }}"/>
-                                <x-custom-select :options="array('internal' => 'Reunião Interna', 'external' => 'Reunião Externa')" value="{{ $conversationItem->schedule_type }}" name="schedule_type" id="schedule_type" class="mt-1"/>
+                                <x-custom-select :options="array('internal' => 'Follow up', 'external' => 'Reunião Externa')" value="{{ $conversationItem->schedule_type }}" name="schedule_type" id="schedule_type" class="mt-1"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">

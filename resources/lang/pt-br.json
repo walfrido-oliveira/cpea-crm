@@ -86,5 +86,7 @@
     "proposed":"Proposta",
     "others":"Outros",
     "presential":"Presencial",
-    "online":"Online"
+    "online":"Online",
+    "direct_billing":"Faturamento Direto",
+    "technical_assistance":"Assessoria Técnica"
 }

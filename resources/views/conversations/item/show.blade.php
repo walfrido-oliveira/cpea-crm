@@ -345,7 +345,7 @@
                             <p class="font-bold">{{ __('Tipo de Agenda') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">@if($conversationItem->schedule_type == 'internal') Reunião Interna @endif
+                            <p class="text-gray-500 font-bold">@if($conversationItem->schedule_type == 'internal') Follow up @endif
                                 @if($conversationItem->schedule_type == 'external') Reunião Externa @endif</p>
                         </div>
                     </div>
