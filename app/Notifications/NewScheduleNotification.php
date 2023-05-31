@@ -2,13 +2,15 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use App\Models\Config;
-use App\Models\ConversationItem;
 use App\Models\TemplateEmail;
 use Illuminate\Bus\Queueable;
+use App\Models\ConversationItem;
 use Illuminate\Support\HtmlString;
 use Illuminate\Notifications\Notification;
 use Spatie\IcalendarGenerator\Components\Event;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Spatie\IcalendarGenerator\Components\Calendar;
 use Spatie\IcalendarGenerator\Properties\TextProperty;
@@ -48,6 +50,17 @@ class NewScheduleNotification extends Notification
      */
     public function toMail($notifiable)
     {
+        $user = null;
+
+        if ($notifiable instanceof AnonymousNotifiable) {
+            $mail = $notifiable->routes['mail'];
+            $user = new User();
+            $user->name  = array_values($mail)[0];
+            $user->email = array_keys($mail)[0];
+        } else {
+            $user = User::find($notifiable->id);
+        }
+
         $calendar = Calendar::create()
             ->productIdentifier('Kutac.cz')
             ->event(function (Event $event) {
@@ -70,7 +83,7 @@ class NewScheduleNotification extends Notification
         if($this->conversationItem->prospectingStatus) $status = $this->conversationItem->prospectingStatus->name;
 
         $values = [
-            $this->conversationItem->organizer ? $this->conversationItem->organizer->full_name : '-',
+            $user ? $user->full_name : '-',
             $this->conversationItem->schedule_name ? $this->conversationItem->schedule_name : '-',
             $this->conversationItem->schedule_at ? $this->conversationItem->schedule_at->format("d/m/Y H:i") : '-',
             $this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-',
@@ -101,6 +114,7 @@ class NewScheduleNotification extends Notification
             #$this->conversationItem->optional_addressees ? $this->conversationItem->optional_addressees : '-',
             #$this->conversationItem->item_details ? $this->conversationItem->item_details : '-',
         ];
+
         return (new MailMessage())
             ->attachData($calendar->get(), 'invite.ics', [
                 'mime' => 'text/calendar; charset=UTF-8; method=REQUEST',

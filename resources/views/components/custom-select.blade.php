@@ -1,7 +1,7 @@
 <div class="inline-block relative w-full {{ $attributes['class'] }}">
     <select {{ $disabled ? 'disabled' : '' }} {{ isset($attributes['readonly']) ? $attributes['readonly'] : '' }}
     class="{{ $attributes['select-class'] }} block w-full @if(!isset($attributes['default'])) custom-select @endif focus:outline-none focus:shadow-outline @if(!isset($attributes['no-filter'])) filter-field @endif" {{ $attributes }}>
-        <option value="">Selecione um valor</option>
+        <option value="">Selecione um item</option>
         @php
             $index = 0;
         @endphp

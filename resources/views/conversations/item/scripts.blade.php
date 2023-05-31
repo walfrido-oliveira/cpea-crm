@@ -57,6 +57,18 @@
                 document.querySelector("#cpea_linked_id").disabled = true;
             }
         });
+
+        window.addEventListener("load", function() {
+            const additive = document.querySelector("#additive");
+            const cpeaLinkedId = document.querySelector("#cpea_linked_id");
+            if(additive.value == "y") {
+                cpeaLinkedId.disabled = false;
+            } else {
+                cpeaLinkedId.disabled = true;
+            }
+        });
+
+
     }
 
     function getEmployees(direction_id, department_id) {
@@ -301,8 +313,9 @@
         const name = document.querySelector("#attachment_modal #name").value;
         const obs = document.querySelector("#attachment_modal #obs").value;
         const rowLength = table.rows.length;
-        var index = rowLength - 2;
-        row.innerHTML = `<tr data-row="${index}">
+        const index = rowLength - 2;
+
+        row.innerHTML = `<tr>
                             <td>
                                 ${name}
                                 <input type="hidden" name="files[${index}][name]" value="${name}">
@@ -313,7 +326,7 @@
                                 <input type="hidden" name="files[${index}][obs]" value="${obs}">
                             </td>
                             <td>
-                                <button type="button" class="btn-transition-danger delete-attachment" data-row="${index}">
+                                <button type="button" class="btn-transition-danger delete-attachment">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
@@ -322,7 +335,7 @@
                         </tr>`;
         toggleAttachmentModal(false);
         document.querySelector(`input[type="file"][name="files[${index}][file]"]`).files = file;
-        deleteAttachmentModalHandle();
+        deleteAttachmentModalHandle(row.querySelector(".delete-attachment"));
     }
 
     function addLocalValue() {
@@ -339,13 +352,13 @@
         const description = document.querySelector("#value_modal #description").value;
         const obs = document.querySelector("#value_modal #obs").value;
         const rowLength = table.rows.length;
-        var index = rowLength - 2;
         var brl = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL',
         });
+        const index = rowLength - 2;
 
-        row.innerHTML = `<tr data-row="${index}">
+        row.innerHTML = `<tr>
                             <td>
                                 ${value_type_text}
                                 <input type="hidden" name="values[${index}][value_type]" value="${value_type}" class="value-type">
@@ -363,7 +376,7 @@
                                 <input type="hidden" name="values[${index}][obs]" value="${obs}">
                             </td>
                             <td>
-                                <button type="button" class="btn-transition-danger delete-value" data-row="${index}">
+                                <button type="button" class="btn-transition-danger delete-value">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
@@ -371,7 +384,7 @@
                             </td>
                         </tr>`;
         toggleValueModal(false);
-        deleteValueModalHandle();
+        deleteValueModalHandle(row.querySelector(".delete-value"));
     }
 
     function addLocalAddress() {
@@ -389,9 +402,9 @@
         const address = document.querySelector("#address_modal #address").value;
         const obs = document.querySelector("#address_modal #obs").value;
         const rowLength = table.rows.length;
-        var index = rowLength - 2;
+        const index = rowLength - 2;
 
-        row.innerHTML = `<tr data-row="${index}">
+        row.innerHTML = `<tr>
                             <td>
                                 ${address_name}
                                 <input type="hidden" name="address[${index}][address_name]" value="${address_name}">
@@ -405,7 +418,7 @@
                                 <input type="hidden" name="address[${index}][obs]" value="${obs}">
                             </td>
                             <td>
-                                <button type="button" class="btn-transition-danger delete-address" data-row="${index}">
+                                <button type="button" class="btn-transition-danger delete-address">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
@@ -413,7 +426,7 @@
                             </td>
                         </tr>`;
         toggleAddressModal(false);
-        deleteAddressModalHandle();
+        deleteAddressModalHandle(row.querySelector(".delete-address"));
     }
 
     if(document.querySelector(".create #confirm_attachment_modal")) {
@@ -529,52 +542,61 @@
         if(!show) modal.classList.add("hidden");
     }
 
-    function deleteAttachmentModalHandle() {
-        document.querySelectorAll(".delete-attachment:not(.edit)").forEach(item => {
-            item.addEventListener("click", function(e) {
+    function deleteAttachmentModalHandle(elem = null) {
+        if(elem) {
+            elem.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-attachments");
-                table.deleteRow(parseInt(item.dataset.row) + 1);
+                var i = elem.parentNode.parentNode.rowIndex;
+                table.deleteRow(i);
+                console.log(i);
             });
-        });
-        document.querySelectorAll(".delete-attachment.edit").forEach(item => {
-            item.addEventListener("click", function(e) {
-                e.preventDefault();
-                toggleDeleteAttachmentModal(true, this);
+        } else {
+            document.querySelectorAll(".delete-attachment.edit").forEach(item => {
+                item.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    toggleDeleteAttachmentModal(true, this);
+                });
             });
-        });
+        }
     }
 
-    function deleteValueModalHandle() {
-        document.querySelectorAll(".delete-value:not(.edit)").forEach(item => {
-            item.addEventListener("click", function(e) {
+    function deleteValueModalHandle(elem = null) {
+        if(elem) {
+            elem.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-values");
-                table.deleteRow(parseInt(item.dataset.row) + 1);
+                var i = elem.parentNode.parentNode.rowIndex;
+                table.deleteRow(i);
+                console.log(i);
             });
-        });
-        document.querySelectorAll(".delete-value.edit").forEach(item => {
-            item.addEventListener("click", function(e) {
-                e.preventDefault();
-                toggleDeleteValueModal(true, this);
+        } else {
+            document.querySelectorAll(".delete-value.edit").forEach(item => {
+                item.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    toggleDeleteAttachmentModal(true, this);
+                });
             });
-        });
+        }
     }
 
-    function deleteAddressModalHandle() {
-        document.querySelectorAll(".delete-address:not(.edit)").forEach(item => {
-            item.addEventListener("click", function(e) {
+    function deleteAddressModalHandle(elem = null) {
+        if(elem) {
+            elem.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-address");
-                table.deleteRow(parseInt(item.dataset.row) + 1);
+                var i = elem.parentNode.parentNode.rowIndex;
+                table.deleteRow(i);
+                console.log(i);
             });
-        });
-        document.querySelectorAll(".delete-address.edit").forEach(item => {
-            item.addEventListener("click", function(e) {
-                e.preventDefault();
-                toggleDeleteAddressModal(true, this);
+        } else {
+            document.querySelectorAll(".delete-address.edit").forEach(item => {
+                item.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    toggleDeleteAttachmentModal(true, this);
+                });
             });
-        });
+        }
     }
 
     deleteAttachmentModalHandle();

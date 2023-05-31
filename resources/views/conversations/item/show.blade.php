@@ -150,6 +150,15 @@
                     @if($conversationItem->item_type == "Proposta")
                         <div class="flex flex-wrap">
                             <div class="w-full md:w-2/12">
+                                <p class="font-bold">{{ __('IDCPEA') }}</p>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                                <p class="text-gray-500 font-bold">{{ $conversationItem->conversation->cpea_id ? $conversationItem->conversation->cpea_id : '-' }}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap">
+                            <div class="w-full md:w-2/12">
                                 <p class="font-bold">{{ __('Diretoria') }}</p>
                             </div>
                             <div class="w-full md:w-1/2">
@@ -174,13 +183,16 @@
                         <div class="w-full md:w-1/2 flex">
                             <div class="w-auto mr-4">
                                 @foreach ($conversationItem->products as $key => $product)
-                                    <p class="text-gray-500 font-bold" @if($key > 2) x-show="isOpen()"
-                                    x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="opacity-0 transform scale-90"
-                                    x-transition:enter-end="opacity-100 transform scale-100"
-                                    x-transition:leave="transition ease-in duration-300"
-                                    x-transition:leave-start="opacity-100 transform scale-100"
-                                    x-transition:leave-end="opacity-0 transform scale-90 hidden" @endif>{{ $product->name }}</p>
+                                    <p class="text-gray-500 font-bold"
+                                    @if($key > 2)
+                                        x-show="isOpen()"
+                                        x-transition:enter="transition ease-out duration-300"
+                                        x-transition:enter-start="opacity-0 transform scale-90"
+                                        x-transition:enter-end="opacity-100 transform scale-100"
+                                        x-transition:leave="transition ease-in duration-300"
+                                        x-transition:leave-start="opacity-100 transform scale-100"
+                                        x-transition:leave-end="opacity-0 transform scale-90 hidden"
+                                    @endif>{{ $product->name }}</p>
                                 @endforeach
                             </div>
                             <div class="w-full md:w-2/12">
@@ -236,7 +248,7 @@
                                                     x-transition:leave-start="opacity-100 transform scale-100"
                                                     x-transition:leave-end="opacity-0 transform scale-90 hidden" @endif>
                                                     <td>
-                                                        <a class="text-green-600 underline font-bold" href="{{ url($attachment->url) }}">{{ $attachment->name }}</a>
+                                                        <a class="text-green-600 underline font-bold" href="{{ url($attachment->url) }}" target="_blank">{{ $attachment->name }}</a>
                                                     </td>
                                                     <td>
                                                         {{ $attachment->obs }}
@@ -333,7 +345,8 @@
                             <p class="font-bold">{{ __('Tipo de Agenda') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $conversationItem->schedule_type ? $conversationItem->schedule_type : '-' }}</p>
+                            <p class="text-gray-500 font-bold">@if($conversationItem->schedule_type == 'internal') Reunião Interna @endif
+                                @if($conversationItem->schedule_type == 'external') Reunião Externa @endif</p>
                         </div>
                     </div>
 
@@ -391,69 +404,27 @@
                             <p class="font-bold">{{ __('Organizador') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $conversationItem->organizer ? $conversationItem->organizer->full_name : '-' }}</p>
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->organizer ? ($conversationItem->organizer->full_name . ' | ' . $conversationItem->organizer->email) : '-' }}</p>
                         </div>
                     </div>
 
                     <div class="flex flex-wrap">
-                        <div>
-                            <div class="flex">
-                                <p class="font-bold">{{ __('Destinatários') }}</p>
-                            </div>
-                            <div class="flex flex-wrap">
-                                <div class="w-full flex">
-                                    <div class="w-full" x-data="{ showaddress: false}">
-                                        <table class="table-address table md:table w-full">
-                                            <thead>
-                                                <tr class="thead-light">
-                                                    <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('Nome') }}</th>
-                                                    <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('E-mail') }}</th>
-                                                    <th scope="col"  class="custom-th" style="white-space: nowrap;">{{ __('Observações') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($conversationItem->addresses as $key => $address)
-                                                    <tr @if($key > 3) x-show="showaddress"
-                                                        x-transition:enter="transition ease-out duration-300"
-                                                        x-transition:enter-start="opacity-0 transform scale-90"
-                                                        x-transition:enter-end="opacity-100 transform scale-100"
-                                                        x-transition:leave="transition ease-in duration-300"
-                                                        x-transition:leave-start="opacity-100 transform scale-100"
-                                                        x-transition:leave-end="opacity-0 transform scale-90 hidden" @endif>
-                                                        <td>
-                                                            {{ $address->address_name }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $address->address }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $address->obs }}
-                                                        </td>
-                                                    </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    @if(count($conversationItem->addresses) > 4 )
-                                        <div class="w-full md:w-2/12">
-                                            <button class="btn-transition-primary" type="button" id="show_all_address" @click="showaddress ? false : true;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
+                        <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Destinatários') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            @foreach ($conversationItem->addresses as $key => $address)
+                                <p class="text-gray-500 font-bold">{{ $address->address_name }} | {{ $address->address }}</p>
+                            @endforeach
                         </div>
                     </div>
+
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Detalhes do Agendamento') }}</p>
                         </div>
-                        <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $conversationItem->schedule_details ? $conversationItem->schedule_details : '-' }}</p>
+                        <div class="w-full">
+                            <p class="text-gray-500 font-bold">{!! $conversationItem->schedule_details ? $conversationItem->schedule_details : '-' !!}</p>
                         </div>
                     </div>
                 </div>

@@ -443,3 +443,11 @@ input:read-only {
 [hidden] {
     display: none;
 }
+
+td.produtos .more {
+    display: none;
+}
+
+td.produtos:hover .more {
+    display: block
+}

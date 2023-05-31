@@ -33,12 +33,10 @@
             {{ $conversation->items[count($conversation->items) - 1]->cpea_linked_id ? $conversation->items[count($conversation->items) - 1]->cpea_linked_id : '-' }}
         @endif
     </td>
-    <td class="text-center">
+    <td class="text-center produtos">
         @if(count($conversation->items) > 0)
             @foreach ($conversation->items[count($conversation->items) - 1]->products as $key => $product)
-                @if($key <= 2)
-                    {{ $product->name }}<br>
-                @endif
+                <p @if($key > 0) class="more" @endif>{{ $product->name }}</p>
             @endforeach
         @endif
     </td>

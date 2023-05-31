@@ -38,7 +38,6 @@ class ConversationItemController extends Controller
             'organizer_id' => ['nullable', 'exists:users,id'],
             'direction_id' => ['nullable', 'exists:directions,id'],
             'employee_id' => ['nullable', 'exists:employees,id'],
-            'products' => ['required']
         ]);
     }
 
@@ -194,7 +193,7 @@ class ConversationItemController extends Controller
         $detailedContacts = $conversation->customer->detailedContats->pluck("contact", "id");
         $products = Product::pluck("name", "id");
         $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
-        $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
+        $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id", "cpea_id");
 
         $checkprospect = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
         $checkproposed = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;

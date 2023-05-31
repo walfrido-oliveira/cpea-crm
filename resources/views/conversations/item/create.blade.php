@@ -218,13 +218,13 @@
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                 <x-jet-label for="meeting_form" value="{{ __('Forma de Reunião') }}"/>
-                                <x-custom-select :options="array('online' => 'Online', 'presential' => 'Presencial')" value="{{ old('meeting_form') }}" name="meeting_form" id="meeting_form" class="mt-1"/>
+                                <x-custom-select :options="array('online' => 'Online', 'presential' => 'Presencial')" value="online" name="meeting_form" id="meeting_form" class="mt-1"/>
                             </div>
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden meeting-place">
                                 <x-jet-label for="meeting_place" value="{{ __('Local') }}"/>
                                 <x-jet-input id="meeting_place" class="form-control block mt-1 w-full" type="text" name="meeting_place" maxlength="255" autofocus autocomplete="meeting_place" value="{{ old('meeting_place') }}"/>
                             </div>
-                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 hidden teams-url">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 teams-url">
                                 <x-jet-label for="teams_url" value="{{ __('Link do Teams') }}"/>
                                 <x-jet-input id="teams_url" class="form-control block mt-1 w-full" type="text" name="teams_url" maxlength="255" autofocus autocomplete="teams_url" value="{{ old('teams_url') }}"/>
                             </div>
@@ -273,7 +273,7 @@
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                             <div class="w-full px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_details" value="{{ __('Detalhes do Agendamento') }}"/>
-                                <textarea name="schedule_details" id="schedule_details" cols="30" rows="5" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('schedule_details') }}</textarea>
+                                <textarea name="schedule_details" id="schedule_details" cols="30" rows="5" class="ckeditor">{{ old('schedule_details') }}</textarea>
                             </div>
                         </div>
                     </div>

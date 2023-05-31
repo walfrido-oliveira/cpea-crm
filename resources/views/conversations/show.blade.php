@@ -37,11 +37,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($conversation->items as $key => $item)
+                        @foreach ($conversation->items()->orderBy("created_at", "desc")->get() as $key => $item)
                             <tr>
                                 <td>
                                     <a class="text-green-600 underline font-bold" href="{{ route("customers.conversations.item.show", ["item" => $item->id]) }}">
-                                        {{ $key + 1 }}
+                                        {{ $item->order }}
                                     </a>
                                 </td>
                                 <td>{{ $item->item_type }}</td>

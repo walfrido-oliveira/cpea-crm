@@ -2,13 +2,14 @@
 
 namespace App\Notifications;
 
-use App\Models\Config;
-use App\Models\ConversationItem;
-use App\Models\TemplateEmail;
 use App\Models\User;
+use App\Models\Config;
+use App\Models\TemplateEmail;
 use Illuminate\Bus\Queueable;
+use App\Models\ConversationItem;
 use Illuminate\Support\HtmlString;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class ExternalMeetingNotification extends Notification
@@ -49,7 +50,16 @@ class ExternalMeetingNotification extends Notification
         $tags = TemplateEmail::where("name", "external_meeting")->first()->tags;
         $tags = explode(",", $tags);
 
-        $user = User::find($notifiable->id);
+        $user = null;
+
+        if ($notifiable instanceof AnonymousNotifiable) {
+            $mail = $notifiable->routes['mail'];
+            $user = new User();
+            $user->name  = array_values($mail)[0];
+            $user->email = array_keys($mail)[0];
+        } else {
+            $user = User::find($notifiable->id);
+        }
 
         $values = [
             $user->full_name,

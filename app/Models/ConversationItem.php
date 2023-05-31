@@ -5,7 +5,10 @@ namespace App\Models;
 use App\Models\Config;
 use App\Traits\Observable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ExternalMeetingNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Notifications\NewScheduleNotification;
 
 class ConversationItem extends Model
 {
@@ -167,11 +170,21 @@ class ConversationItem extends Model
     public function sendScheduleNotification()
     {
         $this->user->sendScheduleNotification($this);
+
+        foreach ($this->addresses as $address) {
+            Notification::route('mail', [$address->address => $address->address_name])
+            ->notify(new NewScheduleNotification($this));
+        }
     }
 
     public function sendExternalMeetingNotification()
     {
         $this->user->sendExternalMeetingNotification($this);
+
+        foreach ($this->addresses as $address) {
+            Notification::route('mail', [$address->address => $address->address_name])
+            ->notify(new ExternalMeetingNotification($this));
+        }
     }
 
     public function sendAppovedProposalNotification()

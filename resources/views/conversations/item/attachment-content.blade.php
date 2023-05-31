@@ -1,6 +1,6 @@
 <tr>
     <td>
-        <a href="{{ asset($attachment->url) }}">{{ $attachment->name }}</a>
+        <a href="{{ url($attachment->url) }}" target="_blank">{{ $attachment->name }}</a>
     </td>
     <td>
         {{ $attachment->obs }}
