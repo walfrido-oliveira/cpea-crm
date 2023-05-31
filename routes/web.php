@@ -1,17 +1,20 @@
 <?php
 
+use App\Models\ConversationItem;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ValueController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DirectionController;
+use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\AzureAcessController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\ContactTypeController;
@@ -21,12 +24,10 @@ use App\Http\Controllers\ProjectStatusController;
 use App\Http\Controllers\TemplateEmailController;
 use App\Http\Controllers\ProposedStatusController;
 use App\Http\Controllers\DetailedContactController;
+use App\Http\Controllers\ScheduleAddressController;
 use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\GeneralContactTypeController;
-use App\Http\Controllers\ScheduleAddressController;
-use App\Http\Controllers\ValueController;
-use App\Models\ConversationItem;
 
 /*
 |--------------------------------------------------------------------------
@@ -242,6 +243,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
             });
         });
 
+    });
+
+    Route::prefix('azure')->name('azure.')->group(function(){
+        Route::get('token', [AzureAcessController::class, 'token'])->name('token');
+        Route::get('teste', [AzureAcessController::class, 'teste'])->name('teste');
     });
 
 });

@@ -36,7 +36,7 @@
     <td class="text-center produtos">
         @if(count($conversation->items) > 0)
             @foreach ($conversation->items[count($conversation->items) - 1]->products as $key => $product)
-                <p @if($key > 0) class="more" @endif>{{ $product->name }}</p>
+                <div @if($key > 0) class="more" @endif>{{ $product->name }}</div>
             @endforeach
         @endif
     </td>

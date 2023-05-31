@@ -9,11 +9,8 @@ use Illuminate\Bus\Queueable;
 use App\Models\ConversationItem;
 use Illuminate\Support\HtmlString;
 use Illuminate\Notifications\Notification;
-use Spatie\IcalendarGenerator\Components\Event;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Messages\MailMessage;
-use Spatie\IcalendarGenerator\Components\Calendar;
-use Spatie\IcalendarGenerator\Properties\TextProperty;
 
 class NewScheduleNotification extends Notification
 {
@@ -61,18 +58,6 @@ class NewScheduleNotification extends Notification
             $user = User::find($notifiable->id);
         }
 
-        $calendar = Calendar::create()
-            ->productIdentifier('Kutac.cz')
-            ->event(function (Event $event) {
-                $event->name($this->conversationItem->schedule_name ? $this->conversationItem->schedule_name : '-')
-                    ->attendee( $this->conversationItem->user->email)
-                    ->startsAt($this->conversationItem->schedule_at ? $this->conversationItem->schedule_at : null)
-                    ->endsAt($this->conversationItem->schedule_at ? $this->conversationItem->schedule_at : null)
-                    ->fullDay()
-                    ->address($this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-');
-            });
-        $calendar->appendProperty(TextProperty::create('METHOD', 'REQUEST'));
-
         $tags = TemplateEmail::where("name", "new_schedule")->first()->tags;
         $tags = explode(",", $tags);
 
@@ -107,18 +92,9 @@ class NewScheduleNotification extends Notification
             $this->conversationItem->employee ? $this->conversationItem->employee->department->name : '-',
             $this->conversationItem->employee ? $this->conversationItem->employee->name : '-',
             Config::get("mail_signature"),
-            #$this->conversationItem->additive ? 'SIM' : 'NÃO',
-            #$this->conversationItem->conversation->cpea_linked_id ? $this->conversationItem->conversation->cpea_linked_id : '-',
-            #$this->conversationItem->schedule_type ? $this->conversationItem->schedule_type : '-',
-            #$this->conversationItem->addressees ? $this->conversationItem->addressees : '-',
-            #$this->conversationItem->optional_addressees ? $this->conversationItem->optional_addressees : '-',
-            #$this->conversationItem->item_details ? $this->conversationItem->item_details : '-',
         ];
 
         return (new MailMessage())
-            ->attachData($calendar->get(), 'invite.ics', [
-                'mime' => 'text/calendar; charset=UTF-8; method=REQUEST',
-            ])
             ->subject(str_replace($tags, $values, TemplateEmail::getSubject('new_schedule')))
             ->line(new HtmlString(str_replace($tags, $values, TemplateEmail::getValue('new_schedule'))));
     }

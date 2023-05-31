@@ -20,7 +20,8 @@
         "mistic100/randomcolor": "^1.0",
         "phpoffice/phpspreadsheet": "^1.18",
         "spatie/icalendar-generator": "^2.5",
-        "spatie/laravel-permission": "^4.2"
+        "spatie/laravel-permission": "^4.2",
+        "microsoft/microsoft-graph": "^1.93.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

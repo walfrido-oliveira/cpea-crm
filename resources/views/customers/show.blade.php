@@ -470,12 +470,12 @@
                             <tbody>
                                 @php $index = 0 @endphp
                                 @foreach ($customer->customers as $key => $child)
-                                    @foreach ($child->conversations as $key => $conversation)
+                                    @foreach ($child->conversations()->orderBy("created_at", "desc")->get() as $key => $conversation)
                                         @include('customers.conversation', ['conversation' => $conversation, 'index' => $index])
                                         @php $index++ @endphp
                                     @endforeach
                                 @endforeach
-                                @foreach ($customer->conversations as $key => $conversation)
+                                @foreach ($customer->conversations()->orderBy("created_at", "desc")->get() as $key => $conversation)
                                     @include('customers.conversation', ['conversation' => $conversation, 'index' => $index])
                                     @php $index++ @endphp
                                 @endforeach

@@ -3479,10 +3479,13 @@ input:read-only {
     display: none;
 }
 td.produtos .more {
-    display: none;
+    transition: max-height .5s;
+    overflow: hidden;
+    max-height: 0;
+    cursor: pointer;
 }
 td.produtos:hover .more {
-    display: block
+    max-height: 300px;
 }
 .hover\:border-gray-300:hover {
 	--tw-border-opacity: 1;
