@@ -85,7 +85,7 @@ class ExternalMeetingNotification extends Notification
             $this->conversationItem->organizer ? $this->conversationItem->organizer->full_name : '-',
             $this->conversationItem->organizer ? $this->conversationItem->organizer->email : '-',
             count($this->conversationItem->addresses) > 0 ? implode(",", $this->conversationItem->addresses->pluck("address")->toArray()) : '-',
-            $this->conversationItem->meeting_place ? $this->conversationItem->meeting_place : '-',
+            $this->conversationItem->teams_url ? $this->conversationItem->teams_url : '-',
             $this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-',
             Config::get("mail_signature"),
         ];

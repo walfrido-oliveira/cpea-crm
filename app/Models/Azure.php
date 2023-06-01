@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
-class AzureAcessController extends Controller
+class Azure extends Model
 {
-    public function token()
+    public static function token()
     {
+        if(Cache::has("AZURE_TOKEN")) return Cache::get("AZURE_TOKEN");
+
         $tenantId = env('AZURE_TENANT_ID', '');
         $clientId = env('AZURE_CLIENT_ID', '');
         $clientSecret = env('AZURE_CLIENT_SECRET', '');
@@ -24,8 +27,8 @@ class AzureAcessController extends Controller
         ])->getBody()->getContents());
         $accessToken = $token->access_token;
 
+        Cache::put("AZURE_TOKEN", $accessToken, 60 * 60);
+
         return $accessToken;
     }
-
-
 }
