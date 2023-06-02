@@ -214,7 +214,7 @@ class ConversationItem extends Model
         }
 
         if($this->schedule_type == 'external' && $isNew) {
-            $this->teams_url = OnlineMeeting::createOnlineMeeting($this->schedule_at, $this->schedule_at->addHour(), $this->schedule_name);
+            $this->teams_url = OnlineMeeting::createOnlineMeeting($this->schedule_at, $this->schedule_at->addHour(), $this->schedule_name, Azure::user($this->organizer->email));
             $this->save();
             $this->sendExternalMeetingNotification();
         }

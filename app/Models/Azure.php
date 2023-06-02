@@ -31,4 +31,20 @@ class Azure extends Model
 
         return $accessToken;
     }
+
+    public static function user($email)
+    {
+        $token = Azure::token();
+        $guzzle = new \GuzzleHttp\Client();
+        $url = "https://graph.microsoft.com/v1.0/users/$email";
+        $user = json_decode($guzzle->get($url, [
+            'headers' => [
+                'Authorization' => "Bearer $token",
+                'content-type' => 'application/json',
+                'Accept-Language' => 'pt-BR'
+            ],
+        ])->getBody()->getContents());
+
+        return $user->id;
+    }
 }
