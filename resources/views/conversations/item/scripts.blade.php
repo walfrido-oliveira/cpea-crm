@@ -623,13 +623,21 @@
 
     document.querySelector("#meeting_form").addEventListener("change", function() {
         if(this.value == 'online') {
-            document.querySelector(".meeting-place").classList.add("hidden");
-            document.querySelector(".teams-url").classList.remove("hidden");
+            document.querySelectorAll(".meeting-place").forEach(item => {
+                item.classList.add("hidden");
+            });
+            document.querySelectorAll(".teams-url").forEach(item => {
+                item.classList.remove("hidden");
+            });
         }
 
         if(this.value == 'presential') {
-            document.querySelector(".meeting-place").classList.remove("hidden");
-            document.querySelector(".teams-url").classList.add("hidden");
+            document.querySelectorAll(".meeting-place").forEach(item => {
+                item.classList.remove("hidden");
+            });
+            document.querySelectorAll(".teams-url").forEach(item => {
+                item.classList.add("hidden");
+            });
         }
     });
 

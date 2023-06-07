@@ -38,7 +38,7 @@ class ConversationItem extends Model
         'schedule_name', 'schedule_at', 'schedule_details',
         'conversation_id', 'project_status_id', 'proposed_status_id', 'prospecting_status_id',
         'detailed_contact_id', 'organizer_id', 'user_id', 'item_details', 'direction_id', 'employee_id', 'order',
-        'meeting_form', 'meeting_place', 'teams_url'
+        'meeting_form', 'meeting_place', 'teams_url', 'teams_id', 'teams_token', 'schedule_end'
     ];
 
     /**
@@ -49,6 +49,7 @@ class ConversationItem extends Model
     protected $casts = [
         'interaction_at' => 'datetime',
         'schedule_at' => 'datetime',
+        'schedule_end' => 'datetime',
     ];
 
     /**
@@ -211,11 +212,14 @@ class ConversationItem extends Model
     {
         if($this->schedule_type == 'internal' && $isNew) {
             $this->sendScheduleNotification();
-            OnlineMeeting::createEvent($this, Azure::user($this->organizer->email));
+            //OnlineMeeting::createEvent($this, Azure::user($this->organizer->email));
         }
 
         if($this->schedule_type == 'external' && $isNew) {
-            $this->teams_url = OnlineMeeting::createOnlineMeeting($this, Azure::user($this->organizer->email));
+            $onlieMeetingResp = OnlineMeeting::createOnlineMeeting($this, Azure::user($this->organizer->email));
+            $this->teams_url = $onlieMeetingResp->joinWebUrl;
+            $this->teams_id = $onlieMeetingResp->joinMeetingId;
+            $this->teams_token = $onlieMeetingResp->passcode;
             $this->save();
             $this->sendExternalMeetingNotification();
             OnlineMeeting::createEvent($this, Azure::user($this->organizer->email));

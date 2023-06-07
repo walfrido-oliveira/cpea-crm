@@ -401,6 +401,15 @@
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Data/Hora do final da Reunião') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->schedule_end ? $conversationItem->schedule_end->format('d/m/Y H:i:s') : "-" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Organizador') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">

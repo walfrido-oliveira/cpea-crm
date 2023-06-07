@@ -10,8 +10,11 @@ class OnlineMeeting extends Model
     {
         $data =  [
             "startDateTime" => $conversationItem->schedule_at,
-            "endDateTime" => $conversationItem->schedule_at->addHour(),
-            "subject" => $conversationItem->schedule_name
+            "endDateTime" => $conversationItem->schedule_end,
+            "subject" => $conversationItem->schedule_name,
+            "joinMeetingIdSettings" => [
+                "isPasscodeRequired" => true
+            ]
         ];
         $token = Azure::token();
 
@@ -62,7 +65,7 @@ class OnlineMeeting extends Model
                      "timeZone" => "E. South America Standard Time"
                   ],
             "end" => [
-                        "dateTime" => $conversationItem->schedule_at->addHour(),
+                        "dateTime" => $conversationItem->schedule_end,
                         "timeZone" => "E. South America Standard Time"
                      ],
             "location" => [

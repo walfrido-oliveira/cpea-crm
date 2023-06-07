@@ -220,13 +220,27 @@
                             </div>
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 @if($conversationItem->meeting_form == 'presential') hidden @endif teams-url">
                                 <x-jet-label for="teams_url" value="{{ __('Link do Teams') }}"/>
-                                <x-jet-input id="teams_url" class="form-control block mt-1 w-full" type="text" name="teams_url" maxlength="255" autofocus autocomplete="teams_url" value="{{ $conversationItem->teams_url }}"/>
+                                <x-jet-input id="teams_url" class="form-control block mt-1 w-full" type="text" name="teams_url" maxlength="255" autofocus autocomplete="teams_url" value="{{ $conversationItem->teams_url }}" disabled/>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 teams-url">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 ">
+                                <x-jet-label for="teams_id" value="{{ __('ID da reunião') }}"/>
+                                <x-jet-input id="teams_id" class="form-control block mt-1 w-full" type="text" name="teams_id" maxlength="255" autofocus autocomplete="teams_id" value="{{ $conversationItem->teams_id }}" disabled/>
+                            </div>
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 ">
+                                <x-jet-label for="teams_token" value="{{ __('Senha da Reunião') }}"/>
+                                <x-jet-input id="teams_token" class="form-control block mt-1 w-full" type="text" name="teams_token" maxlength="255" autofocus autocomplete="teams_token" value="{{ $conversationItem->teams_token }}" disabled/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
-                            <div class="w-full px-3 mb-6 md:mb-0">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                 <x-jet-label for="schedule_at" value="{{ __('Data/Hora da Reunião') }}"/>
                                 <x-jet-input id="schedule_at" class="form-control block mt-1 w-full" type="datetime-local" name="schedule_at" autofocus value="{{ $conversationItem->schedule_at }}"/>
+                            </div>
+                            <div class="w-full md:w-1/2  px-3 mb-6 md:mb-0">
+                                <x-jet-label for="schedule_end" value="{{ __('Data/Hora do Fim da Reunião') }}"/>
+                                <x-jet-input id="schedule_end" class="form-control block mt-1 w-full" type="datetime-local" name="schedule_end" autofocus value="{{ $conversationItem->schedule_end }}"/>
                             </div>
                         </div>
                         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">

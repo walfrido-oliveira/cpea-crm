@@ -88,6 +88,9 @@ class ExternalMeetingNotification extends Notification
             $this->conversationItem->teams_url ? $this->conversationItem->teams_url : '-',
             $this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-',
             Config::get("mail_signature"),
+            $this->conversationItem->teams_id,
+            $this->conversationItem->teams_token,
+            $this->conversationItem->schedule_end ? $this->conversationItem->schedule_end->format("d/m/Y H:i") : '-',
         ];
 
         return (new MailMessage())
