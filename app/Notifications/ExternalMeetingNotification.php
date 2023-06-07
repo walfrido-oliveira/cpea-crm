@@ -91,9 +91,9 @@ class ExternalMeetingNotification extends Notification
         ];
 
         return (new MailMessage())
-            ->attachData($calendar->get(), 'invite.ics', [
-                'mime' => 'text/calendar; charset=UTF-8; method=REQUEST',
-            ])
+            #->attachData($calendar->get(), 'invite.ics', [
+            #    'mime' => 'text/calendar; charset=UTF-8; method=REQUEST',
+            #])
             ->subject(str_replace($tags, $values, TemplateEmail::getSubject('external_meeting')))
             ->line(new HtmlString(str_replace($tags, $values, TemplateEmail::getValue('external_meeting'))));
     }
