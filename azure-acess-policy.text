@@ -1,0 +1,9 @@
+New-CsApplicationAccessPolicy -Identity Anderson-policy -AppIds "d89a4a44-6929-4496-9711-a1b073e00ab4" -Description "Anderson acesso"
+
+Soft@uplink@2023
+alertascpea@cpeanet.com
+
+Grant-CsApplicationAccessPolicy -PolicyName Anderson-policy -Identity "2ab6db7c-d49d-43f7-b2f0-5bb41b9b6f72"
+
+
+Grant-CsApplicationAccessPolicy -PolicyName Test-policy -Global

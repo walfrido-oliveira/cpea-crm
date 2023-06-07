@@ -211,12 +211,14 @@ class ConversationItem extends Model
     {
         if($this->schedule_type == 'internal' && $isNew) {
             $this->sendScheduleNotification();
+            OnlineMeeting::createEvent($this, Azure::user($this->organizer->email));
         }
 
         if($this->schedule_type == 'external' && $isNew) {
-            $this->teams_url = OnlineMeeting::createOnlineMeeting($this->schedule_at, $this->schedule_at->addHour(), $this->schedule_name, Azure::user($this->organizer->email));
+            $this->teams_url = OnlineMeeting::createOnlineMeeting($this, Azure::user($this->organizer->email));
             $this->save();
             $this->sendExternalMeetingNotification();
+            OnlineMeeting::createEvent($this, Azure::user($this->organizer->email));
         }
 
         if($this->proposedStatus) {
