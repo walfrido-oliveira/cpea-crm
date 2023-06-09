@@ -411,7 +411,6 @@
                             </div>
                         </div>
                     @endif
-                @endif
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
