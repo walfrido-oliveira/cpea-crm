@@ -31,7 +31,7 @@ class OnlineMeeting extends Model
 
             ])->getBody()->getContents());
 
-        return $response->joinWebUrl;
+        return $response;
     }
 
     public static function createEvent(ConversationItem $conversationItem, $userId)
@@ -71,7 +71,7 @@ class OnlineMeeting extends Model
             "location" => [
                            "displayName" => $conversationItem->meeting_place ? $conversationItem->meeting_place : "-"
                         ],
-            "attendees" => [$attendees],
+            "attendees" => $attendees,
             "allowNewTimeProposals" => true,
             "transactionId" => "7E163156-7762-4BEB-A1C6-729EA81755A7"
          ];
@@ -90,6 +90,6 @@ class OnlineMeeting extends Model
 
             ])->getBody()->getContents());
 
-        return $response->joinWebUrl;
+        return $response;
     }
 }

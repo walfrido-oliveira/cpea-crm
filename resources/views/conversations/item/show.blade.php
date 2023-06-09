@@ -390,6 +390,29 @@
                         </div>
                     @endif
 
+                    @if($conversationItem->teams_id)
+                        <div class="flex flex-wrap">
+                            <div class="w-full md:w-2/12">
+                                <p class="font-bold">{{ __('ID da Reunião') }}</p>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                                <p class="text-gray-500 font-bold">{{ $conversationItem->teams_id }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($conversationItem->teams_token)
+                        <div class="flex flex-wrap">
+                            <div class="w-full md:w-2/12">
+                                <p class="font-bold">{{ __('Senha da Reunião') }}</p>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                                <p class="text-gray-500 font-bold">{{ $conversationItem->teams_token }}</p>
+                            </div>
+                        </div>
+                    @endif
+                @endif
+
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Data/Hora da Reunião') }}</p>
