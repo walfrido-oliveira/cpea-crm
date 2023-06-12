@@ -66,7 +66,7 @@ class ExternalMeetingNotification extends Notification
 
         $adresses = "";
         foreach ($this->conversationItem->addresses as $key => $adress) {
-            $adresses .= "$adress->address_name - $adress->address <br>";
+            $adresses .= "<p>$adress->address_name - $adress->address</p>";
         }
 
         $values = [
