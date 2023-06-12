@@ -385,7 +385,7 @@
                                 <p class="font-bold">{{ __('Link do Teams') }}</p>
                             </div>
                             <div class="w-full md:w-1/2">
-                                <p class="text-gray-500 font-bold">{{ $conversationItem->teams_url }}</p>
+                                <p class="text-gray-500 font-bold"><a href="{{ $conversationItem->teams_url }}">link da reunião</a></p>
                             </div>
                         </div>
                     @endif

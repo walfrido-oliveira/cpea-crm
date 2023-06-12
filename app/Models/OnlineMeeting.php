@@ -38,8 +38,8 @@ class OnlineMeeting extends Model
     {
         $attendees[] = [
             "emailAddress" => [
-               "address" => $conversationItem->user->email,
-               "name" => $conversationItem->user->full_name
+               "address" => $conversationItem->organizer->email,
+               "name" => $conversationItem->organizer->full_name
             ],
             "type" => "required"
         ];
@@ -73,7 +73,6 @@ class OnlineMeeting extends Model
                         ],
             "attendees" => $attendees,
             "allowNewTimeProposals" => true,
-            "transactionId" => "7E163156-7762-4BEB-A1C6-729EA81755A7"
          ];
         $token = Azure::token();
 

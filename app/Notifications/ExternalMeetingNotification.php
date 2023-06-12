@@ -64,17 +64,10 @@ class ExternalMeetingNotification extends Notification
             $user = User::find($notifiable->id);
         }
 
-        $calendar = Calendar::create()
-        ->productIdentifier('Kutac.cz')
-        ->event(function (Event $event) {
-            $event->name($this->conversationItem->schedule_name ? $this->conversationItem->schedule_name : '-')
-                ->attendee( $this->conversationItem->user->email)
-                ->startsAt($this->conversationItem->schedule_at ? $this->conversationItem->schedule_at : null)
-                ->endsAt($this->conversationItem->schedule_at ? $this->conversationItem->schedule_at : null)
-                ->fullDay()
-                ->address($this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-');
-        });
-        $calendar->appendProperty(TextProperty::create('METHOD', 'REQUEST'));
+        $adresses = "";
+        foreach ($this->conversationItem->addresses as $key => $adress) {
+            $adresses .= "$adress->address_name - $adress->address <br>";
+        }
 
         $values = [
             $user->full_name,
@@ -84,7 +77,7 @@ class ExternalMeetingNotification extends Notification
             $this->conversationItem->schedule_at ? $this->conversationItem->schedule_at->format("d/m/Y H:i") : '-',
             $this->conversationItem->organizer ? $this->conversationItem->organizer->full_name : '-',
             $this->conversationItem->organizer ? $this->conversationItem->organizer->email : '-',
-            count($this->conversationItem->addresses) > 0 ? implode(",", $this->conversationItem->addresses->pluck("address")->toArray()) : '-',
+            $adresses,
             $this->conversationItem->teams_url ? $this->conversationItem->teams_url : '-',
             $this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-',
             Config::get("mail_signature"),
@@ -94,9 +87,6 @@ class ExternalMeetingNotification extends Notification
         ];
 
         return (new MailMessage())
-            #->attachData($calendar->get(), 'invite.ics', [
-            #    'mime' => 'text/calendar; charset=UTF-8; method=REQUEST',
-            #])
             ->subject(str_replace($tags, $values, TemplateEmail::getSubject('external_meeting')))
             ->line(new HtmlString(str_replace($tags, $values, TemplateEmail::getValue('external_meeting'))));
     }
