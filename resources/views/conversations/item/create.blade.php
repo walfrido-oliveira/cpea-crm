@@ -42,19 +42,16 @@
                         <div class="w-1/2 custom-radio mx-4 px-1 py-1 mt-0 ml-3 flex items-center" style="max-height: 59px">
                             <div class="bg-gray-200 radios-container">
                                 <div class="inline-flex inner-item p-2">
-                                    <input type="radio" name="item_type" id="prospect" @if(!$checkprospect) checked @endif hidden value="Prospect"
-                                    @if($checkproject) disabled @endif/>
-                                    <label for="prospect" class="radio" style="@if($checkproject) cursor: not-allowed; @endif">Prospect</label>
+                                    <input type="radio" name="item_type" id="prospect" @if(!$checkprospect) checked @endif hidden value="Prospect"/>
+                                    <label for="prospect" class="radio">Prospect</label>
                                 </div>
                                 <div class="inline-flex inner-item p-2">
-                                    <input type="radio" name="item_type" id="proposta" hidden value="Proposta"
-                                    @if(!$checkprospect || $checkproject) disabled @endif/>
-                                    <label for="proposta" class="radio" style="@if(!$checkprospect || $checkproject) cursor: not-allowed; @endif">Proposta</label>
+                                    <input type="radio" name="item_type" id="proposta" hidden value="Proposta"/>
+                                    <label for="proposta" class="radio">Proposta</label>
                                 </div>
                                 <div class="inline-flex inner-item p-2">
-                                    <input type="radio" name="item_type" id="projeto" hidden value="Projeto"
-                                    @if(!$checkproposed) disabled @endif/>
-                                    <label for="projeto" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Projeto</label>
+                                    <input type="radio" name="item_type" id="projeto" hidden value="Projeto"/>
+                                    <label for="projeto" class="radio">Projeto</label>
                                 </div>
                             </div>
                         </div>

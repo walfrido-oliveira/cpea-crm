@@ -35,15 +35,15 @@
                         <div class="bg-gray-200 radios-container">
                             <div class="inline-flex inner-item p-2">
                                 <input type="radio" name="item_type" id="prospect" @if($conversationItem->item_type == "Prospect") checked @endif hidden value="Prospect" />
-                                <label for="prospect" class="radio" style="@if($checkproject) cursor: not-allowed; @endif">Prospect</label>
+                                <label for="prospect" class="radio">Prospect</label>
                             </div>
                             <div class="inline-flex inner-item p-2">
                                 <input type="radio" name="item_type" id="proposta" hidden value="Proposta" @if($conversationItem->item_type == "Proposta") checked @endif />
-                                <label for="proposta" class="radio" style="@if(!$checkprospect || $checkproject) cursor: not-allowed; @endif">Proposta</label>
+                                <label for="proposta" class="radio">Proposta</label>
                             </div>
                             <div class="inline-flex inner-item p-2">
                                 <input type="radio" name="item_type" id="projeto" hidden value="Projeto" @if($conversationItem->item_type == "Projeto") checked @endif />
-                                <label for="projeto" class="radio" style="@if(!$checkproposed) cursor: not-allowed; @endif">Projeto</label>
+                                <label for="projeto" class="radio">Projeto</label>
                             </div>
                         </div>
 
