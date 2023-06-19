@@ -18,9 +18,9 @@ class EmailHasBeenSentListener
 
         EmailAudit::create([
             'user_id'   => $user,
-            'from'      => json_encode($fromArr),
-            'to'        => json_encode($toArr),
-            'cc'        => $ccArr ? json_encode($ccArr) : NULL,
+            'from'      => $fromArr,
+            'to'        => $toArr,
+            'cc'        => $ccArr ? $ccArr : NULL,
             'subject'   => $subject,
             'body'      => $body,
         ]);
