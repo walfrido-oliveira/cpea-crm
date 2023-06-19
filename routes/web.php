@@ -16,6 +16,7 @@ use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\AzureAcessController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmailAuditController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\ContactTypeController;
 use App\Http\Controllers\EmailConfigController;
@@ -77,6 +78,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
             Route::post('/store', [EmailConfigController::class, 'store'])->name('store');
             Route::resource('templates', TemplateEmailController::class);
             Route::get('templates/mail-preview/{template}', [TemplateEmailController::class, 'show'])->name("templates.mail-preview");
+            Route::get('/email-audit', [EmailAuditController::class, 'index'])->name("email-audit.index");
+            Route::get('/email-audit/{email_audit}', [EmailAuditController::class, 'show'])->name("email-audit.show");
+            Route::post('/email-audit/filter', [EmailAuditController::class, 'filter'])->name("email-audit.filter");
         });
     });
 

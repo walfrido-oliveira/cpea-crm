@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Event;
 use App\Listeners\SendMailCreatedUser;
 use App\Listeners\SendMailUpdatedUser;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Mail\Events\MessageSent;
+use App\Listeners\EmailHasBeenSentListener;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CreatedUser::class => [
             SendMailCreatedUser::class,
+        ],
+        MessageSent::class => [
+            EmailHasBeenSentListener::class,
         ]
     ];
 

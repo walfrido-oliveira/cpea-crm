@@ -190,6 +190,10 @@
                         <a class="@if (request()->routeIs('config.emails.templates.index')) {{ 'active' }} @endif"
                             href="{{ route('config.emails.templates.index') }}">Templates</a>
                     </div>
+                    <div class="px-0 py-0 ">
+                        <a class="@if (request()->routeIs('config.emails.email-audit.index')) {{ 'active' }} @endif"
+                            href="{{ route('config.emails.email-audit.index') }}">Email enviados</a>
+                    </div>
                 </div>
             </div>
 
