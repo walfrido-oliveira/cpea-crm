@@ -12,8 +12,8 @@ class EmailHasBeenSentListener
         $subject        = $event->message->getSubject();
         $toArr          = $this->parseAddresses($event->message->getTo());
         $ccArr          = $this->parseAddresses($event->message->getCc());
-        $fromArr           = $event->message->getFrom();
-        $body           = $this->parseBodyText($event->message->getBody());
+        $fromArr        = $event->message->getFrom();
+        $body           = $event->message->getBody();
         $user           = auth()->id() ?? NULL;
 
         EmailAudit::create([

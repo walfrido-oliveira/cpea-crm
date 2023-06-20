@@ -40,7 +40,7 @@ class EmailAuditController extends Controller
     {
         $emailAudit = EmailAudit::findOrFail($id);
         $body = $emailAudit->body;
-        $body = Str::replace("<br>", "", $body);
+        $body = Str::replace("<br><br><br>", "", $body);
         return view('email-audit.body', compact('body'));
     }
 
