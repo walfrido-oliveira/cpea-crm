@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\EmailAudit;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class EmailAuditController extends Controller
 {
@@ -33,6 +34,14 @@ class EmailAuditController extends Controller
     {
         $emailAudit = EmailAudit::findOrFail($id);
         return view('email-audit.show', compact('emailAudit'));
+    }
+
+    public function body($id)
+    {
+        $emailAudit = EmailAudit::findOrFail($id);
+        $body = $emailAudit->body;
+        $body = Str::replace("<br>", "", $body);
+        return view('email-audit.body', compact('body'));
     }
 
     /**

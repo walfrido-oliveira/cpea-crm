@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
             Route::get('/email-audit', [EmailAuditController::class, 'index'])->name("email-audit.index");
             Route::get('/email-audit/{email_audit}', [EmailAuditController::class, 'show'])->name("email-audit.show");
             Route::post('/email-audit/filter', [EmailAuditController::class, 'filter'])->name("email-audit.filter");
+            Route::get('/email-audit/body/{email_audit}', [EmailAuditController::class, 'body'])->name("email-audit.body");
         });
     });
 
