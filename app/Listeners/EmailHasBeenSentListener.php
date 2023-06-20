@@ -16,6 +16,8 @@ class EmailHasBeenSentListener
         $body           = $event->message->getBody();
         $user           = auth()->id() ?? NULL;
 
+        if($subject == 'Mudar Senha') return false;
+
         EmailAudit::create([
             'user_id'   => $user,
             'from'      => $fromArr,
