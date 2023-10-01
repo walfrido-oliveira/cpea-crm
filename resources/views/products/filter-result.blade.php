@@ -2,6 +2,8 @@
     <tr class="thead-light">
         <x-table-sort-header :orderBy="null" :ascending="null" columnName="" columnText="{{ __('') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Produto') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="created_at" columnText="{{ __('Data Criação') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="updated_at" columnText="{{ __('Última Atualização') }}"/>
         <th scope="col"
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Ações
@@ -16,6 +18,12 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('products.show', ['product' => $products->id]) }}">{{ $products->name }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('products.show', ['product' => $products->id]) }}">{{ $products->created_at->format('d/m/Y') }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('products.show', ['product' => $products->id]) }}">{{ $products->updated_at->format('d/m/Y') }}</a>
             </td>
             <td>
                 <a class="btn-transition-warning" href="{{ route('products.edit', ['product' => $products->id]) }}">

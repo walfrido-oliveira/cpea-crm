@@ -423,7 +423,7 @@
             <div class="py-2 my-2 bg-white rounded-lg" x-data="{ showInterations: false }">
                 <div class="mx-4 px-3 py-2 mt-4">
                     <div class="w-full flex">
-                        <h2 class="w-full">Interações</h2>
+                        <h2 class="w-full">Negociações</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
                                 <button class="btn-transition-primary" type="button" id="show_all_infos" @click="showInterations ? showInterations = false : showInterations = true;">
