@@ -2,6 +2,7 @@
     <tr class="thead-light">
         <x-table-sort-header :orderBy="null" :ascending="null" columnName="" columnText="{{ __('') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Status da Interação') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="type" columnText="{{ __('Tipo de Interação') }}"/>
         <th scope="col"
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Ações
@@ -16,6 +17,9 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('conversation-statuss.show', ['conversation_status' => $conversationStatus->id]) }}">{{ $conversationStatus->name }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('conversation-statuss.show', ['conversation_status' => $conversationStatus->id]) }}">{{ $conversationStatus->type }}</a>
             </td>
             <td>
                 <a class="btn-transition-warning" href="{{ route('conversation-statuss.edit', ['conversation_status' => $conversationStatus->id]) }}">
