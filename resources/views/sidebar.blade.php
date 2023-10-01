@@ -16,7 +16,8 @@
                 </svg>
             </button>
         </div>
-        <nav :class="{ 'block': open, 'hidden': !open }" class="flex-grow md:block px-0 pb-4 md:pb-0 md:overflow-y-auto">
+        <nav :class="{ 'block': open, 'hidden': !open }"
+            class="flex-grow md:block px-0 pb-4 md:pb-0 md:overflow-y-auto">
 
             <a class="@if (request()->routeIs('users.index')) {{ 'active' }} @endif" href="{{ route('users.index') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
@@ -27,7 +28,8 @@
                 Usuários
             </a>
 
-            <a class="@if (request()->routeIs('employees.index')) {{ 'active' }} @endif" href="{{ route('employees.index') }}">
+            <a class="@if (request()->routeIs('employees.index')) {{ 'active' }} @endif"
+                href="{{ route('employees.index') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -36,14 +38,40 @@
                 Colaboradores
             </a>
 
-            <a class="@if (request()->routeIs('customers.index')) {{ 'active' }} @endif" href="{{ route('customers.index') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                Clientes
-            </a>
+            <div class="relative" x-data="{ customer: {{ request()->routeIs('customers.*') ? 'true' : 'false' }} }">
+                <button @click="customer = !customer" class="submenu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <span>Clientes</span>
+                    <svg fill="currentColor" viewBox="0 0 20 20"
+                        :class="{ 'rotate-180': customer, 'rotate-0': !customer }"
+                        class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform md:-mt-1 text-white">
+                        <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <div x-show="customer" x-transition:enter="transition ease-out duration-100"
+                    x-transition:enter-start="transform opacity-0 scale-95"
+                    x-transition:enter-end="transform opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-75"
+                    x-transition:leave-start="transform opacity-100 scale-100"
+                    x-transition:leave-end="transform opacity-0 scale-95"
+                    class="relative right-0 w-full origin-top-right">
+                    <a class="@if (request()->routeIs('customers.index')) {{ 'active' }} @endif" href="{{ route('customers.index') }}">
+                        Clientes
+                    </a>
+                    <a class="@if (request()->routeIs('customers.companies.index')) {{ 'active' }} @endif" href="{{ route('customers.companies.index') }}">
+                        Empresas/Filiais
+                    </a>
+                    <a class="@if (request()->routeIs('customers.cpea-ids.index')) {{ 'active' }} @endif" href="{{ route('customers.cpea-ids.index') }}">
+                        IDCPEA
+                    </a>
+                </div>
+            </div>
 
             <div class="relative" x-data="{ openConfig: {{ request()->routeIs('config.emails.*') ? 'true' : 'false' }} }">
                 <button @click="openConfig = !openConfig" class="submenu">

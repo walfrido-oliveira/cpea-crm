@@ -217,4 +217,40 @@ class ConversationItem extends Model
         }
 
     }
+
+    /**
+     * Find users in dabase
+     *
+     * @param Array
+     *
+     * @return object
+     */
+    public static function filter($query, $isCpeaId = false)
+    {
+        $perPage = isset($query['paginate_per_page']) ? $query['paginate_per_page'] : DEFAULT_PAGINATE_PER_PAGE;
+        $ascending = isset($query['ascending']) ? $query['ascending'] : DEFAULT_ASCENDING;
+        $orderBy = isset($query['order_by']) ? $query['order_by'] : "conversation_items." . DEFAULT_ORDER_BY_COLUMN;
+
+        $result = self::where(function($q) use ($query, $isCpeaId) {
+            if(!$isCpeaId) $q->whereNull("cpea_linked_id");
+            if($isCpeaId) $q->whereNotNull("cpea_linked_id");
+
+            if(isset($query['id']))
+            {
+                if(!is_null($query['id']))
+                {
+                    $q->where('id', $query['id']);
+                }
+            }
+
+        });
+
+        $result
+        ->join("conversations as c", "c.id", "=", "conversation_id")
+        ->orderBy($orderBy, $ascending);
+
+
+
+        return $result->paginate($perPage);
+    }
 }

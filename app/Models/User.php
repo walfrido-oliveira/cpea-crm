@@ -11,7 +11,6 @@ use Illuminate\Notifications\Notifiable;
 use App\Notifications\NewUserNotification;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use App\Notifications\NewScheduleNotification;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\AppovedProposalNotification;
 use App\Notifications\ExternalMeetingNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

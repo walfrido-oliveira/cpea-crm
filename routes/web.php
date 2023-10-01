@@ -17,6 +17,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\AzureAcessController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmailAuditController;
 use App\Http\Controllers\OccupationController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\ScheduleAddressController;
 use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\ConversationStatusController;
+use App\Http\Controllers\CpeaIdController;
 use App\Http\Controllers\GeneralContactTypeController;
 
 /*
@@ -169,6 +171,16 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::prefix('clientes')->name('customers.')->group(function(){
         Route::post('/filter', [CustomerController::class, 'filter'])->name('filter');
         Route::post('/cnpj/{cnpj}', [CustomerController::class, 'cnpj'])->name('cnpj');
+
+        Route::prefix('empresas')->name('companies.')->group(function(){
+            Route::post('/filter', [CompanyController::class, 'filter'])->name('filter');
+            Route::get('/index', [CompanyController::class, 'index'])->name('index');
+        });
+
+        Route::prefix('cpea-ids')->name('cpea-ids.')->group(function(){
+            Route::post('/filter', [CpeaIdController::class, 'filter'])->name('filter');
+            Route::get('/index', [CpeaIdController::class, 'index'])->name('index');
+        });
 
         Route::prefix('contato')->name('contact.')->group(function(){
             Route::put('/store', [ContactController::class, 'store'])->name('store');

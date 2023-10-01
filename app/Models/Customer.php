@@ -121,14 +121,15 @@ class Customer extends Model
      *
      * @return object
      */
-    public static function filter($query)
+    public static function filter($query, $iscompany = false)
     {
         $perPage = isset($query['paginate_per_page']) ? $query['paginate_per_page'] : DEFAULT_PAGINATE_PER_PAGE;
         $ascending = isset($query['ascending']) ? $query['ascending'] : DEFAULT_ASCENDING;
         $orderBy = isset($query['order_by']) ? $query['order_by'] : DEFAULT_ORDER_BY_COLUMN;
 
-        $result = self::where(function($q) use ($query) {
-            $q->whereNull("customer_id");
+        $result = self::where(function($q) use ($query, $iscompany) {
+            if(!$iscompany) $q->whereNull("customer_id");
+            if($iscompany) $q->whereNotNull("customer_id");
 
             if(isset($query['id']))
             {
