@@ -125,15 +125,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('/filter', [DirectionController::class, 'filter'])->name('filter');
     });
 
-    Route::resource('tipo-contato', ContactTypeController::class, [
-        'names' => 'contact-types'])->parameters([
-        'tipo-contato' => 'contact_type'
-    ]);
-
-    Route::prefix('tipo-contato')->name('contact-types.')->group(function(){
-        Route::post('/filter', [ContactTypeController::class, 'filter'])->name('filter');
-    });
-
     Route::resource('tipo-contato-geral', GeneralContactTypeController::class, [
         'names' => 'general-contact-types'])->parameters([
         'tipo-contato-geral' => 'general_contact_type'

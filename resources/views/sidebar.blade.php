@@ -90,16 +90,9 @@
                     </div>
 
                     <div class="px-0 py-0">
-                        <a class="@if (request()->routeIs('contact-types.index')) {{ 'active' }} @endif"
-                            href="{{ route('contact-types.index') }}">
-                            Tipo Contato
-                        </a>
-                    </div>
-
-                    <div class="px-0 py-0">
                         <a class="@if (request()->routeIs('general-contact-types.index')) {{ 'active' }} @endif"
                             href="{{ route('general-contact-types.index') }}">
-                            Tipo Contato Geral
+                            Tipo Contato
                         </a>
                     </div>
 
