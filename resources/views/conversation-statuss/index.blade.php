@@ -1,17 +1,17 @@
 <x-app-layout>
-    <div class="py-6 index-sectors">
+    <div class="py-6 index-conversation-status">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
 
             <div class="flex md:flex-row flex-col">
                 <div class="w-full flex items-center">
-                    <h1>{{ __('Setor') }}</h1>
+                    <h1>{{ __('Status da Interação') }}</h1>
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2 ">
-                        <a class="btn-outline-info" href="{{ route('sectors.create') }}" >{{ __('Cadastrar') }}</a>
+                        <a class="btn-outline-info" href="{{ route('conversation-statuss.create') }}" >{{ __('Cadastrar') }}</a>
                     </div>
                     <div class="m-2">
-                        <button type="button" class="btn-outline-danger delete-sectors" data-type="multiple">{{ __('Apagar') }}</button>
+                        <button type="button" class="btn-outline-danger delete-conversation-statuss" data-type="multiple">{{ __('Apagar') }}</button>
                     </div>
                 </div>
             </div>
@@ -27,35 +27,35 @@
                         </div>
                         <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
-                                {{ __('Setor') }}
+                                {{ __('Status da Interação') }}
                             </label>
                             <x-jet-input id="name" class="form-control block w-full filter-field" type="text" name="name" :value="app('request')->input('name')" autofocus autocomplete="name" />
                         </div>
                     </div>
                 </div>
                 <div class="flex mt-4">
-                    <table id="sectors_table" class="table table-responsive md:table w-full">
-                        @include('sectors.filter-result', ['sectors' => $sectors, 'ascending' => $ascending, 'orderBy' => $orderBy])
+                    <table id="conversation_status_table" class="table table-responsive md:table w-full">
+                        @include('conversation-statuss.filter-result', ['conversationStatuss' => $conversationStatuss, 'ascending' => $ascending, 'orderBy' => $orderBy])
                     </table>
                 </div>
                 <div class="flex mt-4 p-2" id="pagination">
-                        {{ $sectors->appends(request()->input())->links() }}
+                        {{ $conversationStatuss->appends(request()->input())->links() }}
                 </div>
             </div>
         </div>
     </div>
 
-    <x-modal title="{{ __('Excluir Setor') }}"
-             msg="{{ __('Deseja realmente apagar esse Setor?') }}"
-             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_sector_modal"
+    <x-modal title="{{ __('Excluir Status da Interação') }}"
+             msg="{{ __('Deseja realmente apagar esse Status da Interação?') }}"
+             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_department_modal"
              method="DELETE"
-             redirect-url="{{ route('sectors.index') }}"/>
+             redirect-url="{{ route('conversation-statuss.index') }}"/>
 
     <script>
         window.addEventListener("load", function() {
             var filterCallback = function (event) {
                 var ajax = new XMLHttpRequest();
-                var url = "{!! route('sectors.filter') !!}";
+                var url = "{!! route('conversation-statuss.filter') !!}";
                 var token = document.querySelector('meta[name="csrf-token"]').content;
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
@@ -67,7 +67,7 @@
                 ajax.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var resp = JSON.parse(ajax.response);
-                        document.getElementById("sectors_table").innerHTML = resp.filter_result;
+                        document.getElementById("conversation_status_table").innerHTML = resp.filter_result;
                         document.getElementById("pagination").innerHTML = resp.pagination;
                         eventsFilterCallback();
                         eventsDeleteCallback();
@@ -98,7 +98,7 @@
                 ascending = this.dataset.ascending;
                 var that = this;
                 var ajax = new XMLHttpRequest();
-                var url = "{!! route('sectors.filter') !!}";
+                var url = "{!! route('conversation-statuss.filter') !!}";
                 var token = document.querySelector('meta[name="csrf-token"]').content;
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
@@ -110,7 +110,7 @@
                 ajax.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var resp = JSON.parse(ajax.response);
-                        document.getElementById("sectors_table").innerHTML = resp.filter_result;
+                        document.getElementById("conversation_status_table").innerHTML = resp.filter_result;
                         document.getElementById("pagination").innerHTML = resp.pagination;
                         that.dataset.ascending = that.dataset.ascending == 'asc' ? that.dataset.ascending = 'desc' : that.dataset.ascending = 'asc';
                         eventsFilterCallback();
@@ -139,24 +139,24 @@
                     item.addEventListener('change', filterCallback, false);
                     item.addEventListener('keyup', filterCallback, false);
                 });
-                document.querySelectorAll("#sectors_table thead [data-name]").forEach(item => {
+                document.querySelectorAll("#conversation_status_table thead [data-name]").forEach(item => {
                     item.addEventListener("click", orderByCallback, false);
                 });
             }
 
             function eventsDeleteCallback() {
-                document.querySelectorAll('.delete-sectors').forEach(item => {
+                document.querySelectorAll('.delete-conversation-statuss').forEach(item => {
                 item.addEventListener("click", function() {
                     if(this.dataset.type != 'multiple') {
                         var url = this.dataset.url;
-                        var modal = document.getElementById("delete_sector_modal");
+                        var modal = document.getElementById("delete_department_modal");
                         modal.dataset.url = url;
                         modal.classList.remove("hidden");
                         modal.classList.add("block");
                     }
                     else {
                         var urls = '';
-                        document.querySelectorAll('input:checked.sectors-url').forEach((item, index, arr) => {
+                        document.querySelectorAll('input:checked.conversation-statuss-url').forEach((item, index, arr) => {
                             urls += item.value ;
                             if(index < (arr.length - 1)) {
                                 urls += ',';
@@ -164,7 +164,7 @@
                         });
 
                         if(urls.length > 0) {
-                            var modal = document.getElementById("delete_sector_modal");
+                            var modal = document.getElementById("delete_department_modal");
                             modal.dataset.url = urls;
                             modal.classList.remove("hidden");
                             modal.classList.add("block");

@@ -30,6 +30,7 @@ use App\Http\Controllers\DetailedContactController;
 use App\Http\Controllers\ScheduleAddressController;
 use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
+use App\Http\Controllers\ConversationStatusController;
 use App\Http\Controllers\GeneralContactTypeController;
 
 /*
@@ -151,40 +152,13 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
     });
 
-    Route::resource('setores', SectorController::class, [
-        'names' => 'sectors'])->parameters([
-        'setores' => 'sector'
+    Route::resource('status-conversa', ConversationStatusController::class, [
+        'names' => 'conversation-statuss'])->parameters([
+        'status-conversa' => 'conversation-status'
     ]);
 
-    Route::prefix('setores')->name('sectors.')->group(function(){
-        Route::post('/filter', [SectorController::class, 'filter'])->name('filter');
-    });
-
-    Route::resource('status-integracao', ProspectingStatusController::class, [
-        'names' => 'prospecting-statuss'])->parameters([
-        'status-integracao' => 'prospecting-status'
-    ]);
-
-    Route::prefix('status-integracao')->name('prospecting-statuss.')->group(function(){
-        Route::post('/filter', [ProspectingStatusController::class, 'filter'])->name('filter');
-    });
-
-    Route::resource('status-proposta', ProposedStatusController::class, [
-        'names' => 'proposed-statuss'])->parameters([
-        'status-proposta' => 'proposed-status'
-    ]);
-
-    Route::prefix('status-proposta')->name('proposed-statuss.')->group(function(){
-        Route::post('/filter', [ProposedStatusController::class, 'filter'])->name('filter');
-    });
-
-    Route::resource('status-projeto', ProjectStatusController::class, [
-        'names' => 'project-statuss'])->parameters([
-        'status-projeto' => 'project-status'
-    ]);
-
-    Route::prefix('status-projeto')->name('project-statuss.')->group(function(){
-        Route::post('/filter', [ProjectStatusController::class, 'filter'])->name('filter');
+    Route::prefix('status-conversa')->name('conversation-statuss.')->group(function(){
+        Route::post('/filter', [ConversationStatusController::class, 'filter'])->name('filter');
     });
 
     Route::resource('produtos', ProductController::class, [

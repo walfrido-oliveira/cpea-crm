@@ -99,17 +99,7 @@
                         </div>
                         <div class="w-full md:w-1/2">
                             <p class="text-gray-500 font-bold">
-                                @switch($conversationItem->item_type)
-                                    @case("Prospect")
-                                        {{ $conversationItem->prospectingStatus ? $conversationItem->prospectingStatus->name : "-" }}
-                                        @break
-                                    @case("Proposta")
-                                        {{ $conversationItem->proposedStatus ? $conversationItem->proposedStatus->name : "-" }}
-                                        @break
-                                    @case("Projeto")
-                                        {{ $conversationItem->projectStatus ? $conversationItem->projectStatus->name : "-" }}
-                                        @break
-                                @endswitch
+                                {{ $conversationItem->conversationStatus ? $conversationItem->conversationStatus->name : "-" }}
                             </p>
                         </div>
                     </div>

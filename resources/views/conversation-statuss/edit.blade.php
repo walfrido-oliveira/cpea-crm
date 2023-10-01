@@ -1,19 +1,19 @@
 <x-app-layout>
-    <div class="py-6 edit-project-statuss">
+    <div class="py-6 edit-conversation-statuss">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
-            <form method="POST" action="{{ route('project-statuss.update', ['project_status' => $projectStatus->id]) }}">
+            <form method="POST" action="{{ route('conversation-statuss.update', ['conversation_status' => $conversationStatus->id]) }}">
                 @csrf
                 @method("PUT")
                 <div class="flex md:flex-row flex-col">
                     <div class="w-full flex items-center">
-                        <h1>{{ __('Status Projeto') }}</h1>
+                        <h1>{{ __('Status da Interação') }}</h1>
                     </div>
                     <div class="w-full flex justify-end">
                         <div class="m-2 ">
                             <button type="submit" class="btn-outline-success">{{ __('Confirmar') }}</button>
                         </div>
                         <div class="m-2">
-                            <a href="{{ route('project-statuss.index')}}" class="btn-outline-danger">{{ __('Cancelar') }}</a>
+                            <a href="{{ route('conversation-statuss.index')}}" class="btn-outline-danger">{{ __('Cancelar') }}</a>
                         </div>
                     </div>
                 </div>
@@ -25,8 +25,8 @@
                 <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <x-jet-label for="name" value="{{ __('Status Projeto') }}" required/>
-                            <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" name="name" maxlength="255" :value="$projectStatus->name" required autofocus autocomplete="name" placeholder="{{ __('Nome') }}"/>
+                            <x-jet-label for="name" value="{{ __('Status da Interação') }}" required/>
+                            <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" name="name" maxlength="255" :value="$conversationStatus->name" required autofocus autocomplete="name" placeholder="{{ __('Nome') }}"/>
                         </div>
                     </div>
                 </div>

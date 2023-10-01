@@ -47,15 +47,9 @@
                             <x-custom-select :options="$customers" value="{{ $customer->customer ? $customer->customer->id : null }}" name="customer_id" id="customer_id" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="sector_id" value="{{ __('Setor') }}" required/>
-                            <x-custom-select :options="$sectors" value="{{ $customer->sector_id }}" name="sector_id" id="sector_id" class="mt-1"/>
-                        </div>
-                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="segment_id" value="{{ __('Segmento') }}" required/>
                             <x-custom-select :options="$segments" value="{{ $customer->segment_id }}" name="segment_id" id="segment_id" class="mt-1"/>
                         </div>
-                    </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="status" value="{{ __('Situação do Cliente') }}" required/>
                             <x-custom-select class="mt-1" :options="$status" name="status" id="status" :value="$customer->status" required/>

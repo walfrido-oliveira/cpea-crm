@@ -36,9 +36,10 @@ class ConversationItem extends Model
     protected $fillable = [
         'item_type', 'interaction_at', 'additive', 'cpea_linked_id', 'schedule_type',
         'schedule_name', 'schedule_at', 'schedule_details',
-        'conversation_id', 'project_status_id', 'proposed_status_id', 'prospecting_status_id',
-        'detailed_contact_id', 'organizer_id', 'user_id', 'item_details', 'direction_id', 'employee_id', 'order',
-        'meeting_form', 'meeting_place', 'teams_url', 'teams_id', 'teams_token', 'schedule_end'
+        'conversation_id', 'conversation_status_id', 'detailed_contact_id', 'organizer_id',
+        'user_id', 'item_details', 'direction_id', 'employee_id', 'order',
+        'meeting_form', 'meeting_place', 'teams_url', 'teams_id', 'teams_token', 'schedule_end', 'etapa_id',
+        'ppi', 'cnpj_id'
     ];
 
     /**
@@ -103,25 +104,9 @@ class ConversationItem extends Model
     /**
      * The  project status
     */
-    public function projectStatus()
+    public function conversationStatus()
     {
-        return $this->belongsTo(ProjectStatus::class);
-    }
-
-    /**
-     * The Proposed Status
-    */
-    public function proposedStatus()
-    {
-        return $this->belongsTo(ProposedStatus::class);
-    }
-
-    /**
-     * The Prospecting Status
-    */
-    public function prospectingStatus()
-    {
-        return $this->belongsTo(ProspectingStatus::class);
+        return $this->belongsTo(ConversationStatus::class);
     }
 
     /**

@@ -75,4 +75,9 @@ class Cnpj extends Model
     {
         return mask($this->cnpj, "##.###.###/####-##");
     }
+
+    public function getDisplayNameAttribute()
+    {
+        return $this->cnpj . '(' . $this->unit . ')';
+    }
 }

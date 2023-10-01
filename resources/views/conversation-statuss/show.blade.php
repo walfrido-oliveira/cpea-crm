@@ -1,19 +1,19 @@
 <x-app-layout>
-    <div class="py-6 show-proposed-statuss">
+    <div class="py-6 show-conversation-statuss">
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
             <div class="flex md:flex-row flex-col">
                 <div class="w-full flex items-center">
-                    <h1>{{ __('Detalhes do Status Proposta') }}</h1>
+                    <h1>{{ __('Detalhes do Status da Interação') }}</h1>
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2 ">
-                        <a class="btn-outline-info" href="{{ route('proposed-statuss.index') }}">{{ __('Listar') }}</a>
+                        <a class="btn-outline-info" href="{{ route('conversation-statuss.index') }}">{{ __('Listar') }}</a>
                     </div>
                     <div class="m-2">
-                        <a class="btn-outline-warning" href="{{ route('proposed-statuss.edit', ['proposed_status' => $proposedStatus->id]) }}">{{ __('Editar') }}</a>
+                        <a class="btn-outline-warning" href="{{ route('conversation-statuss.edit', ['conversation_status' => $conversationStatus->id]) }}">{{ __('Editar') }}</a>
                     </div>
                     <div class="m-2">
-                        <button type="button" class="btn-outline-danger delete-proposed-status" id="proposed_status_delete" data-toggle="modal" data-target="#delete_modal" data-id="{{ $proposedStatus->id }}">{{ __('Apagar') }}</button>
+                        <button type="button" class="btn-outline-danger delete-conversation-status" id="conversation_status_delete" data-toggle="modal" data-target="#delete_modal" data-id="{{ $conversationStatus->id }}">{{ __('Apagar') }}</button>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="w-full md:w-1/2">
-                            <p class=   "text-gray-500 font-bold">{{ $proposedStatus->id }}</p>
+                            <p class=   "text-gray-500 font-bold">{{ $conversationStatus->id }}</p>
                         </div>
                     </div>
 
@@ -35,7 +35,7 @@
                             <p class="font-bold">{{ __('Nome') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $proposedStatus->name }}</p>
+                            <p class="text-gray-500 font-bold">{{ $conversationStatus->name }}</p>
                         </div>
                     </div>
 
@@ -44,7 +44,7 @@
                             <p class="font-bold">{{ __('Data de Cadastro') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $proposedStatus->created_at->format('d/m/Y H:i:s')}}</p>
+                            <p class="text-gray-500 font-bold">{{ $conversationStatus->created_at->format('d/m/Y H:i:s')}}</p>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                             <p class="font-bold">{{ __('Última Edição') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $proposedStatus->updated_at->format('d/m/Y H:i:s')}}</p>
+                            <p class="text-gray-500 font-bold">{{ $conversationStatus->updated_at->format('d/m/Y H:i:s')}}</p>
                         </div>
                     </div>
                 </div>
@@ -64,16 +64,16 @@
 
     <x-modal title="{{ __('Excluir tipo de contato') }}"
              msg="{{ __('Deseja realmente apagar esse tipo de contato?') }}"
-             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_proposed_status_modal"
+             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_conversation_status_modal"
              method="DELETE"
-             url="{{ route('proposed-statuss.destroy', ['proposed_status' => $proposedStatus->id]) }}"
-             redirect-url="{{ route('proposed-statuss.index') }}"/>
+             url="{{ route('conversation-statuss.destroy', ['conversation_status' => $conversationStatus->id]) }}"
+             redirect-url="{{ route('conversation-statuss.index') }}"/>
 
     <script>
         function eventsDeleteCallback() {
-            document.querySelectorAll('.delete-proposed-status').forEach(item => {
+            document.querySelectorAll('.delete-conversation-status').forEach(item => {
             item.addEventListener("click", function() {
-                var modal = document.getElementById("delete_proposed_status_modal");
+                var modal = document.getElementById("delete_conversation_status_modal");
                 modal.classList.remove("hidden");
                 modal.classList.add("block");
             })

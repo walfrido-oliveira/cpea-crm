@@ -59,17 +59,9 @@
                             <x-jet-label for="interaction_at" value="{{ __('Data/Hora da Interação') }}" required/>
                             <x-jet-input id="interaction_at" class="form-control block mt-1 w-full" type="datetime-local" name="interaction_at" autofocus value="{{ $conversationItem->interaction_at }}"/>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Prospect-status status @if($conversationItem->item_type != "Prospect") hidden @endif">
-                            <x-jet-label for="prospecting_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$prospectingStatuses" value="{{ $conversationItem->prospecting_status_id }}" name="prospecting_status_id" id="prospecting_status_id" class="mt-1"/>
-                        </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Proposta-status status @if($conversationItem->item_type != "Proposta") hidden @endif">
-                            <x-jet-label for="proposed_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$proposedsStatuses" value="{{ $conversationItem->proposed_status_id }}" name="proposed_status_id" id="proposed_status_id" class="mt-1"/>
-                        </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 Projeto-status status @if($conversationItem->item_type != "Projeto") hidden @endif">
-                            <x-jet-label for="project_status_id" value="{{ __('Status da Interação') }}" required/>
-                            <x-custom-select :options="$projectStatus" value="{{ $conversationItem->project_status_id }}" name="project_status_id" id="project_status_id" class="mt-1"/>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="conversation_status_id" value="{{ __('Status da Interação') }}" required/>
+                            <x-custom-select :options="$conversationStatuses" value="{{ $conversationItem->conversation_status_id }}" name="conversation_status_id" id="conversation_status_id" class="mt-1"/>
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
@@ -104,6 +96,20 @@
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
                             <x-custom-select :options="[]" value="{{ $conversationItem->employee_id }}" name="employee_id" id="employee_id" class="mt-1"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="etapa_id" value="{{ __('Etapa') }}"/>
+                            <x-custom-select :options="$etapas" value="{{ $conversationItem->etapa_id }}" name="etapa_id" id="etapa_id" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="ppi" value="{{ __('PPI') }}"/>
+                            <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ $conversationItem->ppi }}" name="ppi" id="ppi" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="cnpj_id" value="{{ __('CNPJ') }}"/>
+                            <x-custom-select :options="$cnpjs" value="{{ $conversationItem->cnpj_id }}" name="cnpj_id" id="cnpj_id" class="mt-1"/>
                         </div>
                     </div>
                 </div>

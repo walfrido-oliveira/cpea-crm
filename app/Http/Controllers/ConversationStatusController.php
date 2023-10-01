@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sector;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Models\ConversationStatus;
 
-class SectorController extends Controller
+class ConversationStatusController extends Controller
 {
     /**
     * Display a listing of the user.
@@ -16,11 +16,11 @@ class SectorController extends Controller
      */
     public function index(Request $request)
     {
-        $sectors =  Sector::filter($request->all());
+        $conversationStatuss =  ConversationStatus::filter($request->all());
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
 
-        return view('sectors.index', compact('sectors', 'ascending', 'orderBy'));
+        return view('conversation-statuss.index', compact('conversationStatuss', 'ascending', 'orderBy'));
     }
 
     /**
@@ -30,7 +30,7 @@ class SectorController extends Controller
      */
     public function create()
     {
-        return view('sectors.create');
+        return view('conversation-statuss.create');
     }
 
     /**
@@ -42,21 +42,21 @@ class SectorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('sectors', 'name')],
+            'name' => ['required', 'string', 'max:255', Rule::unique('conversation_statuses', 'name')],
         ]);
 
         $input = $request->all();
 
-       Sector::create([
+       ConversationStatus::create([
             'name' => $input['name'],
         ]);
 
         $resp = [
-            'message' => __('Setor Cadastrado com Sucesso!'),
+            'message' => __('Status Cadastrado com Sucesso!'),
             'alert-type' => 'success'
         ];
 
-        return redirect()->route('sectors.index')->with($resp);
+        return redirect()->route('conversation-statuss.index')->with($resp);
     }
 
     /**
@@ -67,8 +67,8 @@ class SectorController extends Controller
      */
     public function show($id)
     {
-        $sector = Sector::findOrFail($id);
-        return view('sectors.show', compact('sector'));
+        $conversationStatus = ConversationStatus::findOrFail($id);
+        return view('conversation-statuss.show', compact('conversationStatus'));
     }
 
     /**
@@ -79,8 +79,8 @@ class SectorController extends Controller
      */
     public function edit($id)
     {
-        $sector = Sector::findOrFail($id);
-        return view('sectors.edit', compact('sector'));
+        $conversationStatus = ConversationStatus::findOrFail($id);
+        return view('conversation-statuss.edit', compact('conversationStatus'));
     }
 
     /**
@@ -92,24 +92,24 @@ class SectorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $sector = Sector::findOrFail($id);
+        $conversationStatus = ConversationStatus::findOrFail($id);
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('sectors', 'name')->ignore($sector->id)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('conversation_statuses', 'name')->ignore($conversationStatus->id)],
         ]);
 
         $input = $request->all();
 
-        $sector->update([
+        $conversationStatus->update([
             'name' => $input['name'],
         ]);
 
         $resp = [
-            'message' => __('Setor Atualizado com Sucesso!'),
+            'message' => __('Status Atualizado com Sucesso!'),
             'alert-type' => 'success'
         ];
 
-        return redirect()->route('sectors.index')->with($resp);
+        return redirect()->route('conversation-statuss.index')->with($resp);
     }
 
     /**
@@ -120,34 +120,34 @@ class SectorController extends Controller
      */
     public function destroy($id)
     {
-        $sector = Sector::findOrFail($id);
+        $conversationStatus = ConversationStatus::findOrFail($id);
 
-        $sector->delete();
+        $conversationStatus->delete();
 
         return response()->json([
-            'message' => __('Setor Apagado com Sucesso!!'),
+            'message' => __('Status Apagado com Sucesso!!'),
             'alert-type' => 'success'
         ]);
     }
 
     /**
-     * Filter sector
+     * Filter conversationStatus
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function filter(Request $request)
     {
-        $sectors = Sector::filter($request->all());
-        $sectors = $sectors->setPath('');
+        $conversationStatuss = ConversationStatus::filter($request->all());
+        $conversationStatuss = $conversationStatuss->setPath('');
         $orderBy = $request->get('order_by');
         $ascending = $request->get('ascending');
         $paginatePerPage = $request->get('paginate_per_page');
 
         return response()->json([
-            'filter_result' => view('sectors.filter-result', compact('sectors', 'orderBy', 'ascending'))->render(),
+            'filter_result' => view('conversation-statuss.filter-result', compact('conversationStatuss', 'orderBy', 'ascending'))->render(),
             'pagination' => view('layouts.pagination', [
-                'models' => $sectors,
+                'models' => $conversationStatuss,
                 'order_by' => $orderBy,
                 'ascending' => $ascending,
                 'paginate_per_page' => $paginatePerPage,

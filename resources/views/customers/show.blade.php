@@ -71,15 +71,6 @@
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Setor') }}</p>
-                        </div>
-                        <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->sector->name }}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap">
-                        <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Segmento') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">

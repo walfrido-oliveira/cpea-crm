@@ -6,7 +6,6 @@ use App\Models\Address;
 use App\Models\Contact;
 use App\Models\Customer;
 use App\Models\GeneralContactType;
-use App\Models\Sector;
 use App\Models\Segment;
 use Illuminate\Http\Request;
 
@@ -54,11 +53,10 @@ class CustomerController extends Controller
     public function create()
     {
         $segments = Segment::pluck("name", "id");
-        $sectors = Sector::pluck("name", "id");
         $generalContactTypes = GeneralContactType::pluck("name", "id");
         $customers =  Customer::where("status", "active")->get()->pluck("name", "id");
 
-        return view('customers.create', compact("segments", "sectors", "generalContactTypes", "customers"));
+        return view('customers.create', compact("segments", "generalContactTypes", "customers"));
     }
 
     /**
@@ -80,7 +78,6 @@ class CustomerController extends Controller
             'obs' => $input['obs'],
             'competitors' => $input['competitors'],
             'segment_id' => $input['segment_id'],
-            'sector_id' => $input['sector_id'],
             'created_user_id' => auth()->user()->id,
             'customer_id' => $input['customer_id'],
         ]);
@@ -147,12 +144,11 @@ class CustomerController extends Controller
     {
         $customer = Customer::findOrFail($id);
         $segments = Segment::pluck("name", "id");
-        $sectors = Sector::pluck("name", "id");
         $generalContactTypes = GeneralContactType::pluck("name", "id");
         $status = Customer::getStatusArray();
         $customers =  Customer::where("status", "active")->get()->pluck("name", "id");
 
-        return view('customers.edit', compact('customer', 'segments', 'sectors', 'generalContactTypes', 'status', 'customers'));
+        return view('customers.edit', compact('customer', 'segments', 'generalContactTypes', 'status', 'customers'));
     }
 
     /**
@@ -177,7 +173,6 @@ class CustomerController extends Controller
             'obs' => $input['obs'],
             'competitors' => $input['competitors'],
             'segment_id' => $input['segment_id'],
-            'sector_id' => $input['sector_id'],
             'status' => $input['status'],
             'updated_user_id' => auth()->user()->id,
             'customer_id' => $input['customer_id'],

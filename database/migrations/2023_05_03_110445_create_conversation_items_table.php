@@ -28,9 +28,7 @@ class CreateConversationItemsTable extends Migration
             $table->text("schedule_details")->nullable();
 
             $table->foreignId('conversation_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('project_status_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('proposed_status_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('prospecting_status_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('conversation_status_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('detailed_contact_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 

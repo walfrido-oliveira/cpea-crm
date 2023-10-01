@@ -111,30 +111,9 @@
                     </div>
 
                     <div class="px-0 py-0">
-                        <a class="@if (request()->routeIs('sectors.index')) {{ 'active' }} @endif"
-                            href="{{ route('sectors.index') }}">
-                            Setores
-                        </a>
-                    </div>
-
-                    <div class="px-0 py-0">
-                        <a class="@if (request()->routeIs('prospecting-statuss.index')) {{ 'active' }} @endif"
-                            href="{{ route('prospecting-statuss.index') }}">
-                            Status Prospecção
-                        </a>
-                    </div>
-
-                    <div class="px-0 py-0">
-                        <a class="@if (request()->routeIs('proposed-statuss.index')) {{ 'active' }} @endif"
-                            href="{{ route('proposed-statuss.index') }}">
-                            Status Proposta
-                        </a>
-                    </div>
-
-                    <div class="px-0 py-0">
-                        <a class="@if (request()->routeIs('project-statuss.index')) {{ 'active' }} @endif"
-                            href="{{ route('project-statuss.index') }}">
-                            Status Projeto
+                        <a class="@if (request()->routeIs('conversation-statuss.index')) {{ 'active' }} @endif"
+                            href="{{ route('conversation-statuss.index') }}">
+                            Status de Interação
                         </a>
                     </div>
 

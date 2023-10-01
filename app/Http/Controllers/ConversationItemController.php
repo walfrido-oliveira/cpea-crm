@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cnpj;
 use App\Models\User;
+use App\Models\Etapa;
 use App\Models\Value;
 use App\Models\Product;
 use App\Models\Direction;
@@ -10,11 +12,9 @@ use App\Models\Attachment;
 use App\Models\Department;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
-use App\Models\ProjectStatus;
-use App\Models\ProposedStatus;
-use App\Models\ConversationItem;
-use App\Models\ProspectingStatus;
 use App\Models\ScheduleAddress;
+use App\Models\ConversationItem;
+use App\Models\ConversationStatus;
 
 class ConversationItemController extends Controller
 {
@@ -31,13 +31,14 @@ class ConversationItemController extends Controller
             'schedule_details' => ['nullable', 'string'],
             'item_details' => ['nullable', 'string'],
             'conversation_id' => ['required', 'exists:conversations,id'],
-            'project_status_id' => ['nullable', 'exists:project_statuses,id'],
-            'proposed_status_id' => ['nullable', 'exists:proposed_statuses,id'],
-            'prospecting_status_id' => ['nullable', 'exists:prospecting_statuses,id'],
+            'conversation_status_id' => ['nullable', 'exists:conversation_statuses,id'],
             'detailed_contact_id' => ['required', 'exists:detailed_contacts,id'],
             'organizer_id' => ['nullable', 'exists:users,id'],
             'direction_id' => ['nullable', 'exists:directions,id'],
             'employee_id' => ['nullable', 'exists:employees,id'],
+            'cnpj_id' => ['nullable', 'exists:cnpjs,id'],
+            'etapa_id' => ['nullable', 'exists:etapas,id'],
+            'ppi' => ['nullable', 'in:y,n'],
         ]);
     }
 
@@ -50,13 +51,13 @@ class ConversationItemController extends Controller
     public function create(Request $request, $id)
     {
         $conversation = Conversation::findOrFail($id);
-        $prospectingStatuses = ProspectingStatus::pluck("name", "id");
-        $proposedsStatuses = ProposedStatus::pluck("name", "id");
-        $projectStatus = ProjectStatus::pluck("name", "id");
+        $conversationStatuses = ConversationStatus::pluck("name", "id");
         $detailedContacts = $conversation->customer->detailedContats->pluck("contact", "id");
         $products = Product::pluck("name", "id");
         $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
+        $cnpjs = Cnpj::all()->pluck("display_name", "id");
+        $etapas = Etapa::pluck("name", "id");
 
         $checkprospect = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
         $checkproposed = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
@@ -65,9 +66,10 @@ class ConversationItemController extends Controller
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
 
-        return view('conversations.item.create', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
-                                                         'projectStatus', 'detailedContacts', 'products', 'organizers',
-                                                         'cpeaIds', 'checkprospect', 'checkproposed', 'checkproject', 'directions','departments'));
+        return view('conversations.item.create', compact('conversation', 'conversationStatuses', 'detailedContacts',
+                                                         'products', 'organizers',
+                                                         'cpeaIds', 'checkprospect', 'checkproposed', 'checkproject',
+                                                         'directions','departments', 'cnpjs', 'etapas'));
     }
 
     /**
@@ -87,9 +89,7 @@ class ConversationItemController extends Controller
             'conversation_id' => $input['conversation_id'],
             'item_type' => $input['item_type'],
             'interaction_at' => $input['interaction_at'],
-            'project_status_id' => $input['project_status_id'],
-            'proposed_status_id' => $input['proposed_status_id'],
-            'prospecting_status_id' => $input['prospecting_status_id'],
+            'conversation_status_id' => $input['conversation_status_id'],
             'detailed_contact_id' => $input['detailed_contact_id'],
             'additive' => $input['additive'] == "y" ? true : false,
             'cpea_linked_id' => isset($input['cpea_linked_id']) ? $input['cpea_linked_id'] : null,
@@ -106,6 +106,9 @@ class ConversationItemController extends Controller
             'meeting_place' => $input['meeting_place'],
             'user_id'=> auth()->user()->id,
             'order' => count($conversation->items) + 1,
+            'cnpj_id' => $input['cnpj_id'],
+            'etapa_id' => $input['etapa_id'],
+            'ppi' => $input['ppi']
         ]);
 
         if(isset($input['products'])) :
@@ -187,13 +190,13 @@ class ConversationItemController extends Controller
     {
         $conversationItem = ConversationItem::findOrFail($id);
         $conversation = $conversationItem->conversation;
-        $prospectingStatuses = ProspectingStatus::pluck("name", "id");
-        $proposedsStatuses = ProposedStatus::pluck("name", "id");
-        $projectStatus = ProjectStatus::pluck("name", "id");
+        $conversationStatuses = ConversationStatus::pluck("name", "id");
         $detailedContacts = $conversation->customer->detailedContats->pluck("contact", "id");
         $products = Product::pluck("name", "id");
         $organizers = User::where("status", "active")->get()->pluck("full_name", "id");
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id", "cpea_id");
+        $cnpjs = Cnpj::all()->pluck("display_name", "id");
+        $etapas = Etapa::pluck("name", "id");
 
         $checkprospect = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
         $checkproposed = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
@@ -203,10 +206,11 @@ class ConversationItemController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $conversationItemProduts = $conversationItem->products()->pluck("products.name", "products.id")->toArray();
 
-        return view('conversations.item.edit', compact('conversation', 'prospectingStatuses', 'proposedsStatuses',
-                                                        'projectStatus', 'detailedContacts', 'products', 'organizers',
-                                                        'cpeaIds', 'checkprospect', 'checkproposed', 'checkproject', 'directions','departments',
-                                                        'conversationItem', 'conversationItemProduts'));
+        return view('conversations.item.edit', compact('conversation', 'conversationStatuses',
+                                                        'detailedContacts', 'products', 'organizers',
+                                                        'cpeaIds', 'checkprospect', 'checkproposed', 'checkproject',
+                                                        'directions','departments',
+                                                        'conversationItem', 'conversationItemProduts', 'cnpjs', 'etapas'));
     }
 
     /**
@@ -228,9 +232,7 @@ class ConversationItemController extends Controller
             'conversation_id' => $input['conversation_id'],
             'item_type' => $input['item_type'],
             'interaction_at' => $input['interaction_at'],
-            'project_status_id' => $input['project_status_id'],
-            'proposed_status_id' => $input['proposed_status_id'],
-            'prospecting_status_id' => $input['prospecting_status_id'],
+            'conversation_status_id' => $input['conversation_status_id'],
             'detailed_contact_id' => $input['detailed_contact_id'],
             'additive' => $input['additive'] == "y" ? true : false,
             'cpea_linked_id' => isset($input['cpea_linked_id']) ? $input['cpea_linked_id'] : null,
@@ -246,6 +248,9 @@ class ConversationItemController extends Controller
             'meeting_form' => $input['meeting_form'],
             'meeting_place' => $input['meeting_place'],
             'user_id'=> auth()->user()->id,
+            'cnpj_id' => $input['cnpj_id'],
+            'etapa_id' => $input['etapa_id'],
+            'ppi' => $input['ppi']
         ]);
 
         if(isset($input['products'])) :
