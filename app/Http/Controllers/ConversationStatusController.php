@@ -19,8 +19,8 @@ class ConversationStatusController extends Controller
         $conversationStatuss =  ConversationStatus::filter($request->all());
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
-
-        return view('conversation-statuss.index', compact('conversationStatuss', 'ascending', 'orderBy'));
+        $types = ConversationStatus::getTypesAttribute();
+        return view('conversation-statuss.index', compact('conversationStatuss', 'ascending', 'orderBy', 'types'));
     }
 
     /**
@@ -30,7 +30,8 @@ class ConversationStatusController extends Controller
      */
     public function create()
     {
-        return view('conversation-statuss.create');
+        $types = ConversationStatus::getTypesAttribute();
+        return view('conversation-statuss.create', compact('types'));
     }
 
     /**
@@ -43,12 +44,14 @@ class ConversationStatusController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('conversation_statuses', 'name')],
+            'type' => ['required', 'string'],
         ]);
 
         $input = $request->all();
 
        ConversationStatus::create([
             'name' => $input['name'],
+            'type' => $input['type'],
         ]);
 
         $resp = [
@@ -80,7 +83,8 @@ class ConversationStatusController extends Controller
     public function edit($id)
     {
         $conversationStatus = ConversationStatus::findOrFail($id);
-        return view('conversation-statuss.edit', compact('conversationStatus'));
+        $types = ConversationStatus::getTypesAttribute();
+        return view('conversation-statuss.edit', compact('conversationStatus', 'types'));
     }
 
     /**
@@ -95,13 +99,15 @@ class ConversationStatusController extends Controller
         $conversationStatus = ConversationStatus::findOrFail($id);
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('conversation_statuses', 'name')->ignore($conversationStatus->id)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('conversation_statuses', 'name')],
+            'type' => ['required', 'string'],
         ]);
 
         $input = $request->all();
 
         $conversationStatus->update([
             'name' => $input['name'],
+            'type' => $input['type'],
         ]);
 
         $resp = [

@@ -24,9 +24,13 @@
 
                 <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
-                        <div class="w-full px-3 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="name" value="{{ __('Status da Interação') }}" required/>
                             <x-jet-input id="name" class="form-control block mt-1 w-full" type="text" name="name" maxlength="255" :value="$conversationStatus->name" required autofocus autocomplete="name" placeholder="{{ __('Nome') }}"/>
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="type" value="{{ __('Tipo de Interação') }}" required/>
+                            <x-custom-select :options="$types" value="{{ $conversationStatus->type }}" name="type" id="type" class="mt-1"/>
                         </div>
                     </div>
                 </div>

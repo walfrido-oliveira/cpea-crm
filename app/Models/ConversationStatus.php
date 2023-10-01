@@ -15,7 +15,7 @@ class ConversationStatus extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'type'
     ];
 
     /**
@@ -45,6 +45,14 @@ class ConversationStatus extends Model
                 if(!is_null($query['name']))
                 {
                     $q->where('name', 'like','%' . $query['name'] . '%');
+                }
+            }
+
+            if(isset($query['type']))
+            {
+                if(!is_null($query['type']))
+                {
+                    $q->where('type', $query['type']);
                 }
             }
 

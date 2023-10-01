@@ -30,7 +30,7 @@ class AddColumns2ToConversationItemTable extends Migration
     {
         Schema::table('conversation_items', function (Blueprint $table) {
             $table->dropForeign('conversation_status_id');
-            $table->dropColumn('conversation_status_id');
+            //$table->dropColumn('conversation_status_id');
         });
     }
 }
