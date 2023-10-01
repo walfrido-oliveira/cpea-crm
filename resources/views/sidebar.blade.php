@@ -145,6 +145,20 @@
                         </a>
                     </div>
 
+                    <div class="px-0 py-0">
+                        <a class="@if (request()->routeIs('etapas.index')) {{ 'active' }} @endif"
+                            href="{{ route('etapas.index') }}">
+                            Etapas
+                        </a>
+                    </div>
+
+                    <div class="px-0 py-0">
+                        <a class="@if (request()->routeIs('cnpjs.index')) {{ 'active' }} @endif"
+                            href="{{ route('cnpjs.index') }}">
+                            CNPJ CPEA
+                        </a>
+                    </div>
+
                 </div>
             </div>
 

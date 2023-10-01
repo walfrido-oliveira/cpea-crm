@@ -2,7 +2,9 @@
 
 use App\Models\ConversationItem;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CnpjController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EtapaController;
 use App\Http\Controllers\ValueController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\SectorController;
@@ -253,6 +255,24 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::prefix('azure')->name('azure.')->group(function(){
         Route::get('token', [AzureAcessController::class, 'token'])->name('token');
         Route::get('create-online-meeting', [AzureAcessController::class, 'createOnlineMeeting'])->name('createOnlineMeeting');
+    });
+
+    Route::resource('etapas', EtapaController::class, [
+        'names' => 'etapas'])->parameters([
+        'etapas' => 'etapa'
+    ]);
+
+    Route::prefix('etapas')->name('etapas.')->group(function(){
+        Route::post('/filter', [EtapaController::class, 'filter'])->name('filter');
+    });
+
+    Route::resource('cnpjs', CnpjController::class, [
+        'names' => 'cnpjs'])->parameters([
+        'cnpjs' => 'cnpj'
+    ]);
+
+    Route::prefix('cnpjs')->name('cnpjs.')->group(function(){
+        Route::post('/filter', [CnpjController::class, 'filter'])->name('filter');
     });
 
 });
