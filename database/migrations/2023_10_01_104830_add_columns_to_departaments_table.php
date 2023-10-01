@@ -15,6 +15,7 @@ class AddColumnsToDepartamentsTable extends Migration
     {
         Schema::table('departments', function (Blueprint $table) {
             $table->string('acronym');
+            $table->foreignId('direction_id')->nullable()->constrained()->cascadeOnDelete();
         });
 
         Schema::table('directions', function (Blueprint $table) {
@@ -30,7 +31,7 @@ class AddColumnsToDepartamentsTable extends Migration
     public function down()
     {
         Schema::table('departments', function (Blueprint $table) {
-            $table->dropColumn('acronym');
+            $table->dropColumn('acronym', 'direction_id');
         });
 
         Schema::table('directions', function (Blueprint $table) {

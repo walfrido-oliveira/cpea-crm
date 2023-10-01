@@ -2,9 +2,10 @@
     <tr class="thead-light">
         <x-table-sort-header :orderBy="null" :ascending="null" columnName="" columnText="{{ __('') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Departamento') }}"/>
-        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Sigla') }}"/>
-        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Data Criação') }}"/>
-        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Última Atualização') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="acronym" columnText="{{ __('Sigla') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="direction" columnText="{{ __('Diretoria') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="created_at" columnText="{{ __('Data Criação') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="updated_at" columnText="{{ __('Última Atualização') }}"/>
         <th scope="col"
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Ações
@@ -22,6 +23,9 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('departments.show', ['department' => $department->id]) }}">{{ $department->acronym }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('departments.show', ['department' => $department->id]) }}">{{ $department->direction ? $department->direction->name : '-' }}</a>
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('departments.show', ['department' => $department->id]) }}">{{ $department->created_at->format('d/m/Y') }}</a>

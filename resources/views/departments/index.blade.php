@@ -31,6 +31,12 @@
                             </label>
                             <x-jet-input id="acronym" class="form-control block w-full filter-field" type="text" name="acronym" :value="app('request')->input('acronym')" autofocus autocomplete="acronym" />
                         </div>
+                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="acronym">
+                                {{ __('Diretoria') }}
+                            </label>
+                            <x-custom-select :options="$directions" value="{{ app('request')->input('direction_id') }}" name="direction_id" id="direction_id" class="mt-1"/>
+                        </div>
                     </div>
                 </div>
                 <div class="flex mt-4">
@@ -61,6 +67,7 @@
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
                 var name = document.getElementById("name").value;
                 var acronym = document.getElementById("acronym").value;
+                var direction_id = document.getElementById("direction_id").value;
 
                 ajax.open(method, url);
 
@@ -86,6 +93,7 @@
                 data.append('order_by', orderBY);
                 if(acronym) data.append('acronym', acronym);
                 if(name) data.append('name', name);
+                if(direction_id) data.append('direction_id', direction_id);
 
                 ajax.send(data);
             }
@@ -104,6 +112,7 @@
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
                 var acronym = document.getElementById("acronym").value;
                 var name = document.getElementById("name").value;
+                var direction_id = document.getElementById("direction_id").value;
 
                 ajax.open(method, url);
 
@@ -131,6 +140,7 @@
                 if(id) data.append('id', id);
                 if(name) data.append('name', name);
                 if(acronym) data.append('acronym', acronym);
+                if(direction_id) data.append('direction_id', direction_id);
 
                 ajax.send(data);
             }

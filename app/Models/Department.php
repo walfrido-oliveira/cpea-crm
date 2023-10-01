@@ -15,7 +15,7 @@ class Department extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'acronym'
+        'name', 'acronym', 'direction_id'
     ];
 
     /**
@@ -40,6 +40,14 @@ class Department extends Model
                 }
             }
 
+            if(isset($query['direction_id']))
+            {
+                if(!is_null($query['direction_id']))
+                {
+                    $q->where('direction_id', $query['direction_id']);
+                }
+            }
+
             if(isset($query['name']))
             {
                 if(!is_null($query['name']))
@@ -61,5 +69,13 @@ class Department extends Model
         $result->orderBy($orderBy, $ascending);
 
         return $result->paginate($perPage);
+    }
+
+    /**
+     * The Customer
+    */
+    public function direction()
+    {
+        return $this->belongsTo(Direction::class);
     }
 }

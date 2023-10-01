@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Department;
+use App\Models\Direction;
 
 class DepartmentController extends Controller
 {
@@ -19,8 +20,9 @@ class DepartmentController extends Controller
         $departments =  Department::filter($request->all());
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
+        $directions = Direction::pluck('name', 'id');
 
-        return view('departments.index', compact('departments', 'ascending', 'orderBy'));
+        return view('departments.index', compact('departments', 'ascending', 'orderBy', 'directions'));
     }
 
     /**
@@ -30,7 +32,8 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('departments.create');
+        $directions = Direction::pluck('name', 'id');
+        return view('departments.create', compact('directions'));
     }
 
     /**
@@ -44,13 +47,15 @@ class DepartmentController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('departments', 'name')],
             'acronym' => ['required', 'string'],
+            'direction_id' => ['required', 'exists:directions,id']
         ]);
 
         $input = $request->all();
 
-       Department::create([
+        Department::create([
             'name' => $input['name'],
             'acronym' => $input['acronym'],
+            'direction_id' => $input['direction_id'],
         ]);
 
         $resp = [
@@ -82,7 +87,8 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         $department = Department::findOrFail($id);
-        return view('departments.edit', compact('department'));
+        $directions = Direction::pluck('name', 'id');
+        return view('departments.edit', compact('department', 'directions'));
     }
 
     /**
@@ -99,6 +105,7 @@ class DepartmentController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('occupations', 'name')->ignore($department->id)],
             'acronym' => ['required', 'string'],
+            'direction_id' => ['required', 'exists:directions,id']
         ]);
 
         $input = $request->all();
@@ -106,6 +113,7 @@ class DepartmentController extends Controller
         $department->update([
             'name' => $input['name'],
             'acronym' => $input['acronym'],
+            'direction_id' => $input['direction_id'],
         ]);
 
         $resp = [
