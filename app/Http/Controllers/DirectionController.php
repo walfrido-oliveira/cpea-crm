@@ -43,12 +43,14 @@ class DirectionController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('directions', 'name')],
+            'acronym' => ['required', 'string'],
         ]);
 
         $input = $request->all();
 
        Direction::create([
             'name' => $input['name'],
+            'acronym' => $input['acronym'],
         ]);
 
         $resp = [
@@ -95,13 +97,15 @@ class DirectionController extends Controller
         $direction = Direction::findOrFail($id);
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('directions', 'name')->ignore($direction->id)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('occupations', 'name')->ignore($direction->id)],
+            'acronym' => ['required', 'string'],
         ]);
 
         $input = $request->all();
 
         $direction->update([
             'name' => $input['name'],
+            'acronym' => $input['acronym'],
         ]);
 
         $resp = [

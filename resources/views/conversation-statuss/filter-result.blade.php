@@ -3,6 +3,8 @@
         <x-table-sort-header :orderBy="null" :ascending="null" columnName="" columnText="{{ __('') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Status da Interação') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="type" columnText="{{ __('Tipo de Interação') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Data Criação') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Última Atualização') }}"/>
         <th scope="col"
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
             Ações
@@ -20,6 +22,12 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('conversation-statuss.show', ['conversation_status' => $conversationStatus->id]) }}">{{ $conversationStatus->type }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('conversation-statuss.show', ['conversation_status' => $conversationStatus->id]) }}">{{ $conversationStatus->created_at->format('d/m/Y') }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('conversation-statuss.show', ['conversation_status' => $conversationStatus->id]) }}">{{ $conversationStatus->updated_at->format('d/m/Y') }}</a>
             </td>
             <td>
                 <a class="btn-transition-warning" href="{{ route('conversation-statuss.edit', ['conversation_status' => $conversationStatus->id]) }}">

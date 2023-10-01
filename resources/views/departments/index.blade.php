@@ -20,16 +20,16 @@
                 <div class="filter-container">
                     <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
                         <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="id">
-                                {{ __('ID') }}
-                            </label>
-                            <x-jet-input id="id" class="form-control block w-full filter-field" type="text" name="id" :value="app('request')->input('id')" autofocus autocomplete="id" />
-                        </div>
-                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
                                 {{ __('Departamento') }}
                             </label>
                             <x-jet-input id="name" class="form-control block w-full filter-field" type="text" name="name" :value="app('request')->input('name')" autofocus autocomplete="name" />
+                        </div>
+                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="acronym">
+                                {{ __('Sigla') }}
+                            </label>
+                            <x-jet-input id="acronym" class="form-control block w-full filter-field" type="text" name="acronym" :value="app('request')->input('acronym')" autofocus autocomplete="acronym" />
                         </div>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
                 var token = document.querySelector('meta[name="csrf-token"]').content;
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
-                var id = document.getElementById("id").value;
                 var name = document.getElementById("name").value;
+                var acronym = document.getElementById("acronym").value;
 
                 ajax.open(method, url);
 
@@ -84,7 +84,7 @@
                 data.append('paginate_per_page', paginationPerPage);
                 data.append('ascending', ascending);
                 data.append('order_by', orderBY);
-                if(id) data.append('id', id);
+                if(acronym) data.append('acronym', acronym);
                 if(name) data.append('name', name);
 
                 ajax.send(data);
@@ -102,7 +102,7 @@
                 var token = document.querySelector('meta[name="csrf-token"]').content;
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
-                var id = document.getElementById("id").value;
+                var acronym = document.getElementById("acronym").value;
                 var name = document.getElementById("name").value;
 
                 ajax.open(method, url);
@@ -130,6 +130,7 @@
                 data.append('order_by', orderBY);
                 if(id) data.append('id', id);
                 if(name) data.append('name', name);
+                if(acronym) data.append('acronym', acronym);
 
                 ajax.send(data);
             }

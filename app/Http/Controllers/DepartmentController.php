@@ -43,12 +43,14 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('departments', 'name')],
+            'acronym' => ['required', 'string'],
         ]);
 
         $input = $request->all();
 
        Department::create([
             'name' => $input['name'],
+            'acronym' => $input['acronym'],
         ]);
 
         $resp = [
@@ -95,13 +97,15 @@ class DepartmentController extends Controller
         $department = Department::findOrFail($id);
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('departments', 'name')->ignore($department->id)],
+            'name' => ['required', 'string', 'max:255', Rule::unique('occupations', 'name')->ignore($department->id)],
+            'acronym' => ['required', 'string'],
         ]);
 
         $input = $request->all();
 
         $department->update([
             'name' => $input['name'],
+            'acronym' => $input['acronym'],
         ]);
 
         $resp = [

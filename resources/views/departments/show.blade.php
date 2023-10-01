@@ -41,6 +41,15 @@
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Sigla') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">{{ $department->acronym }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Data de Cadastro') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">

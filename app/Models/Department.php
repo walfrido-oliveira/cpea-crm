@@ -15,7 +15,7 @@ class Department extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'acronym'
     ];
 
     /**
@@ -45,6 +45,14 @@ class Department extends Model
                 if(!is_null($query['name']))
                 {
                     $q->where('name', 'like','%' . $query['name'] . '%');
+                }
+            }
+
+            if(isset($query['acronym']))
+            {
+                if(!is_null($query['acronym']))
+                {
+                    $q->where('acronym', 'like','%' . $query['acronym'] . '%');
                 }
             }
 
