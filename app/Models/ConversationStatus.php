@@ -62,4 +62,9 @@ class ConversationStatus extends Model
 
         return $result->paginate($perPage);
     }
+
+    public static function getTypesAttribute()
+    {
+        return ['Prospecção' => 'Prospecção', 'Proposta' => 'Proposta', 'Projeto' => 'Projeto'];
+    }
 }
