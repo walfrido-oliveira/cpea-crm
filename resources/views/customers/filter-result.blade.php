@@ -26,7 +26,7 @@
                 <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->name }}</a>
             </td>
             <td>
-                <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->segment->name }}</a>
+                <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->segment ? $customer->segment->name : '-' }}</a>
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->updated_at->format("d/m/Y H:i") }}</a>
