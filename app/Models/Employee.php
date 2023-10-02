@@ -21,7 +21,8 @@ class Employee extends Model
         'name',
         'manager_id',
         'employee_id',
-        'user_id'
+        'user_id',
+        'project_manager'
     ];
 
 

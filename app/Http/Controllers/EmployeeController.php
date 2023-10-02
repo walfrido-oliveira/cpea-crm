@@ -81,6 +81,7 @@ class EmployeeController extends Controller
             'manager_id' => $input['manager_id'],
             'employee_id' => $input['employee_id'],
             'user_id' => $input['user_id'],
+            'project_manager' => isset($input['project_manager']),
         ]);
 
         $resp = [
@@ -144,6 +145,7 @@ class EmployeeController extends Controller
             'manager_id' => $input['manager_id'],
             'employee_id' => $input['employee_id'],
             'user_id' => $input['user_id'],
+            'project_manager' => isset($input['project_manager']),
         ]);
 
         $resp = [

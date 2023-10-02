@@ -60,6 +60,15 @@
                         </div>
                     </div>
 
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label for="accreditation" class="flex items-center">
+                                <input id="accreditation" type="checkbox" class="form-checkbox" name="accreditation" value="true">
+                                <span class="ml-2 text-sm text-gray-600">{{ __('Gestor de Projeto?') }}</span>
+                            </label>
+                        </div>
+                    </div>
+
                 </div>
             </form>
         </div>

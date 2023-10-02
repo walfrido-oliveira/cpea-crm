@@ -59,6 +59,15 @@
                             <x-custom-select :options="$departments" name="department_id" id="department_id" required :value="$employee->department_id"/>
                         </div>
                     </div>
+
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label for="project_manager" class="flex items-center">
+                                <input id="project_manager" type="checkbox" class="form-checkbox" name="project_manager" value="true" @if($employee->project_manager) checked @endif>
+                                <span class="ml-2 text-sm text-gray-600">{{ __('Gestor de Projeto?') }}</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
