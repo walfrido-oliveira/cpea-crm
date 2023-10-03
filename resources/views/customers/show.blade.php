@@ -74,7 +74,7 @@
                             <p class="font-bold">{{ __('Segmento') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->segment->name }}</p>
+                            <p class="text-gray-500 font-bold">{{ $customer->segment ? $customer->segment->name : '-' }}</p>
                         </div>
                     </div>
                 </div>
@@ -509,7 +509,7 @@
                                         <td>{{ $child->addresses[0]->city }}</td>
                                         <td>{{ $child->addresses[0]->state }}</td>
                                         <td>{{ $child->addresses[0]->state }}</td>
-                                        <td>{{ $child->segment->name }}</td>
+                                        <td>{{ $child->segment ? $child->segment->name : '-' }}</td>
                                         <td>{{ $child->updated_at->format('d/m/Y H:i') }}</td>
                                         <td>
                                             <span class="w-24 py-1 @if($child->status == "active") badge-success @elseif($child->status == 'inactive') badge-danger @endif" >
