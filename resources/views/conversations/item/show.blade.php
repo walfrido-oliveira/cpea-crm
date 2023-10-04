@@ -109,7 +109,7 @@
                             <p class="font-bold">{{ __('Contato') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $conversationItem->detailedContact->contact }}</p>
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->detailedContact ? $conversationItem->detailedContact->contact : '-' }}</p>
                         </div>
                     </div>
 
