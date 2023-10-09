@@ -43,7 +43,7 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.conversations.item.show', ['item' => $conversation->id]) }}">
-                    {{ $conversation->employee ? $conversation->employee->department_id : '-' }}
+                    {{ $conversation->employee ? $conversation->employee->department->name : '-' }}
                 </a>
             </td>
             <td>

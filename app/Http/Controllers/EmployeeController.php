@@ -24,7 +24,7 @@ class EmployeeController extends Controller
             'department_id' => ['required', 'exists:departments,id'],
             'name' => ['required', 'string', 'max:255'],
             'manager_id' => ['nullable', 'exists:employees,id'],
-            'employee_id' => ['required', 'string'],
+            'registration' => ['required', 'string'],
             'user_id' => ['nullable', 'exists:users,id'],
         ]);
 
@@ -79,7 +79,7 @@ class EmployeeController extends Controller
             'department_id' => $input['department_id'],
             'name' => $input['name'],
             'manager_id' => $input['manager_id'],
-            'employee_id' => $input['employee_id'],
+            'registration' => $input['registration'],
             'user_id' => $input['user_id'],
             'project_manager' => isset($input['project_manager']),
         ]);
@@ -143,7 +143,7 @@ class EmployeeController extends Controller
             'department_id' => $input['department_id'],
             'name' => $input['name'],
             'manager_id' => $input['manager_id'],
-            'employee_id' => $input['employee_id'],
+            'registration' => $input['registration'],
             'user_id' => $input['user_id'],
             'project_manager' => isset($input['project_manager']),
         ]);

@@ -25,8 +25,8 @@
                 <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="employee_id" value="{{ __('Matrícula') }}" required/>
-                            <x-jet-input id="employee_id" class="form-control block mt-1 w-full" type="text" :value="$employee->employee_id" name="employee_id" maxlength="255" required autofocus autocomplete="employee_id" placeholder="{{ __('Matrícula') }}"/>
+                            <x-jet-label for="registration" value="{{ __('Matrícula') }}" required/>
+                            <x-jet-input id="registration" class="form-control block mt-1 w-full" type="text" :value="$employee->registration" name="registration" maxlength="255" required autofocus autocomplete="registration" placeholder="{{ __('Matrícula') }}"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="name" value="{{ __('Nome Completo') }}" required/>

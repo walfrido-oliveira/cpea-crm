@@ -20,7 +20,7 @@ class Employee extends Model
         'department_id',
         'name',
         'manager_id',
-        'employee_id',
+        'registration',
         'user_id',
         'project_manager'
     ];
