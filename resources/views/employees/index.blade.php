@@ -43,6 +43,12 @@
                             </label>
                             <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id" :value="app('request')->input('direction_id')"/>
                         </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="status">
+                                {{ __('Situação') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$status" name="status" id="status" value=""/>
+                        </div>
                     </div>
                 </div>
                 <div class="flex mt-4">
@@ -79,6 +85,7 @@
                 var name = document.getElementById("name").value;
                 var department_id = document.getElementById("department_id").value;
                 var direction_id = document.getElementById("direction_id").value;
+                var status = document.getElementById("status").value;
 
                 ajax.open(method, url);
 
@@ -106,6 +113,7 @@
                 if(name) data.append('name', name);
                 if(department_id) data.append('department_id', department_id);
                 if(direction_id) data.append('direction_id', direction_id);
+                if(status) data.append('status', status);
 
                 ajax.send(data);
             }
@@ -126,6 +134,7 @@
                 var name = document.getElementById("name").value;
                 var department_id = document.getElementById("department_id").value;
                 var direction_id = document.getElementById("direction_id").value;
+                var status = document.getElementById("status").value;
 
                 ajax.open(method, url);
 
@@ -154,6 +163,7 @@
                 if(name) data.append('name', name);
                 if(department_id) data.append('department_id', department_id);
                 if(direction_id) data.append('direction_id', direction_id);
+                if(status) data.append('status', status);
 
                 ajax.send(data);
             }

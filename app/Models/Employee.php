@@ -22,7 +22,8 @@ class Employee extends Model
         'manager_id',
         'registration',
         'user_id',
-        'project_manager'
+        'project_manager',
+        'status'
     ];
 
 
@@ -66,6 +67,16 @@ class Employee extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get status array
+     *
+     * @return Array
+     */
+    public static function getStatusArray()
+    {
+        return  ['active' => 'Ativo', 'inactive' => 'Inativo'];
+    }
+
 
     /**
      * Find users in dabase
@@ -86,6 +97,14 @@ class Employee extends Model
                 if(!is_null($query['id']))
                 {
                     $q->where('id', $query['id']);
+                }
+            }
+
+            if(isset($query['status']))
+            {
+                if(!is_null($query['status']))
+                {
+                    $q->where('status', $query['status']);
                 }
             }
 

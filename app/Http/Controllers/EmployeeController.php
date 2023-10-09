@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Direction;
 use App\Models\Department;
@@ -26,6 +27,7 @@ class EmployeeController extends Controller
             'manager_id' => ['nullable', 'exists:employees,id'],
             'registration' => ['required', 'string'],
             'user_id' => ['nullable', 'exists:users,id'],
+            'status' => ['in:active,inactive', 'nullable'],
         ]);
 
     }
@@ -38,13 +40,15 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $employees =  Employee::filter($request->all());
+        $employees =  Employee::filter(['status' => 'active']);
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'registration';
         $directions = Direction::pluck("name", "id");
         $departments = Department::pluck("name", "id");
+        $status = Customer::getStatusArray();
 
-        return view('employees.index', compact('employees', 'ascending', 'orderBy', 'directions', 'departments'));
+        return view('employees.index', compact('employees', 'ascending', 'orderBy',
+        'directions', 'departments', 'status'));
     }
 
     /**
@@ -119,9 +123,11 @@ class EmployeeController extends Controller
         $directions = Direction::all()->pluck('name', 'id');
         $departments = Department::all()->pluck('name', 'id');
         $employees = Employee::all()->pluck('name', 'id');
-        $users = User::all()->pluck('full_name', 'id');
+        $users = User::where('status', 'active')->get()->pluck('full_name', 'id');
+        $status = Employee::getStatusArray();
 
-        return view('employees.edit', compact('employee', 'occupations', 'directions', 'departments', 'employees', 'users'));
+        return view('employees.edit', compact('employee', 'occupations',
+        'directions', 'departments', 'employees', 'users', 'status'));
     }
 
     /**
@@ -148,6 +154,7 @@ class EmployeeController extends Controller
             'registration' => $input['registration'],
             'user_id' => $input['user_id'],
             'project_manager' => isset($input['project_manager']),
+            'status' => $input['status'],
         ]);
 
         $resp = [
@@ -186,6 +193,8 @@ class EmployeeController extends Controller
             if($request->get("department_id")) {
                 $q->where('department_id', $request->get("department_id"));
             }
+
+            $q->where('status', 'active');
         })->get();
 
         return response()->json($employees);

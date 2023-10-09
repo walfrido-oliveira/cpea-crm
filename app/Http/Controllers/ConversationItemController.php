@@ -59,17 +59,11 @@ class ConversationItemController extends Controller
         $cnpjs = Cnpj::all()->pluck("display_name", "id");
         $etapas = Etapa::pluck("name", "id");
 
-        $checkprospect = count($conversation->items()->where("item_type", "Prospect")->get()) > 0;
-        $checkproposed = count($conversation->items()->where("item_type", "Proposta")->get()) > 0;
-        $checkproject = count($conversation->items()->where("item_type", "Projeto")->get()) > 0;
-
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
 
         return view('conversations.item.create', compact('conversation', 'conversationStatuses', 'detailedContacts',
-                                                         'products', 'organizers',
-                                                         'cpeaIds', 'checkprospect', 'checkproposed', 'checkproject',
-                                                         'directions','departments', 'cnpjs', 'etapas'));
+                                                         'products', 'organizers', 'cpeaIds', 'directions','departments', 'cnpjs', 'etapas'));
     }
 
     /**
