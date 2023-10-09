@@ -290,10 +290,10 @@ class ConversationItem extends Model
         ->join("conversations", "conversations.id", "=", "conversation_id")
         ->leftJoin("customers", "customers.id", "=", "conversations.customer_id")
         ->leftJoin("employees", "employees.id", "=", "conversation_items.employee_id")
+        ->select("conversation_items.*")
         ->orderBy($orderBy, $ascending);
 
 
-        //dd($result->toSql());
         return $result->paginate($perPage);
     }
 }
