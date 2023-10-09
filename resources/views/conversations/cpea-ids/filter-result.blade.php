@@ -48,7 +48,7 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.conversations.item.show', ['item' => $conversation->id]) }}">
-                    {{ $conversation->conversationStatus }}
+                    {{ $conversation->conversationStatus->name }}
                 </a>
             </td>
             <td>
