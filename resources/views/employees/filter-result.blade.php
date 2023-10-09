@@ -1,8 +1,11 @@
 <thead>
     <tr class="thead-light">
         <x-table-sort-header :orderBy="null" :ascending="null" columnName="" columnText="{{ __('') }}"/>
-        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="employee_id" columnText="{{ __('Matrícula') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="registration" columnText="{{ __('Matrícula') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="user_id" columnText="{{ __('Colaborador') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="occupation_id" columnText="{{ __('Cargo') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="department_id" columnText="{{ __('Departamento') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="direction_id" columnText="{{ __('Diretoria') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="manager_id" columnText="{{ __('Gestor Imediato') }}"/>
         <th scope="col"
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -17,10 +20,19 @@
                 <input class="form-checkbox employees-url" type="checkbox" name="employees[{{ $employee->id }}]" value="{!! route('employees.destroy', ['employee' => $employee->id]) !!}">
             </td>
             <td>
-                <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->employee_id }}</a>
+                <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->registration }}</a>
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->name }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->occupation ? $employee->occupation->name : '-' }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->department ? $employee->department->name : '-' }}</a>
+            </td>
+            <td>
+                <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->direction ? $employee->direction->name : '-' }}</a>
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->manager ? $employee->manager->name : '-' }}</a>

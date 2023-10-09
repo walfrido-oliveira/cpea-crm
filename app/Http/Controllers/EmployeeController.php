@@ -40,9 +40,11 @@ class EmployeeController extends Controller
     {
         $employees =  Employee::filter($request->all());
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'employee_id';
+        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'registration';
+        $directions = Direction::pluck("name", "id");
+        $departments = Department::pluck("name", "id");
 
-        return view('employees.index', compact('employees', 'ascending', 'orderBy'));
+        return view('employees.index', compact('employees', 'ascending', 'orderBy', 'directions', 'departments'));
     }
 
     /**

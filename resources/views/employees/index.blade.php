@@ -19,17 +19,29 @@
             <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
                 <div class="filter-container">
                     <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
-                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="employee_id">
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="registration">
                                 {{ __('Matrícula') }}
                             </label>
-                            <x-jet-input id="employee_id" class="form-control block w-full filter-field" type="text" name="employee_id" :value="app('request')->input('employee_id')" autofocus autocomplete="employee_id" />
+                            <x-jet-input id="registration" class="form-control block w-full filter-field" type="text" name="registration" :value="app('request')->input('registration')" autofocus autocomplete="registration" />
                         </div>
-                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
-                                {{ __('Colaborador') }}
+                                {{ __('Nome') }}
                             </label>
                             <x-jet-input id="name" class="form-control block w-full filter-field" type="text" name="name" :value="app('request')->input('name')" autofocus autocomplete="name" />
+                        </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="department_id">
+                                {{ __('Departamento') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$departments" name="department_id" id="department_id" :value="app('request')->input('department_id')"/>
+                        </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="direction_id">
+                                {{ __('Diretoria') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id" :value="app('request')->input('direction_id')"/>
                         </div>
                     </div>
                 </div>
@@ -63,8 +75,10 @@
                 var token = document.querySelector('meta[name="csrf-token"]').content;
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
-                var employee_id = document.getElementById("employee_id").value;
+                var registration = document.getElementById("registration").value;
                 var name = document.getElementById("name").value;
+                var department_id = document.getElementById("department_id").value;
+                var direction_id = document.getElementById("direction_id").value;
 
                 ajax.open(method, url);
 
@@ -88,8 +102,10 @@
                 data.append('paginate_per_page', paginationPerPage);
                 data.append('ascending', ascending);
                 data.append('order_by', orderBY);
-                if(employee_id) data.append('employee_id', employee_id);
+                if(registration) data.append('registration', registration);
                 if(name) data.append('name', name);
+                if(department_id) data.append('department_id', department_id);
+                if(direction_id) data.append('direction_id', direction_id);
 
                 ajax.send(data);
             }
@@ -106,8 +122,10 @@
                 var token = document.querySelector('meta[name="csrf-token"]').content;
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
-                var employee_id = document.getElementById("employee_id").value;
+                var registration = document.getElementById("registration").value;
                 var name = document.getElementById("name").value;
+                var department_id = document.getElementById("department_id").value;
+                var direction_id = document.getElementById("direction_id").value;
 
                 ajax.open(method, url);
 
@@ -132,8 +150,10 @@
                 data.append('paginate_per_page', paginationPerPage);
                 data.append('ascending', ascending);
                 data.append('order_by', orderBY);
-                if(employee_id) data.append('employee_id', employee_id);
+                if(registration) data.append('registration', registration);
                 if(name) data.append('name', name);
+                if(department_id) data.append('department_id', department_id);
+                if(direction_id) data.append('direction_id', direction_id);
 
                 ajax.send(data);
             }

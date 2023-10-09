@@ -27,19 +27,27 @@ class Employee extends Model
 
 
     /**
-     * The occupation type
+     * The occupation
      */
-    public function occupationType()
+    public function occupation()
     {
-        return $this->belongsTo(OccupationType::class);
+        return $this->belongsTo(Occupation::class);
     }
 
     /**
-     * The occupation type
+     * The occupation
      */
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    /**
+     * The directions
+     */
+    public function direction()
+    {
+        return $this->belongsTo(Direction::class);
     }
 
     /**
@@ -81,11 +89,27 @@ class Employee extends Model
                 }
             }
 
-            if(isset($query['employee_id']))
+            if(isset($query['department_id']))
             {
-                if(!is_null($query['employee_id']))
+                if(!is_null($query['department_id']))
                 {
-                    $q->where('employee_id', 'like','%' . $query['employee_id'] . '%');
+                    $q->where('department_id', $query['department_id']);
+                }
+            }
+
+            if(isset($query['direction_id']))
+            {
+                if(!is_null($query['direction_id']))
+                {
+                    $q->where('direction_id', $query['direction_id']);
+                }
+            }
+
+            if(isset($query['registration']))
+            {
+                if(!is_null($query['registration']))
+                {
+                    $q->where('registration', 'like','%' . $query['registration'] . '%');
                 }
             }
 
@@ -104,7 +128,7 @@ class Employee extends Model
             {
                 if(!is_null($query['user_id']))
                 {
-                    $q->where('user_id', 'like', $query['user_id'] );
+                    $q->where('user_id', $query['user_id'] );
                 }
             }
         });
