@@ -287,9 +287,9 @@ class ConversationItem extends Model
         });
 
         $result
-        ->join("conversations", "conversations.id", "=", "conversation_id")
-        ->join("customers", "customers.id", "=", "conversations.customer_id")
-        ->join("employees", "employees.id", "=", "conversation_items.employee_id")
+        ->leftJoin("conversations", "conversations.id", "=", "conversation_id")
+        ->leftJoin("customers", "customers.id", "=", "conversations.customer_id")
+        ->leftJoin("employees", "employees.id", "=", "conversation_items.employee_id")
         ->orderBy($orderBy, $ascending);
 
 
