@@ -14,6 +14,46 @@
             </div>
 
             <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
+                <div class="filter-container">
+                    <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="cpea_linked_id">
+                                {{ __('IDCPEA') }}
+                            </label>
+                            <x-jet-input id="cpea_linked_id" class="form-control block w-full filter-field" type="text" name="cpea_linked_id" :value="app('request')->input('cpea_linked_id')" autofocus autocomplete="id" />
+                        </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="customer_name">
+                                {{ __('Cliente') }}
+                            </label>
+                            <x-jet-input id="customer_name" class="form-control block w-full filter-field" type="text" name="customer_name" :value="app('request')->input('customer_name')" autofocus autocomplete="id" />
+                        </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="employee_id">
+                                {{ __('Gestor') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$employees" name="employee_id" id="employee_id" :value="app('request')->input('employee_id')"/>
+                        </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="direction_id">
+                                {{ __('Diretoria') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id" :value="app('request')->input('direction_id')"/>
+                        </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="department_id">
+                                {{ __('Departamento') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$departments" name="department_id" id="department_id" :value="app('request')->input('department_id')"/>
+                        </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="conversation_status_id">
+                                {{ __('Status') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$conversationStatuses" name="conversation_status_id" id="conversation_status_id" :value="app('request')->input('conversation_status_id')"/>
+                        </div>
+                    </div>
+                </div>
                 <div class="flex mt-4">
                     <table id="conversation_items_table" class="table table-responsive md:table w-full">
                         @include('conversations.cpea-ids.filter-result', ['conversationItems' => $conversationItems, 'ascending' => $ascending, 'orderBy' => $orderBy])
@@ -35,10 +75,12 @@
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
 
-                /*var id = document.getElementById("id").value;
-                var name = document.getElementById("name").value;
-                var segment_id = document.getElementById("segment_id").value;
-                var status = document.getElementById("status").value;*/
+                var customer_name = document.getElementById("customer_name").value;
+                var conversation_status_id = document.getElementById("conversation_status_id").value;
+                var cpea_linked_id = document.getElementById("cpea_linked_id").value;
+                var employee_id = document.getElementById("employee_id").value;
+                var direction_id = document.getElementById("direction_id").value;
+                var department_id = document.getElementById("department_id").value;
 
                 ajax.open(method, url);
 
@@ -63,10 +105,12 @@
                 data.append('ascending', ascending);
                 data.append('order_by', orderBY);
 
-                /*if(id) data.append('id', id);
-                if(name) data.append('name', name);
-                if(segment_id) data.append('segment_id', segment_id);
-                if(status) data.append('status', status);*/
+                if(customer_name) data.append('customer_name', customer_name);
+                if(conversation_status_id) data.append('conversation_status_id', conversation_status_id);
+                if(cpea_linked_id) data.append('cpea_linked_id', cpea_linked_id);
+                if(employee_id) data.append('employee_id', employee_id);
+                if(direction_id) data.append('direction_id', direction_id);
+                if(department_id) data.append('department_id', department_id);
 
                 ajax.send(data);
             }
@@ -84,10 +128,13 @@
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
 
-                /*var id = document.getElementById("id").value;
-                var name = document.getElementById("name").value;
-                var segment_id = document.getElementById("segment_id").value;
-                var status = document.getElementById("status").value;*/
+                var customer_name = document.getElementById("customer_name").value;
+                var conversation_status_id = document.getElementById("conversation_status_id").value;
+                var cpea_linked_id = document.getElementById("cpea_linked_id").value;
+                var employee_id = document.getElementById("employee_id").value;
+                var direction_id = document.getElementById("direction_id").value;
+                var department_id = document.getElementById("department_id").value;
+
 
                 ajax.open(method, url);
 
@@ -113,10 +160,12 @@
                 data.append('ascending', ascending);
                 data.append('order_by', orderBY);
 
-                /*if(id) data.append('id', id);
-                if(name) data.append('name', name);
-                if(segment_id) data.append('segment_id', segment_id);
-                if(status) data.append('status', status);*/
+                if(customer_name) data.append('customer_name', customer_name);
+                if(conversation_status_id) data.append('conversation_status_id', conversation_status_id);
+                if(cpea_linked_id) data.append('cpea_linked_id', cpea_linked_id);
+                if(employee_id) data.append('employee_id', employee_id);
+                if(direction_id) data.append('direction_id', direction_id);
+                if(department_id) data.append('department_id', department_id);
 
                 ajax.send(data);
             }

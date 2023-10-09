@@ -36,7 +36,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $customers =  Customer::filter($request->all());
+        $customers =  Customer::filter(['status' => 'active']);
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
         $status = Customer::getStatusArray();

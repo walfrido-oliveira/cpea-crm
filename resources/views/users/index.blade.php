@@ -16,23 +16,29 @@
             <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
                 <div class="filter-container">
                     <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
-                        <div class="w-full md:w-1/3 px-2 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="id">
                                 {{ __('ID') }}
                             </label>
                             <x-jet-input id="id" class="form-control block w-full filter-field" type="text" name="id" :value="app('request')->input('id')" autofocus autocomplete="id" />
                         </div>
-                        <div class="w-full md:w-1/3 px-2 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
                                 {{ __('Nome') }}
                             </label>
                             <x-jet-input id="name" class="form-control block w-full filter-field" type="text" name="name" :value="app('request')->input('name')" autofocus autocomplete="name" />
                         </div>
-                        <div class="w-full md:w-1/3 px-2 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="status">
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="roles">
                                 {{ __('Nível de Acesso') }}
                             </label>
                             <x-custom-select :options="$roles" name="roles" id="roles" :value="app('request')->input('roles')"/>
+                        </div>
+                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="status">
+                                {{ __('Status') }}
+                            </label>
+                            <x-custom-select :options="$status" name="status" id="status" :value="app('request')->input('status')"/>
                         </div>
                     </div>
                 </div>
@@ -65,6 +71,7 @@
                 var id = document.getElementById("id").value;
                 var name = document.getElementById("name").value;
                 var roles = document.getElementById("roles").value;
+                var status = document.getElementById("status").value;
 
                 ajax.open(method, url);
 
@@ -89,6 +96,7 @@
                 if(id) data.append('id', id);
                 if(name) data.append('name', name);
                 if(roles) data.append('roles', roles);
+                if(status) data.append('status', status);
                 data.append('ascending', ascending);
                 data.append('order_by', orderBY);
 
@@ -110,6 +118,7 @@
                 var id = document.getElementById("id").value;
                 var name = document.getElementById("name").value;
                 var roles = document.getElementById("roles").value;
+                var status = document.getElementById("status").value;
 
                 ajax.open(method, url);
 
@@ -137,6 +146,7 @@
                 if(id) data.append('id', id);
                 if(name) data.append('name', name);
                 if(roles) data.append('roles', roles);
+                if(status) data.append('status', status);
 
                 ajax.send(data);
             }

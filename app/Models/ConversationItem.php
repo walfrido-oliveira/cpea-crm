@@ -235,22 +235,65 @@ class ConversationItem extends Model
             if(!$isCpeaId) $q->whereNull("cpea_linked_id");
             if($isCpeaId) $q->whereNotNull("cpea_linked_id");
 
-            if(isset($query['id']))
+            if(isset($query['cpea_linked_id']))
             {
-                if(!is_null($query['id']))
+                if(!is_null($query['cpea_linked_id']))
                 {
-                    $q->where('id', $query['id']);
+                    $q->where('cpea_linked_id', $query['cpea_linked_id']);
                 }
             }
+
+            if(isset($query['direction_id']))
+            {
+                if(!is_null($query['direction_id']))
+                {
+                    $q->where('employees.direction_id', $query['direction_id']);
+                }
+            }
+
+            if(isset($query['department_id']))
+            {
+                if(!is_null($query['department_id']))
+                {
+                    $q->where('employees.department_id', $query['department_id']);
+                }
+            }
+
+            if(isset($query['employee_id']))
+            {
+                if(!is_null($query['employee_id']))
+                {
+                    $q->where('employee_id', $query['employee_id']);
+                }
+            }
+
+            if(isset($query['customer_name']))
+            {
+                if(!is_null($query['customer_name']))
+                {
+                    $q->where('customers.name', 'LIKE', "%{$query['customer_name']}%");
+                }
+            }
+
+            if(isset($query['conversation_status_id']))
+            {
+                if(!is_null($query['conversation_status_id']))
+                {
+                    $q->where('conversation_status_id', $query['conversation_status_id']);
+                }
+            }
+
 
         });
 
         $result
-        ->join("conversations as c", "c.id", "=", "conversation_id")
+        ->join("conversations", "conversations.id", "=", "conversation_id")
+        ->join("customers", "customers.id", "=", "conversations.customer_id")
+        ->join("employees", "employees.id", "=", "conversation_items.employee_id")
         ->orderBy($orderBy, $ascending);
 
 
-
+        //dd($result->toSql());
         return $result->paginate($perPage);
     }
 }

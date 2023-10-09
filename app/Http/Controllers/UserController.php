@@ -25,12 +25,13 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users =  User::filter($request->all());
+        $users =  User::filter(['status' => 'active']);
         $roles = Role::all()->pluck('name', 'name');
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'id';
+        $status = User::getStatusArray();
 
-        return view('users.index', compact('users', 'roles', 'ascending', 'orderBy'));
+        return view('users.index', compact('users', 'roles', 'ascending', 'orderBy', 'status'));
     }
 
     /**

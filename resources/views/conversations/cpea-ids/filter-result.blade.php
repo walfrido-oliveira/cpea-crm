@@ -1,11 +1,11 @@
 <thead>
     <tr class="thead-light">
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="cpea_linked_id" columnText="{{ __('IDCPEA') }}" />
-        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="customer_id" columnText="{{ __('Cliente') }}" />
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="customers.name" columnText="{{ __('Cliente') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="" columnText="{{ __('Produto') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="employee_id" columnText="{{ __('Gestor') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="direction_id" columnText="{{ __('Diretoria') }}" />
-        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="" columnText="{{ __('Departamento') }}" />
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="department_id" columnText="{{ __('Departamento') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="conversation_status_id" columnText="{{ __('Status') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="conversation_items.created_at" columnText="{{ __('Data da Interação') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName=""  columnText="{{ __('Valor') }}" />
@@ -43,7 +43,7 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.conversations.item.show', ['item' => $conversation->id]) }}">
-                    {{ $conversation->employee ? $conversation->employee->department->name : '-' }}
+                    {{ $conversation->employee ? $conversation->employee->department_id : '-' }}
                 </a>
             </td>
             <td>

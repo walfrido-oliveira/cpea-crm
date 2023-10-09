@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ConversationItem;
+use App\Models\ConversationStatus;
+use App\Models\Department;
+use App\Models\Direction;
+use App\Models\Employee;
 
 class CpeaIdController extends Controller
 {
@@ -17,9 +21,14 @@ class CpeaIdController extends Controller
     {
         $conversationItems =  ConversationItem::filter($request->all(), true);
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
+        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'customers.name';
+        $conversationStatuses = ConversationStatus::pluck("name", "id");
+        $employees = Employee::pluck("name", "id");
+        $directions = Direction::pluck("name", "id");
+        $departments = Department::pluck("name", "id");
 
-        return view('conversations.cpea-ids.index', compact('conversationItems', 'ascending', 'orderBy'));
+        return view('conversations.cpea-ids.index', compact('conversationItems', 'ascending',
+        'orderBy', 'conversationStatuses', 'employees', 'directions', 'departments'));
     }
 
      /**

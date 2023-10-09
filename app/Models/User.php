@@ -115,6 +115,14 @@ class User extends Authenticatable
                 }
             }
 
+            if(isset($query['status']))
+            {
+                if(!is_null($query['status']))
+                {
+                    $q->where('status', $query['status']);
+                }
+            }
+
             if(isset($query['roles']))
             {
                 if(!is_null($query['roles']))
