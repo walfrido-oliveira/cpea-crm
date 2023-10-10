@@ -272,7 +272,7 @@
                     </div>
                     @foreach ($customer->detailedContats as $index => $contact)
                         <div class="w-full flex mb-3"
-                        @if($index > 5)
+                        @if($index > 4)
                             x-show="isOpenContact()"
                             x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0 transform scale-90"
