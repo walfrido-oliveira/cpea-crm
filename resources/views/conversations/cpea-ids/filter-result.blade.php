@@ -1,6 +1,6 @@
 <thead>
     <tr class="thead-light">
-        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="cpea_linked_id" columnText="{{ __('IDCPEA') }}" />
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="cpea_id" columnText="{{ __('IDCPEA') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="customers.name" columnText="{{ __('Cliente') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="" columnText="{{ __('Produto') }}" />
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="employee_id" columnText="{{ __('Gestor') }}" />

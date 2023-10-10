@@ -113,6 +113,28 @@
                         </div>
                     </div>
 
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Etapa') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->etapa ? $conversationItem->etapa->name : '-' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('PPI') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">
+                                <span class="w-24 py-1 @if($conversationItem->ppi == "y") badge-success @elseif($conversationItem->ppi == 'n') badge-danger @endif" >
+                                    {{ __($conversationItem->ppi) }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
                     @if($conversationItem->item_type == "Prospect")
                         <div class="flex flex-wrap">
                             <div class="w-full md:w-2/12">
@@ -162,6 +184,15 @@
                             </div>
                             <div class="w-full md:w-1/2">
                                 <p class="text-gray-500 font-bold">{{ $conversationItem->employee ? $conversationItem->employee->full_name : '-' }}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap">
+                            <div class="w-full md:w-2/12">
+                                <p class="font-bold">{{ __('Departamento') }}</p>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                                <p class="text-gray-500 font-bold">{{ $conversationItem->employee ? $conversationItem->employee->department->name : '-' }}</p>
                             </div>
                         </div>
                     @endif

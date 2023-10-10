@@ -4,7 +4,7 @@
 
             <div class="flex md:flex-row flex-col">
                 <div class="w-full flex items-center">
-                    <h1>{{ __('Empresas/Filiais') }}</h1>
+                    <h1>{{ __('IDCPEA') }}</h1>
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2">
@@ -17,10 +17,10 @@
                 <div class="filter-container">
                     <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
                         <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="cpea_linked_id">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="cpea_id">
                                 {{ __('IDCPEA') }}
                             </label>
-                            <x-jet-input id="cpea_linked_id" class="form-control block w-full filter-field" type="text" name="cpea_linked_id" :value="app('request')->input('cpea_linked_id')" autofocus autocomplete="id" />
+                            <x-jet-input id="cpea_id" class="form-control block w-full filter-field" type="text" name="cpea_id" :value="app('request')->input('cpea_id')" autofocus autocomplete="id" />
                         </div>
                         <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="customer_name">
@@ -77,7 +77,7 @@
 
                 var customer_name = document.getElementById("customer_name").value;
                 var conversation_status_id = document.getElementById("conversation_status_id").value;
-                var cpea_linked_id = document.getElementById("cpea_linked_id").value;
+                var cpea_id = document.getElementById("cpea_id").value;
                 var employee_id = document.getElementById("employee_id").value;
                 var direction_id = document.getElementById("direction_id").value;
                 var department_id = document.getElementById("department_id").value;
@@ -107,7 +107,7 @@
 
                 if(customer_name) data.append('customer_name', customer_name);
                 if(conversation_status_id) data.append('conversation_status_id', conversation_status_id);
-                if(cpea_linked_id) data.append('cpea_linked_id', cpea_linked_id);
+                if(cpea_id) data.append('cpea_id', cpea_id);
                 if(employee_id) data.append('employee_id', employee_id);
                 if(direction_id) data.append('direction_id', direction_id);
                 if(department_id) data.append('department_id', department_id);
@@ -130,7 +130,7 @@
 
                 var customer_name = document.getElementById("customer_name").value;
                 var conversation_status_id = document.getElementById("conversation_status_id").value;
-                var cpea_linked_id = document.getElementById("cpea_linked_id").value;
+                var cpea_id = document.getElementById("cpea_id").value;
                 var employee_id = document.getElementById("employee_id").value;
                 var direction_id = document.getElementById("direction_id").value;
                 var department_id = document.getElementById("department_id").value;
@@ -162,7 +162,7 @@
 
                 if(customer_name) data.append('customer_name', customer_name);
                 if(conversation_status_id) data.append('conversation_status_id', conversation_status_id);
-                if(cpea_linked_id) data.append('cpea_linked_id', cpea_linked_id);
+                if(cpea_id) data.append('cpea_id', cpea_id);
                 if(employee_id) data.append('employee_id', employee_id);
                 if(direction_id) data.append('direction_id', direction_id);
                 if(department_id) data.append('department_id', department_id);

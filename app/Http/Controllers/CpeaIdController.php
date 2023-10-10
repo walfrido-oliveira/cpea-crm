@@ -21,7 +21,7 @@ class CpeaIdController extends Controller
     {
         $conversationItems =  ConversationItem::filter($request->all(), true);
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'customers.name';
+        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'cpea_id';
         $conversationStatuses = ConversationStatus::pluck("name", "id");
         $employees = Employee::pluck("name", "id");
         $directions = Direction::pluck("name", "id");

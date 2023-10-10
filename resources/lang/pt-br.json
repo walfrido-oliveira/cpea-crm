@@ -88,5 +88,7 @@
     "presential":"Presencial",
     "online":"Online",
     "direct_billing":"Faturamento Direto",
-    "technical_assistance":"Assessoria Técnica"
+    "technical_assistance":"Assessoria Técnica",
+    "y":"Sim",
+    "n":"Não"
 }

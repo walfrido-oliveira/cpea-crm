@@ -94,6 +94,14 @@ class ConversationItem extends Model
     }
 
     /**
+     * The ETAPA
+    */
+    public function etapa()
+    {
+        return $this->belongsTo(Etapa::class);
+    }
+
+    /**
      * The user
     */
     public function user()
@@ -229,17 +237,17 @@ class ConversationItem extends Model
     {
         $perPage = isset($query['paginate_per_page']) ? $query['paginate_per_page'] : DEFAULT_PAGINATE_PER_PAGE;
         $ascending = isset($query['ascending']) ? $query['ascending'] : DEFAULT_ASCENDING;
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : "conversation_items." . DEFAULT_ORDER_BY_COLUMN;
+        $orderBy = isset($query['order_by']) ? $query['order_by'] : "cpea_id";
 
         $result = self::where(function($q) use ($query, $isCpeaId) {
-            if(!$isCpeaId) $q->whereNull("cpea_linked_id");
-            if($isCpeaId) $q->whereNotNull("cpea_linked_id");
+            if(!$isCpeaId) $q->whereNull("cpea_id");
+            if($isCpeaId) $q->whereNotNull("cpea_id");
 
-            if(isset($query['cpea_linked_id']))
+            if(isset($query['cpea_id']))
             {
-                if(!is_null($query['cpea_linked_id']))
+                if(!is_null($query['cpea_id']))
                 {
-                    $q->where('cpea_linked_id', $query['cpea_linked_id']);
+                    $q->where('cpea_id', $query['cpea_id']);
                 }
             }
 
