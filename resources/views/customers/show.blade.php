@@ -261,7 +261,7 @@
             </div>
 
             <div class="py-2 my-2 bg-white rounded-lg">
-                <div class="mx-4 px-3 py-2 mt-4" x-data="showInfosContact()">
+                <div class="mx-4 px-3 py-2 mt-4" x-data="showMoreContacts()">
                     <div class="w-full flex">
                         <h2 class="w-full">Contatos {{ ($customer->customer_id ? "da Empresa" : "do Cliente") }}</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
@@ -272,8 +272,8 @@
                     </div>
                     @foreach ($customer->detailedContats as $index => $contact)
                         <div class="w-full flex mb-3"
-                        @if($index > 6)
-                            x-show="isOpen()"
+                        @if($index > 5)
+                            x-show="isOpenContact()"
                             x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0 transform scale-90"
                             x-transition:enter-end="opacity-100 transform scale-100"
@@ -281,7 +281,7 @@
                             x-transition:leave-start="opacity-100 transform scale-100"
                             x-transition:leave-end="opacity-0 transform scale-90 hidden"
                         @endif>
-                            <div class="w-full">
+                            <div class="w-full" x-data="showInfosContact()">
                                 <div class="flex flex-wrap">
                                     <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Nome') }}</p>
@@ -422,20 +422,20 @@
                                     </svg>
                                 </button>
                             </div>
+                            <hr>
                         </div>
-                        <hr>
                     @endforeach
                     @if(count($customer->detailedContats) > 4)
                         <div class="w-full">
-                            <button class="btn-transition-secondary" type="button" id="show_all_contacts" @click="isOpen() ? close() : show();">
-                                <span x-show="isOpen()">
+                            <button class="btn-transition-secondary" type="button" id="show_all_contacts" @click="isOpenContact() ? closeContact() : showContact();">
+                                <span x-show="isOpenContact()">
                                     {{ __('Mostra menos contatos') }}
                                 </span>
-                                <span x-show="!isOpen()">
+                                <span x-show="!isOpenContact()">
                                     {{ __('Mostra todos contatos') }}
                                 </span>
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                    :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }"
+                                    :class="{ 'rotate-180': isOpenContact(), 'rotate-0': !isOpenContact() }"
                                     class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -619,6 +619,21 @@
                 this.open = false;
             },
             isOpen() {
+                return this.open === true
+            },
+        }
+    }
+
+    function showMoreContacts() {
+        return {
+            open: false,
+            showContact() {
+                this.open = true;
+            },
+            closeContact() {
+                this.open = false;
+            },
+            isOpenContact() {
                 return this.open === true
             },
         }
