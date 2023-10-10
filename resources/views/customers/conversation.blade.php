@@ -42,12 +42,12 @@
     </td>
     <td class="text-center">
         @if(count($conversation->items) > 0)
-            {{ $conversation->items[0]->updated_at->format('d/m/Y H:i') }}
+            {{ $conversation->items[0]->interaction_at->format('d/m/Y H:i') }}
         @endif
     </td>
     <td class="text-center">
         @if(count($conversation->items) > 0)
-            {{ $conversation->items[count($conversation->items) - 1]->updated_at->format('d/m/Y H:i') }}
+            {{ $conversation->items[count($conversation->items) - 1]->interaction_at->format('d/m/Y H:i') }}
         @endif
     </td>
     <td class="text-center">
