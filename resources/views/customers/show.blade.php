@@ -271,17 +271,18 @@
                         </div>
                     </div>
                     @foreach ($customer->detailedContats as $index => $contact)
-                        <div class="w-full flex mb-3"
-                        @if($index > 6)
-                            x-data="showInfosContact()"
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 transform scale-90"
-                            x-transition:enter-end="opacity-100 transform scale-100"
-                            x-transition:leave="transition ease-in duration-300"
-                            x-transition:leave-start="opacity-100 transform scale-100"
-                            x-transition:leave-end="opacity-0 transform scale-90 hidden"
-                        @endif>
-                            <div class="w-full">
+                        <div class="w-full flex mb-3" x-data="showInfosContact()">
+                            <div class="w-full"
+                                @if($index > 6)
+                                    x-show="isOpen()"
+                                    x-transition:enter="transition ease-out duration-300"
+                                    x-transition:enter-start="opacity-0 transform scale-90"
+                                    x-transition:enter-end="opacity-100 transform scale-100"
+                                    x-transition:leave="transition ease-in duration-300"
+                                    x-transition:leave-start="opacity-100 transform scale-100"
+                                    x-transition:leave-end="opacity-0 transform scale-90 hidden"
+                                @endif
+                            >
                                 <div class="flex flex-wrap">
                                     <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Nome') }}</p>
@@ -427,15 +428,15 @@
                     @endforeach
                     @if(count($customer->detailedContats) > 4)
                         <div class="w-full">
-                            <button class="btn-transition-secondary" type="button" id="show_all_contacts" @click="showInfosContact() ? close() : show();">
-                                <span x-show="showInfosContact()">
+                            <button class="btn-transition-secondary" type="button" id="show_all_contacts" @click="isOpen() ? close() : show();">
+                                <span x-show="isOpen()">
                                     {{ __('Mostra menos contatos') }}
                                 </span>
-                                <span x-show="!showInfosContact()">
+                                <span x-show="!isOpen()">
                                     {{ __('Mostra todos contatos') }}
                                 </span>
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                    :class="{ 'rotate-180': showInfosContact(), 'rotate-0': !showInfosContact() }"
+                                    :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }"
                                     class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
