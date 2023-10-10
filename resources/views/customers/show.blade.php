@@ -281,7 +281,8 @@
                             x-transition:leave-start="opacity-100 transform scale-100"
                             x-transition:leave-end="opacity-0 transform scale-90 hidden"
                         @endif>
-                            <div class="w-full" x-data="showInfosContact()">
+                        <div class="w-full flex"  x-data="{showContacts: false}">
+                            <div class="w-full" >
                                 <div class="flex flex-wrap">
                                     <div class="w-full md:w-2/12">
                                         <p class="font-bold">{{ __('Nome') }}</p>
@@ -300,7 +301,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap" x-show="isOpen()"
+                                <div class="flex flex-wrap" x-show="showContacts"
                                 x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-start="opacity-0 transform scale-90"
                                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -315,7 +316,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap" x-show="isOpen()"
+                                <div class="flex flex-wrap" x-show="showContacts"
                                 x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-start="opacity-0 transform scale-90"
                                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -330,7 +331,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap" x-show="isOpen()"
+                                <div class="flex flex-wrap" x-show="showContacts"
                                 x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-start="opacity-0 transform scale-90"
                                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -345,7 +346,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap" x-show="isOpen()"
+                                <div class="flex flex-wrap" x-show="showContacts"
                                 x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-start="opacity-0 transform scale-90"
                                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -360,7 +361,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap" x-show="isOpen()"
+                                <div class="flex flex-wrap" x-show="showContacts"
                                 x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-start="opacity-0 transform scale-90"
                                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -375,7 +376,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap" x-show="isOpen()"
+                                <div class="flex flex-wrap" x-show="showContacts"
                                 x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-start="opacity-0 transform scale-90"
                                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -390,7 +391,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap" x-show="isOpen()"
+                                <div class="flex flex-wrap" x-show="showContacts"
                                 x-transition:enter="transition ease-out duration-300"
                                 x-transition:enter-start="opacity-0 transform scale-90"
                                 x-transition:enter-end="opacity-100 transform scale-100"
@@ -406,8 +407,8 @@
                                 </div>
                             </div>
                             <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0 flex justify-center place-items-start mt-2">
-                                <button class="btn-transition-primary" type="button" id="show_all_infos" @click="isOpen() ? close() : show();" style="position: relative;left: 70px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': isOpen(), 'rotate-0': !isOpen() }" class="h-6 w-6 inline">
+                                <button class="btn-transition-primary" type="button" id="show_all_infos" @click="showContacts = !showContacts" style="position: relative;left: 70px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{ 'rotate-180': showContacts, 'rotate-0': !showContacts }" class="h-6 w-6 inline">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
                                     </svg>
                                 </button>
@@ -422,11 +423,12 @@
                                     </svg>
                                 </button>
                             </div>
+                        </div>
                             <hr>
                         </div>
                     @endforeach
                     @if(count($customer->detailedContats) > 4)
-                        <div class="w-full">
+                        <div class="w-full flex justify-center">
                             <button class="btn-transition-secondary" type="button" id="show_all_contacts" @click="isOpenContact() ? closeContact() : showContact();">
                                 <span x-show="isOpenContact()">
                                     {{ __('Mostra menos contatos') }}
