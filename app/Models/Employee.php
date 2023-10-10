@@ -128,7 +128,7 @@ class Employee extends Model
             {
                 if(!is_null($query['registration']))
                 {
-                    $q->where('registration', 'like','%' . $query['registration'] . '%');
+                    $q->where('registration', $query['registration']);
                 }
             }
 
