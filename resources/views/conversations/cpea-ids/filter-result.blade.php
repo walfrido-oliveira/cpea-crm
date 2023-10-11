@@ -16,7 +16,7 @@
         <tr>
             <td>
                 <a class="text-item-table" href="{{ route('customers.conversations.item.show', ['item' => $conversation->id]) }}">
-                    {{ $conversation->cpea_linked_id }}
+                    {{ $conversation->conversation->cpea_id }}
                 </a>
             </td>
             <td>
