@@ -25,7 +25,6 @@
                         <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Cliente') }}</p>
                         </div>
-
                         <div class="w-full md:w-1/2">
                             <p class="text-gray-500 font-bold">{{ $conversationItem->conversation->customer ? $conversationItem->conversation->customer->name : '-'  }}</p>
                         </div>
@@ -35,7 +34,6 @@
                         <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Empresa') }}</p>
                         </div>
-
                         <div class="w-full md:w-1/2">
                             <p class="text-gray-500 font-bold">{{ $conversationItem->conversation->customer->customer ? $conversationItem->conversation->customer->customer->name : '-'  }}</p>
                         </div>
@@ -376,8 +374,10 @@
                             <p class="font-bold">{{ __('Tipo de Agenda') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">@if($conversationItem->schedule_type == 'internal') Follow up @endif
-                                @if($conversationItem->schedule_type == 'external') Reunião Externa @endif</p>
+                            <p class="text-gray-500 font-bold">
+                                @if($conversationItem->schedule_type == 'internal') Follow up @endif
+                                @if($conversationItem->schedule_type == 'external') Reunião Externa @endif
+                            </p>
                         </div>
                     </div>
 
