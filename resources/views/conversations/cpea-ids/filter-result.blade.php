@@ -53,7 +53,7 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.conversations.item.show', ['item' => $conversation->id]) }}">
-                    {{ $conversation->created_at->format('d/m/Y H:i') }}
+                    {{ $conversation->interaction_at->format('d/m/Y H:i') }}
                 </a>
             </td>
             <td>
