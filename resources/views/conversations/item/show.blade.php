@@ -3,7 +3,7 @@
         <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
             <div class="flex md:flex-row flex-col">
                 <div class="w-full flex items-center">
-                    <h1>{{ __('Empresa') }} - {{ $conversationItem->conversation->customer->name }} - {{ __("Conversa") }} ({{ str_pad($conversationItem->conversation->id, 5, 0, STR_PAD_LEFT) }})</h1>
+                    <h1>{{ $conversationItem->conversation->customer->name }} - {{ __("Conversa") }} ({{ str_pad($conversationItem->conversation->id, 5, 0, STR_PAD_LEFT) }})</h1>
                 </div>
                 <div class="w-full flex justify-end">
                     <div class="m-2 ">
