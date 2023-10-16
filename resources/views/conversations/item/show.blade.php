@@ -23,6 +23,16 @@
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Empresa') }}</p>
+                        </div>
+
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->conversation->customer ? $conversationItem->conversation->customer->name : '-'  }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('Cliente') }}</p>
                         </div>
 
@@ -89,7 +99,7 @@
                             <p class="font-bold">{{ __('Data/Hora da Interação') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $conversationItem->updated_at->format('d/m/Y H:i:s') }}</p>
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->interaction_at->format('d/m/Y H:i:s') }}</p>
                         </div>
                     </div>
 
