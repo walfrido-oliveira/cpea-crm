@@ -23,7 +23,7 @@
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Empresa') }}</p>
+                            <p class="font-bold">{{ __('Cliente') }}</p>
                         </div>
 
                         <div class="w-full md:w-1/2">
@@ -33,7 +33,7 @@
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
-                            <p class="font-bold">{{ __('Cliente') }}</p>
+                            <p class="font-bold">{{ __('Empresa') }}</p>
                         </div>
 
                         <div class="w-full md:w-1/2">
