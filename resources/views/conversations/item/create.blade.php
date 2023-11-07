@@ -42,7 +42,7 @@
                         <div class="w-1/2 custom-radio mx-4 px-1 py-1 mt-0 ml-3 flex items-center" style="max-height: 59px">
                             <div class="bg-gray-200 radios-container">
                                 <div class="inline-flex inner-item p-2">
-                                    <input type="radio" name="item_type" id="prospect" @if(!$checkprospect) checked @endif hidden value="Prospect"/>
+                                    <input type="radio" name="item_type" id="prospect" checked hidden value="Prospect"/>
                                     <label for="prospect" class="radio">Prospect</label>
                                 </div>
                                 <div class="inline-flex inner-item p-2">
