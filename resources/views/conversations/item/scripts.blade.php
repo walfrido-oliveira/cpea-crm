@@ -1,43 +1,51 @@
 <script>
-    document.querySelectorAll(`input[name='item_type']`).forEach(item => {
-        item.addEventListener("change", function(e) {
-            document.querySelectorAll(`.status`).forEach(item2 => {
-                item2.classList.add("hidden");
-                item2.querySelector("select").removeAttribute("required");
+    window.addEventListener("load", function() {
+        document.querySelectorAll(`input[name='item_type']:checked`).forEach(item => {
+            setFields(item);
+        });
+
+        document.querySelectorAll(`input[name='item_type']`).forEach(item => {
+            item.addEventListener("change", function(e) {
+                setFields(item);
             });
-            //document.querySelector(`.${item.value}-status`).classList.remove("hidden");
-            //document.querySelector(`.${item.value}-status`).querySelector("select").setAttribute("required", "");
-
-            toggleProspectsFiedls(false);
-            toggleProposedFiedls(false);
-
-            switch (item.value) {
-                case "Prospect":
-                    toggleProspectsFiedls(true);
-                    break;
-                case "Proposta":
-                    toggleProposedFiedls(true);
-                    break;
-            }
         });
     });
 
+    function setFields(item) {
+        document.querySelectorAll(`.status`).forEach(item2 => {
+            item2.classList.add("hidden");
+            item2.querySelector("select").removeAttribute("required");
+        });
+
+        toggleProspectsFiedls(false);
+        toggleProposedFiedls(false);
+
+        switch (item.value) {
+            case "Prospect":
+                toggleProspectsFiedls(true);
+                break;
+            case "Proposta":
+                toggleProposedFiedls(true);
+                break;
+        }
+    }
+
     function toggleProspectsFiedls(show) {
         document.querySelectorAll(".prospects-fields").forEach(field => {
-            if(show)field.classList.remove("hidden")
-            if(!show)field.classList.add("hidden")
+            if (show) field.classList.remove("hidden")
+            if (!show) field.classList.add("hidden")
         });
     }
 
     function toggleProposedFiedls(show) {
         document.querySelectorAll(".proposed-fields").forEach(field => {
-            if(show)field.classList.remove("hidden")
-            if(!show)field.classList.add("hidden")
+            if (show) field.classList.remove("hidden")
+            if (!show) field.classList.add("hidden")
         });
     }
 
     document.querySelector("#schedule_type").addEventListener("change", function() {
-        if(this.value == "internal") {
+        if (this.value == "internal") {
             document.querySelector("#addressees").disabled = true;
             document.querySelector("#addressees").value = "";
             document.querySelector("#optional_addressees").disabled = true;
@@ -48,10 +56,10 @@
         }
     });
 
-    if(document.querySelector("#additive")) {
+    if (document.querySelector("#additive")) {
         document.querySelector("#additive").addEventListener("change", function() {
             document.querySelector("#cpea_linked_id").value = "";
-            if(this.value == "y") {
+            if (this.value == "y") {
                 document.querySelector("#cpea_linked_id").disabled = false;
             } else {
                 document.querySelector("#cpea_linked_id").disabled = true;
@@ -61,7 +69,7 @@
         window.addEventListener("load", function() {
             const additive = document.querySelector("#additive");
             const cpeaLinkedId = document.querySelector("#cpea_linked_id");
-            if(additive.value == "y") {
+            if (additive.value == "y") {
                 cpeaLinkedId.disabled = false;
             } else {
                 cpeaLinkedId.disabled = true;
@@ -83,32 +91,32 @@
         dataForm.append("department_id", department_id);
 
         fetch("{{ route('employees.get-by-params') }}".replace("#", id), {
-            method: 'POST',
-            body: dataForm
-        })
-        .then(res => res.text())
-        .then(data => {
-            const response = JSON.parse(data);
+                method: 'POST',
+                body: dataForm
+            })
+            .then(res => res.text())
+            .then(data => {
+                const response = JSON.parse(data);
 
-            var i, L = employees.options.length - 1;
-            for(i = L; i >= 0; i--) {
-                employees.remove(i);
-            }
+                var i, L = employees.options.length - 1;
+                for (i = L; i >= 0; i--) {
+                    employees.remove(i);
+                }
 
-            for (let index = 0; index < response.length; index++) {
-                const element = response[index];
+                for (let index = 0; index < response.length; index++) {
+                    const element = response[index];
 
-                var option = document.createElement("option");
-                option.text = element.name;
-                option.value = element.id;
+                    var option = document.createElement("option");
+                    option.text = element.name;
+                    option.value = element.id;
 
-                employees.add(option);
-           }
+                    employees.add(option);
+                }
 
-           window.customSelectArray["employee_id"].update();
-        }).catch(err => {
-            console.log(err);
-        });
+                window.customSelectArray["employee_id"].update();
+            }).catch(err => {
+                console.log(err);
+            });
     }
 
     document.querySelector("#direction_id").addEventListener("change", function() {
@@ -136,20 +144,20 @@
 
     function toggleAttachmentModal(show = false) {
         const modal = document.querySelector("#attachment_modal");
-        if(show) modal.classList.remove("hidden");
-        if(!show) modal.classList.add("hidden");
+        if (show) modal.classList.remove("hidden");
+        if (!show) modal.classList.add("hidden");
     }
 
     function toggleValueModal(show = false) {
         const modal = document.querySelector("#value_modal");
-        if(show) modal.classList.remove("hidden");
-        if(!show) modal.classList.add("hidden");
+        if (show) modal.classList.remove("hidden");
+        if (!show) modal.classList.add("hidden");
     }
 
     function toggleAddressModal(show = false) {
         const modal = document.querySelector("#address_modal");
-        if(show) modal.classList.remove("hidden");
-        if(!show) modal.classList.add("hidden");
+        if (show) modal.classList.remove("hidden");
+        if (!show) modal.classList.add("hidden");
     }
 
     function addAttachment() {
@@ -172,28 +180,28 @@
         dataForm.append("_token", token);
 
         fetch("{{ route('customers.conversations.item.attachments.store') }}", {
-            method: 'POST',
-            body: dataForm
-        })
-        .then(res => res.text())
-        .then(data => {
-            const response = JSON.parse(data);
+                method: 'POST',
+                body: dataForm
+            })
+            .then(res => res.text())
+            .then(data => {
+                const response = JSON.parse(data);
 
-            toggleAttachmentModal(false);
+                toggleAttachmentModal(false);
 
-            toastr.success(response.message);
+                toastr.success(response.message);
 
-            var table = document.querySelector(".table-attachments");
+                var table = document.querySelector(".table-attachments");
 
-            var row = table.insertRow();
-            row.innerHTML = response.attachment;
+                var row = table.insertRow();
+                row.innerHTML = response.attachment;
 
-            deleteAttachmentModalHandle();
+                deleteAttachmentModalHandle();
 
-        }).catch(err => {
-            console.log(err);
-            toastr.error(err);
-        });
+            }).catch(err => {
+                console.log(err);
+                toastr.error(err);
+            });
     }
 
     function checkValidityValue() {
@@ -201,8 +209,10 @@
         const proposed = document.querySelectorAll(".value-type[value='proposed']").length
         var valueType = document.querySelector("#value_modal #value_type");
 
-        if(valueType.value == 'proposed' && proposed > 0) {
-            valueType.setCustomValidity(`Não é permitido adicionar mais de um valor do tipo "Proposta", só pode existir apenas um valor do tipo "Proposta"`)
+        if (valueType.value == 'proposed' && proposed > 0) {
+            valueType.setCustomValidity(
+                `Não é permitido adicionar mais de um valor do tipo "Proposta", só pode existir apenas um valor do tipo "Proposta"`
+            )
         } else {
             valueType.setCustomValidity('');
         }
@@ -230,28 +240,28 @@
         dataForm.append("_token", token);
 
         fetch("{{ route('customers.conversations.item.values.store') }}", {
-            method: 'POST',
-            body: dataForm
-        })
-        .then(res => res.text())
-        .then(data => {
-            const response = JSON.parse(data);
+                method: 'POST',
+                body: dataForm
+            })
+            .then(res => res.text())
+            .then(data => {
+                const response = JSON.parse(data);
 
-            toggleValueModal(false);
+                toggleValueModal(false);
 
-            toastr.success(response.message);
+                toastr.success(response.message);
 
-            var table = document.querySelector(".table-values");
+                var table = document.querySelector(".table-values");
 
-            var row = table.insertRow();
-            row.innerHTML = response.value;
+                var row = table.insertRow();
+                row.innerHTML = response.value;
 
-            deleteValueModalHandle();
+                deleteValueModalHandle();
 
-        }).catch(err => {
-            console.log(err);
-            toastr.error(err);
-        });
+            }).catch(err => {
+                console.log(err);
+                toastr.error(err);
+            });
     }
 
     function addAddress() {
@@ -274,28 +284,28 @@
         dataForm.append("_token", token);
 
         fetch("{{ route('customers.conversations.item.address.store') }}", {
-            method: 'POST',
-            body: dataForm
-        })
-        .then(res => res.text())
-        .then(data => {
-            const response = JSON.parse(data);
+                method: 'POST',
+                body: dataForm
+            })
+            .then(res => res.text())
+            .then(data => {
+                const response = JSON.parse(data);
 
-            toggleAddressModal(false);
+                toggleAddressModal(false);
 
-            toastr.success(response.message);
+                toastr.success(response.message);
 
-            var table = document.querySelector(".table-address");
+                var table = document.querySelector(".table-address");
 
-            var row = table.insertRow();
-            row.innerHTML = response.address;
+                var row = table.insertRow();
+                row.innerHTML = response.address;
 
-            deleteAddressModalHandle();
+                deleteAddressModalHandle();
 
-        }).catch(err => {
-            console.log(err);
-            toastr.error(err);
-        });
+            }).catch(err => {
+                console.log(err);
+                toastr.error(err);
+            });
     }
 
     function addLocalAttachment() {
@@ -347,7 +357,8 @@
         var table = document.querySelector(".table-values");
         var row = table.insertRow();
         const value_type = document.querySelector("#value_modal #value_type").value;
-        const value_type_text = document.querySelector("#value_modal #value_type").options[document.querySelector("#value_modal #value_type").selectedIndex].text;
+        const value_type_text = document.querySelector("#value_modal #value_type").options[document.querySelector(
+            "#value_modal #value_type").selectedIndex].text;
         const value = document.querySelector("#value_modal #value").value.replace(".", "").replace(",", ".");
         const description = document.querySelector("#value_modal #description").value;
         const obs = document.querySelector("#value_modal #obs").value;
@@ -429,13 +440,13 @@
         deleteAddressModalHandle(row.querySelector(".delete-address"));
     }
 
-    if(document.querySelector(".create #confirm_attachment_modal")) {
+    if (document.querySelector(".create #confirm_attachment_modal")) {
         document.querySelector(".create #confirm_attachment_modal").addEventListener("click", function() {
             addLocalAttachment();
         });
     }
 
-    if(document.querySelector(".edit #confirm_attachment_modal")) {
+    if (document.querySelector(".edit #confirm_attachment_modal")) {
         document.querySelector(".edit #confirm_attachment_modal").addEventListener("click", function() {
             addAttachment();
         });
@@ -444,7 +455,9 @@
     document.querySelector("#value_modal #value").addEventListener("keyup", function() {
         var value = this.value.replace('.', '').replace(',', '').replace(/\D/g, '');
 
-        const options = { minimumFractionDigits: 2 }
+        const options = {
+            minimumFractionDigits: 2
+        }
         const result = new Intl.NumberFormat('pt-BR', options).format(
             parseFloat(value) / 100
         );
@@ -452,61 +465,61 @@
         this.value = result;
     });
 
-    if(document.querySelector(".create #confirm_value_modal")) {
+    if (document.querySelector(".create #confirm_value_modal")) {
         document.querySelector(".create #confirm_value_modal").addEventListener("click", function() {
             addLocalValue();
         });
     }
 
-    if(document.querySelector(".edit #confirm_value_modal")) {
+    if (document.querySelector(".edit #confirm_value_modal")) {
         document.querySelector(".edit #confirm_value_modal").addEventListener("click", function() {
             addValue();
         });
     }
 
-    if(document.querySelector(".create #confirm_address_modal")) {
+    if (document.querySelector(".create #confirm_address_modal")) {
         document.querySelector(".create #confirm_address_modal").addEventListener("click", function() {
             addLocalAddress();
         });
     }
 
-    if(document.querySelector(".edit #confirm_address_modal")) {
+    if (document.querySelector(".edit #confirm_address_modal")) {
         document.querySelector(".edit #confirm_address_modal").addEventListener("click", function() {
             addAddress();
         });
     }
 
-    if(document.querySelector("#add_attachment")) {
+    if (document.querySelector("#add_attachment")) {
         document.querySelector("#add_attachment").addEventListener("click", function() {
             toggleAttachmentModal(true);
         });
     }
 
-    if(document.querySelector("#add_value")) {
+    if (document.querySelector("#add_value")) {
         document.querySelector("#add_value").addEventListener("click", function() {
             toggleValueModal(true);
         });
     }
 
-    if(document.querySelector("#add_address")) {
+    if (document.querySelector("#add_address")) {
         document.querySelector("#add_address").addEventListener("click", function() {
             toggleAddressModal(true);
         });
     }
 
-    if(document.querySelector("#cancel_attachment_modal")) {
+    if (document.querySelector("#cancel_attachment_modal")) {
         document.querySelector("#cancel_attachment_modal").addEventListener("click", function() {
             toggleAttachmentModal(false);
         });
     }
 
-    if(document.querySelector("#cancel_value_modal")) {
+    if (document.querySelector("#cancel_value_modal")) {
         document.querySelector("#cancel_value_modal").addEventListener("click", function() {
             toggleValueModal(false);
         });
     }
 
-    if(document.querySelector("#cancel_address_modal")) {
+    if (document.querySelector("#cancel_address_modal")) {
         document.querySelector("#cancel_address_modal").addEventListener("click", function() {
             toggleAddressModal(false);
         });
@@ -514,36 +527,36 @@
 
     function toggleDeleteAttachmentModal(show = false, elem = null) {
         const modal = document.querySelector("#delete_attachment_modal");
-        if(show) {
+        if (show) {
             modal.classList.remove("hidden");
             var url = elem.dataset.url;
             modal.dataset.url = url;
         }
-        if(!show) modal.classList.add("hidden");
+        if (!show) modal.classList.add("hidden");
     }
 
     function toggleDeleteValueModal(show = false, elem = null) {
         const modal = document.querySelector("#delete_value_modal");
-        if(show) {
+        if (show) {
             modal.classList.remove("hidden");
             var url = elem.dataset.url;
             modal.dataset.url = url;
         }
-        if(!show) modal.classList.add("hidden");
+        if (!show) modal.classList.add("hidden");
     }
 
     function toggleDeleteAddressModal(show = false, elem = null) {
         const modal = document.querySelector("#delete_address_modal");
-        if(show) {
+        if (show) {
             modal.classList.remove("hidden");
             var url = elem.dataset.url;
             modal.dataset.url = url;
         }
-        if(!show) modal.classList.add("hidden");
+        if (!show) modal.classList.add("hidden");
     }
 
     function deleteAttachmentModalHandle(elem = null) {
-        if(elem) {
+        if (elem) {
             elem.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-attachments");
@@ -562,7 +575,7 @@
     }
 
     function deleteValueModalHandle(elem = null) {
-        if(elem) {
+        if (elem) {
             elem.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-values");
@@ -581,7 +594,7 @@
     }
 
     function deleteAddressModalHandle(elem = null) {
-        if(elem) {
+        if (elem) {
             elem.addEventListener("click", function(e) {
                 e.preventDefault();
                 var table = document.querySelector(".table-address");
@@ -603,26 +616,26 @@
     deleteValueModalHandle();
     deleteAddressModalHandle();
 
-    if(document.querySelector("#cancel_attachment_delete")) {
+    if (document.querySelector("#cancel_attachment_delete")) {
         document.querySelector("#cancel_attachment_delete").addEventListener("click", function() {
             toggleDeleteAttachmentModal(false);
         });
     }
 
-    if(document.querySelector("#cancel_value_delete")) {
+    if (document.querySelector("#cancel_value_delete")) {
         document.querySelector("#cancel_value_delete").addEventListener("click", function() {
             toggleDeleteValueModal(false);
         });
     }
 
-    if(document.querySelector("#cancel_address_delete")) {
+    if (document.querySelector("#cancel_address_delete")) {
         document.querySelector("#cancel_address_delete").addEventListener("click", function() {
             toggleDeleteAddressModal(false);
         });
     }
 
     document.querySelector("#meeting_form").addEventListener("change", function() {
-        if(this.value == 'online') {
+        if (this.value == 'online') {
             document.querySelectorAll(".meeting-place").forEach(item => {
                 item.classList.add("hidden");
             });
@@ -631,7 +644,7 @@
             });
         }
 
-        if(this.value == 'presential') {
+        if (this.value == 'presential') {
             document.querySelectorAll(".meeting-place").forEach(item => {
                 item.classList.remove("hidden");
             });
@@ -640,5 +653,4 @@
             });
         }
     });
-
 </script>
