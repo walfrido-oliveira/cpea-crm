@@ -148,7 +148,7 @@ class ConversationItemController extends Controller
         $conversationItem->notify(true);
 
         if($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
-            $conversation->cpea_id = $conversation->id;
+            $conversation->cpea_id = Conversation::max('cpea_id') + 1;
             $conversation->save();
         }
 
