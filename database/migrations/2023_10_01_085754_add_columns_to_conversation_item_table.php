@@ -17,7 +17,7 @@ class AddColumnsToConversationItemTable extends Migration
             $table->foreignId('etapa_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('cnpj_id')->nullable()->constrained()->cascadeOnDelete();
 
-            $table->string('ppi');
+            $table->string('ppi')->nullable();
         });
     }
 
