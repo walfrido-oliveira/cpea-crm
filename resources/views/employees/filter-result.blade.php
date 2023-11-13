@@ -6,7 +6,6 @@
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="occupation_id" columnText="{{ __('Cargo') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="department_id" columnText="{{ __('Departamento') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="direction_id" columnText="{{ __('Diretoria') }}"/>
-        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="manager_id" columnText="{{ __('Gestor Imediato') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="status" columnText="{{ __('Situaçao') }}"/>
         <th scope="col"
             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -34,9 +33,6 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->direction ? $employee->direction->name : '-' }}</a>
-            </td>
-            <td>
-                <a class="text-item-table" href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->manager ? $employee->manager->name : '-' }}</a>
             </td>
             <td>
                 <span class="w-24 py-1 @if($employee->status == "active") badge-success @elseif($employee->status == 'inactive') badge-danger @endif" >

@@ -19,7 +19,6 @@ class Employee extends Model
         'direction_id',
         'department_id',
         'name',
-        'manager_id',
         'registration',
         'user_id',
         'project_manager',
@@ -49,14 +48,6 @@ class Employee extends Model
     public function direction()
     {
         return $this->belongsTo(Direction::class);
-    }
-
-    /**
-     * The manager
-     */
-    public function manager()
-    {
-        return $this->belongsTo(Employee::class, 'manager_id', 'id');
     }
 
     /**
