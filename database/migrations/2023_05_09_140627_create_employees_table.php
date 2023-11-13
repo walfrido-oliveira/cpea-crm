@@ -21,7 +21,6 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('department_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('manager_id')->nullable();
-            $table->foreign('manager_id')->references('id')->on('users');
             $table->string('registration')->nullable();
             $table->timestamps();
         });
