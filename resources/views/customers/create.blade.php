@@ -53,20 +53,20 @@
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4"><h2 class="px-3 mb-6 md:mb-0">Endereço</h2></div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <x-jet-label for="cep" value="{{ __('CEP') }}" required/>
-                            <x-jet-input id="cep" class="form-control block mt-1 w-full" type="text" name="addresses[0][cep]" maxlength="9" required autofocus autocomplete="cep" value="{{ old('addresses.0.cep') }}"/>
+                            <x-jet-label for="cep" value="{{ __('CEP') }}" />
+                            <x-jet-input id="cep" class="form-control block mt-1 w-full" type="text" name="addresses[0][cep]" maxlength="9"  autofocus autocomplete="cep" value="{{ old('addresses.0.cep') }}"/>
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <x-jet-label for="address" value="{{ __('Endereço') }}" required/>
-                            <x-jet-input id="address" class="form-control block mt-1 w-full" type="text" name="addresses[0][address]" maxlength="255" required autofocus autocomplete="address" value="{{ old('addresses.0.address') }}"/>
+                            <x-jet-label for="address" value="{{ __('Endereço') }}" />
+                            <x-jet-input id="address" class="form-control block mt-1 w-full" type="text" name="addresses[0][address]" maxlength="255"  autofocus autocomplete="address" value="{{ old('addresses.0.address') }}"/>
                         </div>
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="number" value="{{ __('Número') }}" required/>
-                            <x-jet-input id="number" class="form-control block mt-1 w-full" type="text" name="addresses[0][number]" maxlength="255" required autofocus autocomplete="number" value="{{ old('addresses.0.number') }}"/>
+                            <x-jet-label for="number" value="{{ __('Número') }}" />
+                            <x-jet-input id="number" class="form-control block mt-1 w-full" type="text" name="addresses[0][number]" maxlength="255"  autofocus autocomplete="number" value="{{ old('addresses.0.number') }}"/>
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="complement" value="{{ __('Complemento') }}"/>
@@ -75,15 +75,15 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0">
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="district" value="{{ __('Bairro') }}" required/>
-                            <x-jet-input id="district" class="form-control block mt-1 w-full" type="text" name="addresses[0][district]" maxlength="255" required autofocus autocomplete="district" value="{{ old('addresses.0.district') }}"/>
+                            <x-jet-label for="district" value="{{ __('Bairro') }}" />
+                            <x-jet-input id="district" class="form-control block mt-1 w-full" type="text" name="addresses[0][district]" maxlength="255"  autofocus autocomplete="district" value="{{ old('addresses.0.district') }}"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="city" value="{{ __('Cidade') }}" required/>
-                            <x-jet-input id="city" class="form-control block mt-1 w-full" type="text" name="addresses[0][city]" maxlength="255" required autofocus autocomplete="city" value="{{ old('addresses.0.city') }}"/>
+                            <x-jet-label for="city" value="{{ __('Cidade') }}" />
+                            <x-jet-input id="city" class="form-control block mt-1 w-full" type="text" name="addresses[0][city]" maxlength="255"  autofocus autocomplete="city" value="{{ old('addresses.0.city') }}"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="state" value="{{ __('Estado (UF)') }}" required/>
+                            <x-jet-label for="state" value="{{ __('Estado (UF)') }}" />
                             <x-custom-select :options="states()" value="{{ old('addresses.0.state') }}" name="addresses[0][state]" id="state" class="mt-1"/>
                         </div>
                     </div>

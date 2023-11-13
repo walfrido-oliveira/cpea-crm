@@ -21,7 +21,6 @@ class CustomerController extends Controller
             'obs' => ['nullable', 'string', 'max:255'],
             'competitors' => ['nullable', 'string', 'max:255'],
             'segment_id' => ['required', 'exists:segments,id'],
-            'addresses' => ['required'],
             'status' => ['in:active,inactive', 'nullable'],
             'customer_id' => ['nullable', 'exists:customers,id']
         ]);
