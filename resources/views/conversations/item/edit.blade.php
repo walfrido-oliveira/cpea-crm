@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <div class="py-2 my-2 bg-white rounded-lg">
+                <div class="py-2 my-2 bg-white rounded-lg conversation_fields">
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-4">
                         <h2 class="px-3 mb-6 md:mb-0">Dados da Interação</h2>
                     </div>
@@ -324,5 +324,6 @@
     @include("conversations.item.attachment-modal", ['type' => 'edit'])
     @include("conversations.item.value-modal", ['type' => 'edit'])
     @include("conversations.item.address-modal", ['type' => 'edit'])
+    @include("conversations.item.item-type-modal")
     @include('conversations.item.scripts')
 </x-app-layout>

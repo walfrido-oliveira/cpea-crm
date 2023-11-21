@@ -1,12 +1,28 @@
 <script>
     window.addEventListener("load", function() {
-        document.querySelectorAll(`input[name='item_type']:checked`).forEach(item => {
-            setFields(item);
-        });
+        // document.querySelectorAll(`input[name='item_type']:checked`).forEach(item => {
+        //     setFields(item);
+        // });
+        var oldValueType = document.querySelector(`input[name='item_type']:checked`).id;
 
         document.querySelectorAll(`input[name='item_type']`).forEach(item => {
             item.addEventListener("change", function(e) {
-                setFields(item);
+                toggleItemTypeModal(true);
+                document.querySelector("#confirm_item_type_modal").addEventListener("click", function() {
+                    document.querySelectorAll(".conversation_fields input, .conversation_fields select").forEach(item2 => {
+                        item2.value = "";
+                        console.log(item2.name);
+                        let name = item2.name.replace("[", "").replace("]", "");
+                        if(window.customSelectArray[name]) window.customSelectArray[name].update();
+                    });
+                    toggleItemTypeModal(false);
+                    setFields(item);
+                    oldValueType = item.id;
+                });
+                document.querySelector("#cancel_item_type_modal").addEventListener("click", function() {
+                    toggleItemTypeModal(false);
+                    document.querySelector(`#${oldValueType}`).checked = true;
+                });
             });
         });
     });
@@ -144,6 +160,12 @@
 
     function toggleAttachmentModal(show = false) {
         const modal = document.querySelector("#attachment_modal");
+        if (show) modal.classList.remove("hidden");
+        if (!show) modal.classList.add("hidden");
+    }
+
+    function toggleItemTypeModal(show = false) {
+        const modal = document.querySelector("#item_type_modal");
         if (show) modal.classList.remove("hidden");
         if (!show) modal.classList.add("hidden");
     }
