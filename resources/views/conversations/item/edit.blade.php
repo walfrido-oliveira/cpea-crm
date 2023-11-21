@@ -74,7 +74,7 @@
                             <x-custom-multi-select multiple :options="$products" name="products[]" id="products" :value="$conversationItemProduts" select-class="form-input" class="" no-filter="no-filter"/>
                         </div>
                     </div>
-                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 prospects-fields">
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <x-jet-label for="additive" value="{{ __('Aditivo') }}" required/>
                             <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ $conversationItem->additive ? 'y' : 'n' }}" name="additive" id="additive" class="mt-1"/>
