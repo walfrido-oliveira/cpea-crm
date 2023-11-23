@@ -1,8 +1,8 @@
 <script>
     window.addEventListener("load", function() {
-        // document.querySelectorAll(`input[name='item_type']:checked`).forEach(item => {
-        //     setFields(item);
-        // });
+        document.querySelectorAll(`input[name='item_type']:checked`).forEach(item => {
+            setFields(item);
+         });
         var oldValueType = document.querySelector(`input[name='item_type']:checked`).id;
 
         document.querySelectorAll(`input[name='item_type']`).forEach(item => {
