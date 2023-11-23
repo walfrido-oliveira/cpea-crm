@@ -95,7 +95,7 @@
                             <p class="font-bold">{{ __('CEP') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->addresses[0] ? $customer->addresses[0]->formatted_cep : '-' }}</p>
+                            <p class="text-gray-500 font-bold">{{ isset($customer->addresses[0]) ? $customer->addresses[0]->formatted_cep : '-' }}</p>
                         </div>
                     </div>
 
@@ -104,7 +104,7 @@
                             <p class="font-bold">{{ __('Endereço') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->addresses[0] ? $customer->addresses[0]->address : '-' }}</p>
+                            <p class="text-gray-500 font-bold">{{ isset($customer->addresses[0]) ? $customer->addresses[0]->address : '-' }}</p>
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@
                             <p class="font-bold">{{ __('Número') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->addresses[0] ? $customer->addresses[0]->number : '-' }}</p>
+                            <p class="text-gray-500 font-bold">{{ isset($customer->addresses[0]) ? $customer->addresses[0]->number : '-' }}</p>
                         </div>
                     </div>
 
@@ -122,7 +122,7 @@
                             <p class="font-bold">{{ __('Complmento') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->addresses[0] ? $customer->addresses[0]->complement : '-' }}</p>
+                            <p class="text-gray-500 font-bold">{{ isset($customer->addresses[0]) ? $customer->addresses[0]->complement : '-' }}</p>
                         </div>
                     </div>
 
@@ -131,7 +131,7 @@
                             <p class="font-bold">{{ __('Bairro') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->addresses[0] ? $customer->addresses[0]->district : '-' }}</p>
+                            <p class="text-gray-500 font-bold">{{ isset($customer->addresses[0]) ? $customer->addresses[0]->district : '-' }}</p>
                         </div>
                     </div>
 
@@ -140,7 +140,7 @@
                             <p class="font-bold">{{ __('Cidade') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->addresses[0] ? $customer->addresses[0]->city : '-' }}</p>
+                            <p class="text-gray-500 font-bold">{{ isset($customer->addresses[0]) ? $customer->addresses[0]->city : '-' }}</p>
                         </div>
                     </div>
 
@@ -149,7 +149,7 @@
                             <p class="font-bold">{{ __('Estado (UF)') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $customer->addresses[0] ? $customer->addresses[0]->state : '-' }}</p>
+                            <p class="text-gray-500 font-bold">{{ isset($customer->addresses[0]) ? $customer->addresses[0]->state : '-' }}</p>
                         </div>
                     </div>
 
