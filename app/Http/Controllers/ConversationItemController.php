@@ -63,8 +63,18 @@ class ConversationItemController extends Controller
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
 
-        return view('conversations.item.create', compact('conversation', 'conversationStatuses', 'detailedContacts',
-                                                         'products', 'organizers', 'cpeaIds', 'directions','departments', 'cnpjs', 'etapas'));
+        return view('conversations.item.create', compact(
+            'conversation',
+            'conversationStatuses',
+            'detailedContacts',
+            'products',
+            'organizers',
+            'cpeaIds',
+            'directions',
+            'departments',
+            'cnpjs',
+            'etapas'
+        ));
     }
 
     /**
@@ -99,18 +109,18 @@ class ConversationItemController extends Controller
             'employee_id' => isset($input['employee_id']) ? $input['employee_id'] : null,
             'meeting_form' => $input['meeting_form'],
             'meeting_place' => $input['meeting_place'],
-            'user_id'=> auth()->user()->id,
+            'user_id' => auth()->user()->id,
             'order' => count($conversation->items) + 1,
             'cnpj_id' => $input['cnpj_id'],
             'etapa_id' => $input['etapa_id'],
             'ppi' => $input['ppi']
         ]);
 
-        if(isset($input['products'])) :
+        if (isset($input['products'])) :
             $conversationItem->products()->sync($input['products']);
         endif;
 
-        if(isset($input['files'])) :
+        if (isset($input['files'])) :
             foreach ($input['files'] as $file) {
                 $path = $file['file']->store('public/files');
 
@@ -123,7 +133,7 @@ class ConversationItemController extends Controller
             }
         endif;
 
-        if(isset($input['values'])) :
+        if (isset($input['values'])) :
             foreach ($input['values'] as $value) {
                 Value::create([
                     'conversation_item_id' => $conversationItem->id,
@@ -135,7 +145,7 @@ class ConversationItemController extends Controller
             }
         endif;
 
-        if(isset($input['address'])) :
+        if (isset($input['address'])) :
             foreach ($input['address'] as $address) {
                 ScheduleAddress::create([
                     'conversation_item_id' => $conversationItem->id,
@@ -148,11 +158,14 @@ class ConversationItemController extends Controller
 
         $conversationItem->notify(true);
 
-        if($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
-            DB::statement(DB::raw('LOCK TABLES conversations WRITE'));
-            $conversation->cpea_id = Conversation::max('cpea_id') + 1;
-            $conversation->save();
-            DB::statement(DB::raw('UNLOCK TABLES;'));
+        if ($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
+            #DB::statement(DB::raw('LOCK TABLES conversations WRITE'));
+
+            DB::transaction(function () use($conversation) {
+                $conversation->cpea_id = Conversation::max('cpea_id') + 1;
+                $conversation->save();
+            });
+            #DB::statement(DB::raw('UNLOCK TABLES;'));
         }
 
         $resp = [
@@ -161,7 +174,6 @@ class ConversationItemController extends Controller
         ];
 
         return redirect()->route('customers.conversations.show', ['conversation' => $input['conversation_id']])->with($resp);
-
     }
 
     /**
@@ -199,10 +211,20 @@ class ConversationItemController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $conversationItemProduts = $conversationItem->products()->pluck("products.name", "products.id")->toArray();
 
-        return view('conversations.item.edit', compact('conversation', 'conversationStatuses',
-                                                        'detailedContacts', 'products', 'organizers',
-                                                        'cpeaIds', 'directions','departments',
-                                                        'conversationItem', 'conversationItemProduts', 'cnpjs', 'etapas'));
+        return view('conversations.item.edit', compact(
+            'conversation',
+            'conversationStatuses',
+            'detailedContacts',
+            'products',
+            'organizers',
+            'cpeaIds',
+            'directions',
+            'departments',
+            'conversationItem',
+            'conversationItemProduts',
+            'cnpjs',
+            'etapas'
+        ));
     }
 
     /**
@@ -239,17 +261,17 @@ class ConversationItemController extends Controller
             'employee_id' => isset($input['employee_id']) ? $input['employee_id'] : null,
             'meeting_form' => $input['meeting_form'],
             'meeting_place' => $input['meeting_place'],
-            'user_id'=> auth()->user()->id,
+            'user_id' => auth()->user()->id,
             'cnpj_id' => $input['cnpj_id'],
             'etapa_id' => $input['etapa_id'],
             'ppi' => $input['ppi']
         ]);
 
-        if(isset($input['products'])) :
+        if (isset($input['products'])) :
             $conversationItem->products()->sync($input['products']);
         endif;
 
-        if(isset($input['files'])) :
+        if (isset($input['files'])) :
             foreach ($input['files'] as $file) {
                 $path = $file['file']->store('public/files');
 
@@ -262,7 +284,7 @@ class ConversationItemController extends Controller
             }
         endif;
 
-        if(isset($input['values'])) :
+        if (isset($input['values'])) :
             foreach ($input['values'] as $value) {
                 Value::create([
                     'conversation_item_id' => $conversationItem->id,
@@ -274,7 +296,7 @@ class ConversationItemController extends Controller
             }
         endif;
 
-        if(isset($input['address'])) :
+        if (isset($input['address'])) :
             foreach ($input['address'] as $address) {
                 ScheduleAddress::create([
                     'conversation_item_id' => $conversationItem->id,
