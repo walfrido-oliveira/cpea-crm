@@ -136,11 +136,11 @@
     }
 
     document.querySelector("#direction_id").addEventListener("change", function() {
-        getEmployees(this.value, document.querySelector("#department_id").value);
+        //getEmployees(this.value, document.querySelector("#department_id").value);
     });
 
     document.querySelector("#department_id").addEventListener("change", function() {
-        getEmployees(document.querySelector("#direction_id").value, this.value);
+        //getEmployees(document.querySelector("#direction_id").value, this.value);
     });
 
     function showFieldsSchedule() {

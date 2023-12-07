@@ -39,7 +39,7 @@ class ConversationItem extends Model
         'conversation_id', 'conversation_status_id', 'detailed_contact_id', 'organizer_id',
         'user_id', 'item_details', 'direction_id', 'employee_id', 'order',
         'meeting_form', 'meeting_place', 'teams_url', 'teams_id', 'teams_token', 'schedule_end', 'etapa_id',
-        'ppi', 'cnpj_id'
+        'ppi', 'cnpj_id', 'department_id'
     ];
 
     /**
@@ -91,6 +91,14 @@ class ConversationItem extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    /**
+     * The Departament
+    */
+    public function departament()
+    {
+        return $this->belongsTo(Departament::class);
     }
 
     /**

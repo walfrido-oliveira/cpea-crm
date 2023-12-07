@@ -37,6 +37,7 @@ class ConversationItemController extends Controller
             'organizer_id' => ['nullable', 'exists:users,id'],
             'direction_id' => ['nullable', 'exists:directions,id'],
             'employee_id' => ['nullable', 'exists:employees,id'],
+            'department_id' => ['nullable', 'exists:departments,id'],
             'cnpj_id' => ['nullable', 'exists:cnpjs,id'],
             'etapa_id' => ['nullable', 'exists:etapas,id'],
             'ppi' => ['nullable', 'in:y,n'],
@@ -107,6 +108,7 @@ class ConversationItemController extends Controller
             'schedule_details' => $input['schedule_details'],
             'direction_id' => $input['direction_id'],
             'employee_id' => isset($input['employee_id']) ? $input['employee_id'] : null,
+            'department_id' => isset($input['department_id']) ? $input['department_id'] : null,
             'meeting_form' => $input['meeting_form'],
             'meeting_place' => $input['meeting_place'],
             'user_id' => auth()->user()->id,
@@ -159,13 +161,10 @@ class ConversationItemController extends Controller
         $conversationItem->notify(true);
 
         if ($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
-            #DB::statement(DB::raw('LOCK TABLES conversations WRITE'));
-
             DB::transaction(function () use($conversation) {
                 $conversation->cpea_id = Conversation::max('cpea_id') + 1;
                 $conversation->save();
             });
-            #DB::statement(DB::raw('UNLOCK TABLES;'));
         }
 
         $resp = [
@@ -259,6 +258,7 @@ class ConversationItemController extends Controller
             'schedule_details' => $input['schedule_details'],
             'direction_id' => $input['direction_id'],
             'employee_id' => isset($input['employee_id']) ? $input['employee_id'] : null,
+            'department_id' => isset($input['department_id']) ? $input['department_id'] : null,
             'meeting_form' => $input['meeting_form'],
             'meeting_place' => $input['meeting_place'],
             'user_id' => auth()->user()->id,

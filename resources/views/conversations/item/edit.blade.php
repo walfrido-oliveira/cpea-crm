@@ -91,7 +91,7 @@
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="department_id" value="{{ __('Departamento') }}" required/>
-                            <x-custom-select :options="$departments" name="department_id" id="department_id" class="mt-1" value=""/>
+                            <x-custom-select :options="$departments" name="department_id" id="department_id" class="mt-1" value="{{ $conversationItem->department_id }}"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="employee_id" value="{{ __('Gestor') }}" required/>
