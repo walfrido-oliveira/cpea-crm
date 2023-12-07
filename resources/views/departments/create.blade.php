@@ -34,7 +34,7 @@
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="direction_id" value="{{ __('Diretoria') }}" required/>
-                            <x-custom-select :options="$directions" name="direction_id" id="direction_id" class="mt-1"/>
+                            <x-custom-select :options="$directions" name="direction_id" id="direction_id" class="mt-1" value=""/>
                         </div>
                     </div>
                 </div>

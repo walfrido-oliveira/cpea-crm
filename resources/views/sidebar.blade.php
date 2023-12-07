@@ -19,7 +19,7 @@
         <nav :class="{ 'block': open, 'hidden': !open }"
             class="flex-grow md:block px-0 pb-4 md:pb-0 md:overflow-y-auto">
 
-            <a class="@if (request()->routeIs('users.index')) {{ 'active' }} @endif" href="{{ route('users.index') }}">
+            <a class="@if (request()->routeIs('users.index')) {{ 'active' }} @endif" href="{{ route('users.index') }}?status=active">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

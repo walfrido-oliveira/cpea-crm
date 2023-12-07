@@ -26,7 +26,7 @@ class CnpjController extends Controller
     {
         $cnpjs =  Cnpj::filter($request->all());
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
+        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'cnpj';
 
         return view('cnpjs.index', compact('cnpjs', 'ascending', 'orderBy'));
     }

@@ -59,8 +59,8 @@
                 var token = document.querySelector('meta[name="csrf-token"]').content;
                 var method = 'POST';
                 var paginationPerPage = document.getElementById("paginate_per_page").value;
-                var name = documcent.getElementById("name").value;
-                var type = documcent.getElementById("type").value;
+                var name = document.getElementById("name").value;
+                var type = document.getElementById("type").value;
 
                 ajax.open(method, url);
 
