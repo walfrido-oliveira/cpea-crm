@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\ScheduleAddress;
 use App\Models\ConversationItem;
 use App\Models\ConversationStatus;
+use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 
 class ConversationItemController extends Controller
@@ -60,7 +61,7 @@ class ConversationItemController extends Controller
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id");
         $cnpjs = Cnpj::all()->pluck("display_name", "id");
         $etapas = Etapa::pluck("name", "id");
-
+        $employees = Employee::where("status", "active")->get()->pluck("name", "id");
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
 
@@ -74,7 +75,8 @@ class ConversationItemController extends Controller
             'directions',
             'departments',
             'cnpjs',
-            'etapas'
+            'etapas',
+            'employees'
         ));
     }
 
@@ -205,7 +207,7 @@ class ConversationItemController extends Controller
         $cpeaIds = Conversation::whereNotNull("cpea_id")->pluck("cpea_id", "cpea_id");
         $cnpjs = Cnpj::all()->pluck("display_name", "id");
         $etapas = Etapa::pluck("name", "id");
-
+        $employees = Employee::where("status", "active")->get()->pluck("name", "id");
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
         $conversationItemProduts = $conversationItem->products()->pluck("products.name", "products.id")->toArray();
@@ -222,7 +224,8 @@ class ConversationItemController extends Controller
             'conversationItem',
             'conversationItemProduts',
             'cnpjs',
-            'etapas'
+            'etapas',
+            'employees'
         ));
     }
 
