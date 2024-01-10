@@ -3,19 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Value;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class ValueController extends Controller
 {
     public function validation($request)
     {
-        $request->validate([
-            'conversation_item_id' => ['required', 'exists:conversation_items,id'],
-            'description' => ['required', 'string', 'max:255'],
-            'value_type' => ['required', 'string', 'in:proposed,others'],
-            'obs' => ['nullable', 'string', 'max:255'],
-            'value' => ['required', 'numeric']
-        ]);
+        $validator = Validator::make($request->all(),
+            [
+                'conversation_item_id' => ['required', 'exists:conversation_items,id'],
+                'description' => ['required', 'string', 'max:255'],
+                'value_type' => ['required', 'string', 'in:proposed,others'],
+                'obs' => ['nullable', 'string', 'max:255'],
+                'value' => ['required', 'numeric']
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), Response::HTTP_BAD_REQUEST);
+        }
+
     }
 
     /**
@@ -35,8 +45,10 @@ class ValueController extends Controller
             'description' => $input['description'],
             'obs' => $input['obs'],
             'value_type' => $input['value_type'],
-            'value' => $input['value'],
+            'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
         ]);
+
+        $value = Value::find($value->id);
 
         return response()->json([
             'message' => __('Valor Salvo com Sucesso!'),
@@ -64,7 +76,7 @@ class ValueController extends Controller
             'description' => $input['description'],
             'obs' => $input['obs'],
             'value_type' => $input['value_type'],
-            'value' => $input['value'],
+            'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
         ]);
 
         return response()->json([
