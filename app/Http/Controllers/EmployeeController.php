@@ -148,7 +148,6 @@ class EmployeeController extends Controller
             'direction_id' => $input['direction_id'],
             'department_id' => $input['department_id'],
             'name' => $input['name'],
-            'manager_id' => $input['manager_id'],
             'registration' => $input['registration'],
             'user_id' => $input['user_id'],
             'project_manager' => isset($input['project_manager']),
