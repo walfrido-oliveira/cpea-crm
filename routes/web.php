@@ -231,7 +231,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
     Route::prefix('azure')->name('azure.')->group(function(){
         Route::get('token', [AzureAcessController::class, 'token'])->name('token');
-        Route::get('create-online-meeting', [AzureAcessController::class, 'createOnlineMeeting'])->name('createOnlineMeeting');
+        Route::get('get-user-id/{email}', [AzureAcessController::class, 'getUserId'])->name('get-user-id');
     });
 
     Route::resource('etapas', EtapaController::class, [

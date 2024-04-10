@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Azure;
+
 class AzureAcessController extends Controller
 {
     public function token()
@@ -23,6 +25,11 @@ class AzureAcessController extends Controller
         $accessToken = $token->access_token;
 
         return $accessToken;
+    }
+
+    public function getUserId($email)
+    {
+        return Azure::user($email);
     }
 
 
