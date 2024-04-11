@@ -117,7 +117,9 @@ class ConversationItemController extends Controller
             'order' => count($conversation->items) + 1,
             'cnpj_id' => $input['cnpj_id'],
             'etapa_id' => $input['etapa_id'],
-            'ppi' => $input['ppi']
+            'ppi' => $input['ppi'],
+            'state' => $input['state'],
+            'city' => $input['city'],
         ]);
 
         if (isset($input['products'])) :
@@ -267,7 +269,9 @@ class ConversationItemController extends Controller
             'user_id' => auth()->user()->id,
             'cnpj_id' => $input['cnpj_id'],
             'etapa_id' => $input['etapa_id'],
-            'ppi' => $input['ppi']
+            'ppi' => $input['ppi'],
+            'state' => $input['state'],
+            'city' => $input['city'],
         ]);
 
         if (isset($input['products'])) :

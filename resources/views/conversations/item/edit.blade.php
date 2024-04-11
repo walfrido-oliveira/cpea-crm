@@ -112,6 +112,16 @@
                             <x-custom-select :options="$cnpjs" value="{{ $conversationItem->cnpj_id }}" name="cnpj_id" id="cnpj_id" class="mt-1"/>
                         </div>
                     </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="state" value="{{ __('Estado') }}"/>
+                            <x-custom-select :options="states()" value="{{ $conversationItem->state }}" name="state" id="state" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="city" value="{{ __('Cidade') }}"/>
+                            <x-jet-input id="city" class="form-control block mt-1 w-full" type="text" name="city" maxlength="255" autofocus autocomplete="city" value="{{ $conversationItem->city }}"/>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="py-2 my-2 bg-white rounded-lg">

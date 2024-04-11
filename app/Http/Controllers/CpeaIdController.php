@@ -8,6 +8,7 @@ use App\Models\ConversationStatus;
 use App\Models\Department;
 use App\Models\Direction;
 use App\Models\Employee;
+use App\Models\Product;
 
 class CpeaIdController extends Controller
 {
@@ -26,9 +27,10 @@ class CpeaIdController extends Controller
         $employees = Employee::pluck("name", "id");
         $directions = Direction::pluck("name", "id");
         $departments = Department::pluck("name", "id");
+        $products = Product::pluck("name", "id");
 
         return view('conversations.cpea-ids.index', compact('conversationItems', 'ascending',
-        'orderBy', 'conversationStatuses', 'employees', 'directions', 'departments'));
+        'orderBy', 'conversationStatuses', 'employees', 'directions', 'departments', 'products'));
     }
 
      /**

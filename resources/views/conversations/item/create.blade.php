@@ -33,7 +33,7 @@
                         </div>
                         <div class="w-full md:w-1/2 justify-end flex text-center" style="min-height: 54px">
                             <div class="@if(!$conversation->cpea_id) hidden @endif">
-                                <h2 class="px-3 mb-6 md:mb-0">IDCPEA</h2>
+                                <h2 class="px-3 mb-6 md:mb-0">ID CPEA</h2>
                                 <h2 class="px-3 mb-6 md:mb-0 text-green-600" style="font-size: 2rem !important;">{{ $conversation->cpea_id }}</h2>
                             </div>
                         </div>
@@ -119,6 +119,16 @@
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="cnpj_id" value="{{ __('CNPJ') }}"/>
                             <x-custom-select :options="$cnpjs" value="{{ old('cnpj_id') }}" name="cnpj_id" id="cnpj_id" class="mt-1"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="etapa_id" value="{{ __('Estado') }}"/>
+                            <x-custom-select :options="states()" value="{{ old('state') }}" name="state" id="state" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="ppi" value="{{ __('Cidade') }}"/>
+                            <x-jet-input id="city" class="form-control block mt-1 w-full" type="text" name="city" maxlength="255" autofocus autocomplete="city" value="{{ old('city') }}"/>
                         </div>
                     </div>
                 </div>

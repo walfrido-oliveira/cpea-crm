@@ -39,7 +39,7 @@ class ConversationItem extends Model
         'conversation_id', 'conversation_status_id', 'detailed_contact_id', 'organizer_id',
         'user_id', 'item_details', 'direction_id', 'employee_id', 'order',
         'meeting_form', 'meeting_place', 'teams_url', 'teams_id', 'teams_token', 'schedule_end', 'etapa_id',
-        'ppi', 'cnpj_id', 'department_id'
+        'ppi', 'cnpj_id', 'department_id', 'state', 'city'
     ];
 
     /**
@@ -91,14 +91,6 @@ class ConversationItem extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
-    }
-
-    /**
-     * The Departament
-    */
-    public function departament()
-    {
-        return $this->belongsTo(Departament::class);
     }
 
     /**
@@ -213,7 +205,6 @@ class ConversationItem extends Model
     {
         if($this->schedule_type == 'internal' && $isNew) {
             $this->sendScheduleNotification();
-            //OnlineMeeting::createEvent($this, Azure::user($this->organizer->email));
         }
 
         if($this->schedule_type == 'external' && $isNew) {
@@ -255,7 +246,7 @@ class ConversationItem extends Model
             {
                 if(!is_null($query['cpea_id']))
                 {
-                    $q->where('cpea_id', $query['cpea_id']);
+                    $q->where('cpea_id','LIKE', "{$query['cpea_id']}%");
                 }
             }
 
@@ -299,6 +290,14 @@ class ConversationItem extends Model
                 }
             }
 
+            if(isset($query['product_id']))
+            {
+                if(!is_null($query['product_id']))
+                {
+                    $q->where('product_id', $query['product_id']);
+                }
+            }
+
 
         });
 
@@ -306,6 +305,7 @@ class ConversationItem extends Model
         ->join("conversations", "conversations.id", "=", "conversation_id")
         ->leftJoin("customers", "customers.id", "=", "conversations.customer_id")
         ->leftJoin("employees", "employees.id", "=", "conversation_items.employee_id")
+        ->leftJoin("conversation_item_product", "conversation_item_product.conversation_item_id", "=", "conversation_items.id")
         ->select("conversation_items.*");
 
         if($orderBy == 'cpea_id')

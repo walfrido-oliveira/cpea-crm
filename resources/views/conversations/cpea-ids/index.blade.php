@@ -16,17 +16,23 @@
             <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
                 <div class="filter-container">
                     <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
-                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/5 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="cpea_id">
                                 {{ __('IDCPEA') }}
                             </label>
                             <x-jet-input id="cpea_id" class="form-control block w-full filter-field" type="text" name="cpea_id" :value="app('request')->input('cpea_id')" autofocus autocomplete="id" />
                         </div>
-                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+                        <div class="w-full md:w-1/5 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="customer_name">
                                 {{ __('Cliente') }}
                             </label>
                             <x-jet-input id="customer_name" class="form-control block w-full filter-field" type="text" name="customer_name" :value="app('request')->input('customer_name')" autofocus autocomplete="id" />
+                        </div>
+                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="product_id">
+                                {{ __('Produto') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$products" name="product_id" id="product_id" :value="app('request')->input('product_id')"/>
                         </div>
                         <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="employee_id">
@@ -81,6 +87,7 @@
                 var employee_id = document.getElementById("employee_id").value;
                 var direction_id = document.getElementById("direction_id").value;
                 var department_id = document.getElementById("department_id").value;
+                var product_id = document.getElementById("product_id").value;
 
                 ajax.open(method, url);
 
@@ -111,6 +118,7 @@
                 if(employee_id) data.append('employee_id', employee_id);
                 if(direction_id) data.append('direction_id', direction_id);
                 if(department_id) data.append('department_id', department_id);
+                if(product_id) data.append('product_id', product_id);
 
                 ajax.send(data);
             }
@@ -134,6 +142,7 @@
                 var employee_id = document.getElementById("employee_id").value;
                 var direction_id = document.getElementById("direction_id").value;
                 var department_id = document.getElementById("department_id").value;
+                var product_id = document.getElementById("product_id").value;
 
 
                 ajax.open(method, url);
@@ -166,6 +175,7 @@
                 if(employee_id) data.append('employee_id', employee_id);
                 if(direction_id) data.append('direction_id', direction_id);
                 if(department_id) data.append('department_id', department_id);
+                if(product_id) data.append('product_id', product_id);
 
                 ajax.send(data);
             }

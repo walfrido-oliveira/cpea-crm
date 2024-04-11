@@ -136,6 +136,24 @@
 
                     <div class="flex flex-wrap">
                         <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Estado') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->state ? $conversationItem->state : '-' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Cidade') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">{{ $conversationItem->city ? $conversationItem->city : '-' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
                             <p class="font-bold">{{ __('PPI') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
