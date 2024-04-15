@@ -23,6 +23,10 @@
                             <x-jet-label :value="__('Tempo de Sessão')" for="session_lifetime" required/>
                             <x-jet-input id="session_lifetime" class="form-control block w-full" type="text" name="session_lifetime" maxlength="255" :value="$sessionLifeTime" required autofocus autocomplete="session_lifetime" placeholder="{{ __('Valor em minutos') }}"/>
                         </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <x-jet-label :value="__('Quantidade de Meses (Nova Cliente)')" for="new_customer_months" required/>
+                            <x-jet-input id="new_customer_months" class="form-control block w-full" type="text" name="new_customer_months" maxlength="255" :value="$newCustomerMonths" required autofocus autocomplete="new_customer_months" placeholder="{{ __('Valor em meses') }}"/>
+                        </div>
                     </div>
                 </div>
             </form>

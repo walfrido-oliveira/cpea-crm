@@ -18,8 +18,9 @@ class ConfigController extends Controller
     public function index(Request $request)
     {
         $sessionLifeTime = Config::get('session_lifetime');
+        $newCustomerMonths = Config::get('new_customer_months');
 
-        return view('config.index', compact('sessionLifeTime'));
+        return view('config.index', compact('sessionLifeTime', 'newCustomerMonths'));
     }
 
     /**

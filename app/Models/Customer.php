@@ -114,6 +114,13 @@ class Customer extends Model
         return mask($this->cnpj, "##.###.###/####-##");
     }
 
+    public function getIsNewCustomerAttribute()
+    {
+        $month = now()->subMonth(Config::get('new_customer_months'));
+        $conversationItems = ConversationItem::where("item_type", "Proposta")->whereBetween("interaction_at", [$month, now()])->where("conversation_status_id", 14)->get();
+        return count($conversationItems) == 0;
+    }
+
     /**
      * Find users in dabase
      *

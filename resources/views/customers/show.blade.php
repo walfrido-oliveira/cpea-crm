@@ -77,6 +77,17 @@
                             <p class="text-gray-500 font-bold">{{ $customer->segment ? $customer->segment->name : '-' }}</p>
                         </div>
                     </div>
+
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-2/12">
+                            <p class="font-bold">{{ __('Novo Cliente') }}</p>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <p class="text-gray-500 font-bold">
+                                <span class="w-24 py-1 {{ $customer->is_new_customer ? 'badge-success' : 'badge-danger' }}">{{ $customer->is_new_customer ? 'Sim' : 'Não' }}</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mx-4 px-3 py-2 mt-4" x-show="isOpen()"
