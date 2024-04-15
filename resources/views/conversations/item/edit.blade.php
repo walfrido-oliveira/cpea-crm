@@ -119,7 +119,11 @@
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <x-jet-label for="city" value="{{ __('Cidade') }}"/>
-                            <x-jet-input id="city" class="form-control block mt-1 w-full" type="text" name="city" maxlength="255" autofocus autocomplete="city" value="{{ $conversationItem->city }}"/>
+                            <x-custom-select :options="[$conversationItem->city => $conversationItem->city]" value="{{ $conversationItem->city }}" name="city" id="city" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="probability" value="{{ __('Probabildade') }}"/>
+                            <x-custom-select :options="$probabilities" value="{{ $conversationItem->probability }}" name="probability" id="probability" class="mt-1"/>
                         </div>
                     </div>
                 </div>

@@ -195,7 +195,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
 
         Route::prefix('endereco')->name('address.')->group(function(){
             Route::post('/cep/{cep}', [AddressController::class, 'cep'])->name('cep');
+            Route::post('/cities/{state}', [AddressController::class, 'cities'])->name('cities');
         });
+
 
         Route::prefix('conversas')->name('conversations.')->group(function(){
             Route::get('/{conversation}', [ConversationController::class, 'show'])->name('show');

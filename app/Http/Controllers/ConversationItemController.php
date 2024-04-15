@@ -64,6 +64,7 @@ class ConversationItemController extends Controller
         $employees = Employee::where("status", "active")->get()->pluck("name", "id");
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
+        $probabilities = ConversationItem::probabilities();
 
         return view('conversations.item.create', compact(
             'conversation',
@@ -76,7 +77,8 @@ class ConversationItemController extends Controller
             'departments',
             'cnpjs',
             'etapas',
-            'employees'
+            'employees',
+            'probabilities'
         ));
     }
 
@@ -120,6 +122,7 @@ class ConversationItemController extends Controller
             'ppi' => $input['ppi'],
             'state' => $input['state'],
             'city' => $input['city'],
+            'probability' => $input['probability'],
         ]);
 
         if (isset($input['products'])) :
@@ -213,6 +216,7 @@ class ConversationItemController extends Controller
         $directions = Direction::pluck("name", "id");
         $departments = Department::all()->pluck('name', 'id');
         $conversationItemProduts = $conversationItem->products()->pluck("products.name", "products.id")->toArray();
+        $probabilities = ConversationItem::probabilities();
 
         return view('conversations.item.edit', compact(
             'conversation',
@@ -227,7 +231,8 @@ class ConversationItemController extends Controller
             'conversationItemProduts',
             'cnpjs',
             'etapas',
-            'employees'
+            'employees',
+            'probabilities'
         ));
     }
 
@@ -272,6 +277,7 @@ class ConversationItemController extends Controller
             'ppi' => $input['ppi'],
             'state' => $input['state'],
             'city' => $input['city'],
+            'probability' => $input['probability'],
         ]);
 
         if (isset($input['products'])) :

@@ -123,12 +123,16 @@
                     </div>
                     <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 proposed-fields hidden">
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="etapa_id" value="{{ __('Estado') }}"/>
+                            <x-jet-label for="state" value="{{ __('Estado') }}"/>
                             <x-custom-select :options="states()" value="{{ old('state') }}" name="state" id="state" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="ppi" value="{{ __('Cidade') }}"/>
-                            <x-jet-input id="city" class="form-control block mt-1 w-full" type="text" name="city" maxlength="255" autofocus autocomplete="city" value="{{ old('city') }}"/>
+                            <x-jet-label for="city" value="{{ __('Cidade') }}"/>
+                            <x-custom-select :options="[]" value="{{ old('city') }}" name="city" id="city" class="mt-1"/>
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <x-jet-label for="probability" value="{{ __('Probabildade') }}"/>
+                            <x-custom-select :options="$probabilities" value="{{ old('probability') }}" name="probability" id="probability" class="mt-1"/>
                         </div>
                     </div>
                 </div>

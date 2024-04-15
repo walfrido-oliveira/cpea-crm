@@ -11,7 +11,6 @@
                 document.querySelector("#confirm_item_type_modal").addEventListener("click", function() {
                     document.querySelectorAll(".conversation_fields input, .conversation_fields select").forEach(item2 => {
                         item2.value = "";
-                        console.log(item2.name);
                         let name = item2.name.replace("[", "").replace("]", "");
                         if(window.customSelectArray[name]) window.customSelectArray[name].update();
                     });
@@ -95,18 +94,15 @@
 
     }
 
-    function getEmployees(direction_id, department_id) {
+    function getCities(state) {
         const dataForm = new FormData();
         const token = document.querySelector('meta[name="csrf-token"]').content;
-        const id = this.value;
-        const employees = document.querySelector("#employee_id");
+        const city = document.querySelector("#city");
 
         dataForm.append("_method", "POST");
         dataForm.append("_token", token);
-        dataForm.append("direction_id", direction_id);
-        dataForm.append("department_id", department_id);
 
-        fetch("{{ route('employees.get-by-params') }}".replace("#", id), {
+        fetch("{{ route('customers.address.cities', ['state' => '#']) }}".replace("#", state), {
                 method: 'POST',
                 body: dataForm
             })
@@ -114,33 +110,29 @@
             .then(data => {
                 const response = JSON.parse(data);
 
-                var i, L = employees.options.length - 1;
+                var i, L = city.options.length - 1;
                 for (i = L; i >= 0; i--) {
-                    employees.remove(i);
+                    city.remove(i);
                 }
 
                 for (let index = 0; index < response.length; index++) {
                     const element = response[index];
 
                     var option = document.createElement("option");
-                    option.text = element.name;
-                    option.value = element.id;
+                    option.text = element.nome;
+                    option.value = element.json_decode;
 
-                    employees.add(option);
+                    city.add(option);
                 }
 
-                window.customSelectArray["employee_id"].update();
+                window.customSelectArray["city"].update();
             }).catch(err => {
                 console.log(err);
             });
     }
 
-    document.querySelector("#direction_id").addEventListener("change", function() {
-        //getEmployees(this.value, document.querySelector("#department_id").value);
-    });
-
-    document.querySelector("#department_id").addEventListener("change", function() {
-        //getEmployees(document.querySelector("#direction_id").value, this.value);
+    document.querySelector("#state").addEventListener("change", function() {
+        getCities(this.value);
     });
 
     function showFieldsSchedule() {

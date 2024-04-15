@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Department;
-use App\Models\Occupation;
 use App\Events\CreatedUser;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;

@@ -39,7 +39,7 @@ class ConversationItem extends Model
         'conversation_id', 'conversation_status_id', 'detailed_contact_id', 'organizer_id',
         'user_id', 'item_details', 'direction_id', 'employee_id', 'order',
         'meeting_form', 'meeting_place', 'teams_url', 'teams_id', 'teams_token', 'schedule_end', 'etapa_id',
-        'ppi', 'cnpj_id', 'department_id', 'state', 'city'
+        'ppi', 'cnpj_id', 'department_id', 'state', 'city', 'probability'
     ];
 
     /**
@@ -146,6 +146,11 @@ class ConversationItem extends Model
     public function addresses()
     {
         return $this->hasMany(ScheduleAddress::class);
+    }
+
+    public static function probabilities()
+    {
+        return ["10%" => "10%", "50%" => "50%", "90%" => "90%"];
     }
 
     public function totalValues($type = null)
