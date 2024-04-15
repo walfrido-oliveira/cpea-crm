@@ -4,6 +4,7 @@
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="id" columnText="{{ __('Cód. Cliente') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="name" columnText="{{ __('Cliente') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="segment_id" columnText="{{ __('Segmento') }}"/>
+        <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="new_customer" columnText="{{ __('Novo Cliente?') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="updated_at" columnText="{{ __('Data da Última Interação') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="created_at" columnText="{{ __('Data de Cadastro') }}"/>
         <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="status" columnText="{{ __('Situaçao') }}"/>
@@ -27,6 +28,11 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->segment ? $customer->segment->name : '-' }}</a>
+            </td>
+            <td>
+                <span class="w-24 py-1 @if($customer->is_new_customer) badge-success @elseif(!$customer->is_new_customer) badge-danger @endif" >
+                    {{ $customer->is_new_customer ? 'Sim' : 'Não' }}
+                </span>
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->updated_at->format("d/m/Y H:i") }}</a>

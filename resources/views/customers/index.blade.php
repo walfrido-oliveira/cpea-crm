@@ -43,6 +43,12 @@
                             </label>
                             <x-custom-select class="mt-1" :options="$status" name="status" id="status" value=""/>
                         </div>
+                        <div class="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="new_customer">
+                                {{ __('Novo cliente?') }}
+                            </label>
+                            <x-custom-select class="mt-1" :options="$isNewCustomer" name="new_customer" id="new_customer" value=""/>
+                        </div>
                     </div>
                 </div>
                 <div class="flex mt-4">
@@ -75,6 +81,7 @@
                 var name = document.getElementById("name").value;
                 var segment_id = document.getElementById("segment_id").value;
                 var status = document.getElementById("status").value;
+                var newCustomer = document.getElementById("new_customer").value;
 
                 ajax.open(method, url);
 
@@ -102,6 +109,7 @@
                 if(name) data.append('name', name);
                 if(segment_id) data.append('segment_id', segment_id);
                 if(status) data.append('status', status);
+                if(newCustomer) data.append('new_customer', newCustomer);
 
                 ajax.send(data);
             }
@@ -122,6 +130,7 @@
                 var name = document.getElementById("name").value;
                 var segment_id = document.getElementById("segment_id").value;
                 var status = document.getElementById("status").value;
+                var newCustomer = document.getElementById("new_customer").value;
 
                 ajax.open(method, url);
 
@@ -150,6 +159,7 @@
                 if(name) data.append('name', name);
                 if(segment_id) data.append('segment_id', segment_id);
                 if(status) data.append('status', status);
+                if(newCustomer) data.append('new_customer', newCustomer);
 
                 ajax.send(data);
             }

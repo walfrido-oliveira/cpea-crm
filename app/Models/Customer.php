@@ -116,8 +116,15 @@ class Customer extends Model
 
     public function getIsNewCustomerAttribute()
     {
+        $id = $this->id;
         $month = now()->subMonth(Config::get('new_customer_months'));
-        $conversationItems = ConversationItem::where("item_type", "Proposta")->whereBetween("interaction_at", [$month, now()])->where("conversation_status_id", 14)->get();
+        $conversationItems = ConversationItem::where("item_type", "Proposta")
+        ->whereBetween("interaction_at", [$month, now()])
+        ->where("conversation_status_id", 14)
+        ->whereHas("conversation", function($q) use($id) {
+            $q->where("customer_id", $id);
+        })
+        ->get();
         return count($conversationItems) == 0;
     }
 
@@ -175,6 +182,29 @@ class Customer extends Model
                 if(!is_null($query['name']))
                 {
                     $q->where('name', 'like','%' . $query['name'] . '%');
+                }
+            }
+
+            if(isset($query['new_customer']))
+            {
+                if($query['new_customer'] == 0)
+                {
+                    $month = now()->subMonth(Config::get('new_customer_months'));
+                    $ids = Conversation::whereIn('id', ConversationItem::where("item_type", "Proposta")
+                    ->whereBetween("interaction_at", [$month, now()])
+                    ->where("conversation_status_id", 14)
+                    ->pluck("conversation_id"))->pluck('customer_id');
+                    $q->whereIn("id", $ids);
+                }
+
+                if($query['new_customer'] == 1)
+                {
+                    $month = now()->subMonth(Config::get('new_customer_months'));
+                    $ids = Conversation::whereIn('id', ConversationItem::where("item_type", "Proposta")
+                    ->whereBetween("interaction_at", [$month, now()])
+                    ->where("conversation_status_id", 14)
+                    ->pluck("conversation_id"))->pluck('customer_id');
+                    $q->whereNotIn("id", $ids);
                 }
             }
 

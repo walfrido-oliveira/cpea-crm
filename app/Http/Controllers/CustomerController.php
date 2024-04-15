@@ -39,8 +39,9 @@ class CustomerController extends Controller
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
         $status = Customer::getStatusArray();
         $segments = Segment::pluck("name", "id");
+        $isNewCustomer = ["" => "", true => "Sim", false => "Não"];
 
-        return view('customers.index', compact('customers', 'ascending', 'orderBy', 'status', 'segments'));
+        return view('customers.index', compact('customers', 'ascending', 'orderBy', 'status', 'segments', 'isNewCustomer'));
     }
 
     /**
