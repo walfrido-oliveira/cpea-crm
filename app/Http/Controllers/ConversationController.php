@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 
@@ -41,5 +42,17 @@ class ConversationController extends Controller
         ];
 
         return redirect()->route('customers.conversations.show', ['conversation' => $conversation->id])->with($resp);
+    }
+
+    public function getByCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return response()->json($customer->conversations);
+    }
+
+    public function getById($id)
+    {
+        $conversation = Conversation::findOrFail($id);
+        return response()->json($conversation);
     }
 }

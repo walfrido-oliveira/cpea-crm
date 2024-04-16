@@ -171,6 +171,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
     Route::prefix('clientes')->name('customers.')->group(function(){
         Route::post('/filter', [CustomerController::class, 'filter'])->name('filter');
         Route::post('/cnpj/{cnpj}', [CustomerController::class, 'cnpj'])->name('cnpj');
+        Route::post('/filiais/{id}', [CustomerController::class, 'getCustomesParent'])->name('customers-parent');
 
         Route::prefix('empresas')->name('companies.')->group(function(){
             Route::post('/filter', [CompanyController::class, 'filter'])->name('filter');
@@ -193,6 +194,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
             'contato-detalhado' => 'detailed_contact'
         ]);
 
+        Route::prefix('contato-detalhado')->name('detailed-contacts.')->group(function(){
+            Route::post('/contatos/{id}', [DetailedContactController::class, 'getContactsByCustomer'])->name('contacts-by-customer');
+        });
+
         Route::prefix('endereco')->name('address.')->group(function(){
             Route::post('/cep/{cep}', [AddressController::class, 'cep'])->name('cep');
             Route::post('/cities/{state}', [AddressController::class, 'cities'])->name('cities');
@@ -202,9 +207,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
         Route::prefix('conversas')->name('conversations.')->group(function(){
             Route::get('/{conversation}', [ConversationController::class, 'show'])->name('show');
             Route::post('/store', [ConversationController::class, 'store'])->name('store');
+            Route::post('/conversa-por-id/{id}', [ConversationController::class, 'getById'])->name('by-id');
+            Route::post('/conversas-por-cliente/{id}', [ConversationController::class, 'getByCustomer'])->name('by-customer');
 
             Route::prefix('item')->name('item.')->group(function(){
                 Route::get('/create/{conversation}', [ConversationItemController::class, 'create'])->name('create');
+                Route::get('/faster-create', [ConversationItemController::class, 'fasterCreate'])->name('faster-create');
                 Route::get('/edit/{item}', [ConversationItemController::class, 'edit'])->name('edit');
                 Route::get('/{item}', [ConversationItemController::class, 'show'])->name('show');
                 Route::post('/store', [ConversationItemController::class, 'store'])->name('store');

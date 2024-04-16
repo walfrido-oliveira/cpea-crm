@@ -54,14 +54,6 @@ class Customer extends Model
     }
 
     /**
-     * The Sector
-    */
-    public function sector()
-    {
-        return $this->belongsTo(Sector::class);
-    }
-
-    /**
      * The Creator
     */
     public function createdUser()

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailedContact;
+use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Models\DetailedContact;
 
 class DetailedContactController extends Controller
 {
@@ -146,5 +147,11 @@ class DetailedContactController extends Controller
             'message' => __('Contato Apagado com Sucesso!!'),
             'alert-type' => 'success'
         ]);
+    }
+
+    public function getContactsByCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return response()->json($customer->detailedContats);
     }
 }

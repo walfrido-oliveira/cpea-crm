@@ -248,4 +248,10 @@ class CustomerController extends Controller
 
         return response()->json(json_decode($results));
     }
+
+    public function getCustomesParent($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return response()->json($customer->customers);
+    }
 }

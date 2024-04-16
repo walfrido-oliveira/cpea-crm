@@ -120,7 +120,7 @@
 
                     var option = document.createElement("option");
                     option.text = element.nome;
-                    option.value = element.json_decode;
+                    option.value = element.nome;
 
                     city.add(option);
                 }
@@ -134,6 +134,164 @@
     document.querySelector("#state").addEventListener("change", function() {
         getCities(this.value);
     });
+
+    function getCustomersParent(id) {
+        const dataForm = new FormData();
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const parents = document.querySelector("#customer_parent_id");
+
+        dataForm.append("_method", "POST");
+        dataForm.append("_token", token);
+
+        fetch("{{ route('customers.customers-parent', ['id' => '#']) }}".replace("#", id), {
+                method: 'POST',
+                body: dataForm
+            })
+            .then(res => res.text())
+            .then(data => {
+                const response = JSON.parse(data);
+
+                var i, L = parents.options.length - 1;
+                for (i = L; i >= 0; i--) {
+                    parents.remove(i);
+                }
+
+                var option = document.createElement("option");
+                option.text = "";
+                option.value = "";
+                parents.add(option);
+
+                for (let index = 0; index < response.length; index++) {
+                    const element = response[index];
+
+                    var option = document.createElement("option");
+                    option.text = element.name;
+                    option.value = element.id;
+
+                    parents.add(option);
+                }
+
+                window.customSelectArray["customer_parent_id"].update();
+            }).catch(err => {
+                console.log(err);
+            });
+    }
+
+    document.querySelector("#customer_id").addEventListener("change", function() {
+        getCustomersParent(this.value);
+        getContacts(this.value);
+        getConversations(this.value);
+        document.querySelector("#customer_value").value = this.value;
+    });
+
+    document.querySelector("#customer_parent_id").addEventListener("change", function() {
+        getCustomersParent(this.value);
+        getContacts(this.value);
+        getConversations(this.value);
+        document.querySelector("#customer_value").value = this.value;
+    });
+
+    document.querySelector("#conversation_id").addEventListener("change", function() {
+        getConversation(this.value);
+    });
+
+    function getContacts(id) {
+        const dataForm = new FormData();
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const contacts = document.querySelector("#detailed_contact_id");
+
+        dataForm.append("_method", "POST");
+        dataForm.append("_token", token);
+
+        fetch("{{ route('customers.detailed-contacts.contacts-by-customer', ['id' => '#']) }}".replace("#", id), {
+                method: 'POST',
+                body: dataForm
+            })
+            .then(res => res.text())
+            .then(data => {
+                const response = JSON.parse(data);
+
+                var i, L = contacts.options.length - 1;
+                for (i = L; i >= 0; i--) {
+                    contacts.remove(i);
+                }
+
+                for (let index = 0; index < response.length; index++) {
+                    const element = response[index];
+
+                    var option = document.createElement("option");
+                    option.text = element.contact;
+                    option.value = element.id;
+
+                    contacts.add(option);
+                }
+
+                window.customSelectArray["detailed_contact_id"].update();
+            }).catch(err => {
+                console.log(err);
+            });
+    }
+
+    function getConversation(id) {
+        const dataForm = new FormData();
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const idcpea = document.querySelector("#id_cpea_value");
+
+        dataForm.append("_method", "POST");
+        dataForm.append("_token", token);
+
+        fetch("{{ route('customers.conversations.by-id', ['id' => '#']) }}".replace("#", id), {
+                method: 'POST',
+                body: dataForm
+        })
+        .then(res => res.text())
+        .then(data => {
+            const response = JSON.parse(data);
+            id_cpea_value.innerHTML = response.cpea_id
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    function getConversations(id) {
+        const dataForm = new FormData();
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const conversations = document.querySelector("#conversation_id");
+
+        dataForm.append("_method", "POST");
+        dataForm.append("_token", token);
+
+        fetch("{{ route('customers.conversations.by-customer', ['id' => '#']) }}".replace("#", id), {
+                method: 'POST',
+                body: dataForm
+        })
+        .then(res => res.text())
+        .then(data => {
+            const response = JSON.parse(data);
+
+            var i, L = conversations.options.length - 1;
+            for (i = L; i >= 0; i--) {
+                conversations.remove(i);
+            }
+
+            for (let index = 0; index < response.length; index++) {
+                const element = response[index];
+
+                var option = document.createElement("option");
+                option.text = element.id;
+                option.value = element.id;
+
+                conversations.add(option);
+
+                if(index == 0) getConversation(element.id);
+            }
+
+            window.customSelectArray["conversation_id"].update();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
 
     function showFieldsSchedule() {
         return {
