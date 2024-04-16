@@ -274,6 +274,11 @@
                 conversations.remove(i);
             }
 
+            var option = document.createElement("option");
+            option.text = "";
+            option.value = "";
+            conversations.add(option);
+
             for (let index = 0; index < response.length; index++) {
                 const element = response[index];
 
@@ -283,7 +288,6 @@
 
                 conversations.add(option);
 
-                if(index == 0) getConversation(element.id);
             }
 
             window.customSelectArray["conversation_id"].update();

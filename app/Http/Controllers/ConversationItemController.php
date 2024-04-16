@@ -33,7 +33,7 @@ class ConversationItemController extends Controller
       'schedule_name' => ['nullable', 'string', 'max:255'],
       'schedule_details' => ['nullable', 'string'],
       'item_details' => ['nullable', 'string'],
-      'conversation_id' => ['required', 'exists:conversations,id'],
+      //'conversation_id' => ['required', 'exists:conversations,id'],
       'conversation_status_id' => ['nullable', 'exists:conversation_statuses,id'],
       'detailed_contact_id' => ['required', 'exists:detailed_contacts,id'],
       'organizer_id' => ['nullable', 'exists:users,id'],
@@ -128,7 +128,17 @@ class ConversationItemController extends Controller
     $this->validation($request);
 
     $input = $request->all();
-    $conversation = Conversation::findOrFail($input['conversation_id']);
+
+    if(!$input['conversation_id']) {
+        if(isset($input['customer_value'])) {
+            $conversation = Conversation::create([
+                'customer_id' => $input['customer_value']
+            ]);
+            $input['conversation_id'] = $conversation->id;
+        }
+    } else {
+        $conversation = Conversation::findOrFail($input['conversation_id']);
+    }
 
     $conversationItem = ConversationItem::create([
       'conversation_id' => $input['conversation_id'],
