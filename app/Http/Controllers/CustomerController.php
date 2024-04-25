@@ -34,7 +34,16 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $customers =  Customer::filter(['status' => 'active']);
+        $query = $request->all();
+
+        if(count($request->except('paginate_per_page', 'ascending', 'order_by', 'page')) > 0) {
+            $customers =  Customer::filter($query);
+        } else {
+            $query = $request->all();
+            $query['status'] = 'active';
+            $customers =  Customer::filter($query);
+        }
+
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
         $orderBy = isset($query['order_by']) ? $query['order_by'] : 'id';
         $status = Customer::getStatusArray();
