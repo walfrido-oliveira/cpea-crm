@@ -7,7 +7,7 @@
       columnText="{{ __('Cliente') }}" />
     <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="segment_id"
       columnText="{{ __('Segmento') }}" />
-    <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="new_customer"
+    <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName=""
       columnText="{{ __('Novo Cliente?') }}" />
     <x-table-sort-header :orderBy="$orderBy" :ascending="$ascending" columnName="updated_at"
       columnText="{{ __('Data da Última Interação') }}" />
