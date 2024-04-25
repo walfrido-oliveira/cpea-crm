@@ -36,7 +36,7 @@ class CustomerController extends Controller
     {
         $customers =  Customer::filter(['status' => 'active']);
         $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'ids';
+        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'id';
         $status = Customer::getStatusArray();
         $segments = Segment::pluck("name", "id");
         $isNewCustomer = ["" => "", true => "Sim", false => "Não"];
