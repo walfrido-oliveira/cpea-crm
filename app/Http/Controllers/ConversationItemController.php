@@ -374,4 +374,5 @@ class ConversationItemController extends Controller
 
     return redirect()->route('customers.conversations.show', ['conversation' => $input['conversation_id']])->with($resp);
   }
+
 }
