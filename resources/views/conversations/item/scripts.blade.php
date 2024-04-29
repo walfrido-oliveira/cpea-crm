@@ -1,5 +1,5 @@
 <script>
-    window.addEventListener("load", function() {
+  window.addEventListener("load", function() {
         document.querySelectorAll(`input[name='item_type']:checked`).forEach(item => {
             setFields(item);
          });
@@ -177,23 +177,29 @@
             });
     }
 
-    document.querySelector("#customer_id").addEventListener("change", function() {
+    if(document.querySelector("#customer_id")) {
+      document.querySelector("#customer_id").addEventListener("change", function() {
         getCustomersParent(this.value);
         getContacts(this.value);
         getConversations(this.value);
         document.querySelector("#customer_value").value = this.value;
-    });
+      });
+    }
 
-    document.querySelector("#customer_parent_id").addEventListener("change", function() {
+    if(document.querySelector("#customer_parent_id")) {
+      document.querySelector("#customer_parent_id").addEventListener("change", function() {
         getCustomersParent(this.value);
         getContacts(this.value);
         getConversations(this.value);
         document.querySelector("#customer_value").value = this.value;
-    });
+      });
+    }
 
-    document.querySelector("#conversation_id").addEventListener("change", function() {
+    if(document.querySelector("#conversation_id")) {
+      document.querySelector("#conversation_id").addEventListener("change", function() {
         getConversation(this.value);
-    });
+      });
+    }
 
     function getContacts(id) {
         const dataForm = new FormData();

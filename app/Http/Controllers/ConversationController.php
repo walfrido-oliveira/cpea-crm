@@ -77,18 +77,6 @@ class ConversationController extends Controller
 
       $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
       $writer->save("php://output");
-
-      /*$dompdf = new Dompdf(array('tempDir' => '/srv/www/xyz/tmp'));
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->loadHtml($html);
-
-        $dompdf->render();
-
-        $canvas = $dompdf->getCanvas();
-        $canvas->page_text(280, 820, "{PAGE_NUM} de {PAGE_COUNT}", null, 8, array(0, 0, 0));
-
-        $fileName = "Relatório de Interações";
-        $dompdf->stream("$fileName.pdf", array("Attachment" => false));*/
     }, "Relatório de Interações.xls");
   }
 }
