@@ -34,6 +34,7 @@ use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\ConversationStatusController;
 use App\Http\Controllers\CpeaIdController;
 use App\Http\Controllers\GeneralContactTypeController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -249,10 +250,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     });
   });
 
-  Route::get('/report', [ConversationController::class, 'report'])->name('report');
 
   Route::prefix('relatorios')->name('report.')->group(function () {
-    Route::get('/conversas/relatorio-1', [ConversationController::class, 'report1'])->name('report-1');
+    Route::get('/relatorio-1', [ReportController::class, 'report1'])->name('report-1');
+    Route::get('/relatorio-2', [ReportController::class, 'report2'])->name('report-2');
   });
 
   Route::prefix('azure')->name('azure.')->group(function () {

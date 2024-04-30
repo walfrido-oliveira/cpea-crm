@@ -59,24 +59,4 @@ class ConversationController extends Controller
     return response()->json($conversation);
   }
 
-  public function report1(Request $request)
-  {
-    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date")) : now();
-    $endDate = $request->has("end_date") ? new Carbon($request->get("end_date")) : now();
-
-    $conversations = ConversationItem::whereBetween("interaction_at", [$startDate, $endDate])->get();
-
-    if ($request->has("debug")) return view('conversations.reports.report-1', compact('conversations', 'startDate', 'endDate'));
-
-    $html = view('conversations.reports.report-1', compact('conversations', 'startDate', 'endDate'))->render();
-
-    return response()->streamDownload(function () use ($html) {
-
-      $reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
-      $spreadsheet = $reader->loadFromString($html);
-
-      $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
-      $writer->save("php://output");
-    }, "Relatório de Interações.xls");
-  }
 }
