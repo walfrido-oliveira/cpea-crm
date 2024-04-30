@@ -50,7 +50,7 @@ class ReportController extends Controller
 
     $customers = Customer::whereBetween("created_at", [$startDate, $endDate])->get();
 
-    if ($request->has("debug")) return view('reports.report-2', compact('conversations', 'startDate', 'endDate'));
+    if ($request->has("debug")) return view('reports.report-2', compact('customers', 'startDate', 'endDate'));
 
     $html = view('reports.report-2', compact('customers', 'startDate', 'endDate'))->render();
 
