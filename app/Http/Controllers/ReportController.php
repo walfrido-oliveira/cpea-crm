@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contact;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ConversationItem;
@@ -48,6 +49,26 @@ class ReportController extends Controller
     $html = view('reports.report-2', compact('customers', 'startDate', 'endDate'))->render();
 
     return $this->reportFactory($html, "Relatório de Clientes-Empresas.xls");
+  }
+
+  /**
+   * Gets contacts list in XLS format
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function report3(Request $request)
+  {
+    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date")) : now();
+    $endDate = $request->has("end_date") ? new Carbon($request->get("end_date")) : now();
+
+    $contacts = Contact::whereBetween("created_at", [$startDate, $endDate])->get();
+
+    if ($request->has("debug")) return view('reports.report-3', compact('contacts', 'startDate', 'endDate'));
+
+    $html = view('reports.report-3', compact('contacts', 'startDate', 'endDate'))->render();
+
+    return $this->reportFactory($html, "Relatório Contatos Gerais do Cliente-Empresa.xls");
   }
 
   private function reportFactory($html, $reportName)
