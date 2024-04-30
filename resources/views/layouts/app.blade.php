@@ -1,75 +1,81 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @include('layouts.favicon')
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+  @include('layouts.favicon')
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+  <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        @livewireStyles
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
-    </head>
-    <body class="font-sans antialiased">
-        <div class="flex flex-col justify-between">
+  @livewireStyles
 
-            <div class="flex md:flex-row flex-col w-full">
-                @include('top-menu')
-            </div>
+  <!-- Scripts -->
+  <script src="{{ asset('js/app.js') }}" defer></script>
+</head>
 
-            <div class="flex md:flex-row flex-col flex-grow">
-                @include('sidebar')
+<body class="font-sans antialiased">
+  <div class="flex flex-col justify-between">
 
-                <!-- Page Content -->
-                <main class="w-full">
-                    {{ $slot }}
-                </main>
-            </div>
+    <div class="flex md:flex-row flex-col w-full">
+      @include('top-menu')
+    </div>
 
-            <footer>
-                <p class="text-center">{{ __("© Copyright - CPEA 2021") }}</p>
-            </footer>
+    <div class="flex md:flex-row flex-col flex-grow">
+      @include('sidebar')
 
-        </div>
+      <!-- Page Content -->
+      <main class="w-full">
+        {{ $slot }}
+      </main>
+    </div>
 
-        @stack('modals')
+    <footer>
+      <p class="text-center">{{ __("© Copyright - CPEA 2021") }}</p>
+    </footer>
 
-        @livewireScripts
+  </div>
 
-        <script>
-            @if(Session::has('message'))
-              window.addEventListener("load", function() {
-                toastr.options.closeButton = true;
-                var type = "{!! Session::get('alert-type', 'info') !!}";
-                switch(type){
-                    case 'info':
-                        toastr.info("{!! Session::get('message') !!}");
-                        break;
+  @stack('modals')
 
-                    case 'warning':
-                        toastr.warning("{!! Session::get('message') !!}");
-                        break;
+  @livewireScripts
 
-                    case 'success':
-                        toastr.success("{!! Session::get('message') !!}");
-                        break;
+  <script>
+    @if(Session::has('message'))
+      window.addEventListener("load", function() {
+        toastr.options.closeButton = true;
+        var type = "{!! Session::get('alert-type', 'info') !!}";
+        switch(type){
+            case 'info':
+                toastr.info("{!! Session::get('message') !!}");
+                break;
 
-                    case 'error':
-                        toastr.error("{!! Session::get('message') !!}");
-                        break;
-                }
-              });
-            @endif
-        </script>
-    </body>
+            case 'warning':
+                toastr.warning("{!! Session::get('message') !!}");
+                break;
+
+            case 'success':
+                toastr.success("{!! Session::get('message') !!}");
+                break;
+
+            case 'error':
+                toastr.error("{!! Session::get('message') !!}");
+                break;
+        }
+      });
+    @endif
+  </script>
+
+  @include("reports.filter-modal")
+
+</body>
+
 </html>

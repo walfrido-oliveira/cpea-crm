@@ -251,7 +251,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
   });
 
 
-  Route::prefix('relatorios')->name('report.')->group(function () {
+  Route::prefix('relatorios')->name('reports.')->group(function () {
     Route::get('/relatorio-1', [ReportController::class, 'report1'])->name('report-1');
     Route::get('/relatorio-2', [ReportController::class, 'report2'])->name('report-2');
     Route::get('/relatorio-3', [ReportController::class, 'report3'])->name('report-3');
