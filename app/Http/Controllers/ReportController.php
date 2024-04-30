@@ -27,14 +27,7 @@ class ReportController extends Controller
 
     $html = view('reports.report-1', compact('conversations', 'startDate', 'endDate'))->render();
 
-    return response()->streamDownload(function () use ($html) {
-
-      $reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
-      $spreadsheet = $reader->loadFromString($html);
-
-      $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
-      $writer->save("php://output");
-    }, "Relatório de Interações.xls");
+    return $this->reportFactory($html, "Relatório de Interações.xls");
   }
 
   /**
@@ -54,6 +47,11 @@ class ReportController extends Controller
 
     $html = view('reports.report-2', compact('customers', 'startDate', 'endDate'))->render();
 
+    return $this->reportFactory($html, "Relatório de Clientes-Empresas.xls");
+  }
+
+  private function reportFactory($html, $reportName)
+  {
     return response()->streamDownload(function () use ($html) {
 
       $reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
@@ -61,6 +59,6 @@ class ReportController extends Controller
 
       $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
       $writer->save("php://output");
-    }, "Relatório de Clientes-Empresas.xls");
+    }, $reportName);
   }
 }
