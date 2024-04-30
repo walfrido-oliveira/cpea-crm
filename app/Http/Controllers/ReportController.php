@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ConversationItem;
 use App\Models\Customer;
+use App\Models\DetailedContact;
 
 class ReportController extends Controller
 {
@@ -67,6 +68,26 @@ class ReportController extends Controller
     if ($request->has("debug")) return view('reports.report-3', compact('contacts', 'startDate', 'endDate'));
 
     $html = view('reports.report-3', compact('contacts', 'startDate', 'endDate'))->render();
+
+    return $this->reportFactory($html, "Relatório Contatos Gerais do Cliente-Empresa.xls");
+  }
+
+  /**
+   * Gets general contacts list in XLS format
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function report4(Request $request)
+  {
+    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date")) : now();
+    $endDate = $request->has("end_date") ? new Carbon($request->get("end_date")) : now();
+
+    $contacts = DetailedContact::whereBetween("created_at", [$startDate, $endDate])->get();
+
+    if ($request->has("debug")) return view('reports.report-4', compact('contacts', 'startDate', 'endDate'));
+
+    $html = view('reports.report-4', compact('contacts', 'startDate', 'endDate'))->render();
 
     return $this->reportFactory($html, "Relatório Contatos Gerais do Cliente-Empresa.xls");
   }

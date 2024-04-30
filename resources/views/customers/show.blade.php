@@ -299,7 +299,7 @@
                                         <p class="font-bold">{{ __('Nome') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
-                                        <p class="text-gray-500 font-bold">{{$contact->contact }}</p>
+                                        <p class="text-gray-500 font-bold">{{ $contact->contact }}</p>
                                     </div>
                                 </div>
 
@@ -323,7 +323,7 @@
                                         <p class="font-bold">{{ __('E-mail') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
-                                        <p class="text-gray-500 font-bold">{{$contact->mail }}</p>
+                                        <p class="text-gray-500 font-bold">{{ $contact->mail }}</p>
                                     </div>
                                 </div>
 
@@ -338,7 +338,7 @@
                                         <p class="font-bold">{{ __('telefone') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
-                                        <p class="text-gray-500 font-bold">{{$contact->phone }}</p>
+                                        <p class="text-gray-500 font-bold">{{ $contact->phone }}</p>
                                     </div>
                                 </div>
 
@@ -353,7 +353,7 @@
                                         <p class="font-bold">{{ __('Celular') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
-                                        <p class="text-gray-500 font-bold">{{$contact->cell_phone }}</p>
+                                        <p class="text-gray-500 font-bold">{{ $contact->cell_phone }}</p>
                                     </div>
                                 </div>
 
@@ -368,7 +368,7 @@
                                         <p class="font-bold">{{ __('Linkedin') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
-                                        <p class="text-gray-500 font-bold">{{$contact->linkedin }}</p>
+                                        <p class="text-gray-500 font-bold">{{ $contact->linkedin }}</p>
                                     </div>
                                 </div>
 
@@ -383,7 +383,7 @@
                                         <p class="font-bold">{{ __('Nome Secretária') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
-                                        <p class="text-gray-500 font-bold">{{$contact->secretary }}</p>
+                                        <p class="text-gray-500 font-bold">{{ $contact->secretary }}</p>
                                     </div>
                                 </div>
 
@@ -398,7 +398,7 @@
                                         <p class="font-bold">{{ __('Telefone Secretária') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
-                                        <p class="text-gray-500 font-bold">{{$contact->phone_secretary }}</p>
+                                        <p class="text-gray-500 font-bold">{{ $contact->phone_secretary }}</p>
                                     </div>
                                 </div>
 
@@ -413,7 +413,7 @@
                                         <p class="font-bold">{{ __('Observações') }}</p>
                                     </div>
                                     <div class="w-full md:w-1/2">
-                                        <p class="text-gray-500 font-bold">{{$contact->obs }}</p>
+                                        <p class="text-gray-500 font-bold">{{ $contact->obs }}</p>
                                     </div>
                                 </div>
                             </div>
