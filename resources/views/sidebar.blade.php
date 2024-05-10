@@ -31,19 +31,13 @@
           x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
           x-transition:leave-start="transform opacity-100 scale-100"
           x-transition:leave-end="transform opacity-0 scale-95" class="relative right-0 w-full origin-top-right">
-          <a class="@if (request()->routeIs('customers.index')) {{ 'active' }} @endif" href="{{ route('customers.index') }}">
-            Clientes
-          </a>
-          <a class="@if (request()->routeIs('customers.companies.index')) {{ 'active' }} @endif" href="{{ route('customers.companies.index') }}">
-            Empresas/Filiais
-          </a>
-          <a class="@if (request()->routeIs('customers.cpea-ids.index')) {{ 'active' }} @endif" href="{{ route('customers.cpea-ids.index') }}">
-            IDCPEA
-          </a>
+          <a class="@if (request()->routeIs('customers.index')) {{ 'active' }} @endif" href="{{ route('customers.index') }}">Clientes</a>
+          <a class="@if (request()->routeIs('customers.companies.index')) {{ 'active' }} @endif" href="{{ route('customers.companies.index') }}">Empresas/Filiais</a>
+          <a class="@if (request()->routeIs('customers.cpea-ids.index')) {{ 'active' }} @endif" href="{{ route('customers.cpea-ids.index') }}">IDCPEA</a>
         </div>
       </div>
 
-      <div class="relative" x-data="{ openConfig: {{ request()->routeIs('config.emails.*') ? 'true' : 'false' }} }">
+      <div class="relative" x-data="{ openConfig: false }">
         <button @click="openConfig = !openConfig" class="submenu">
           <x-icon.plus/>
           <span>Cadastros</span>
@@ -55,73 +49,48 @@
           x-transition:leave-start="transform opacity-100 scale-100"
           x-transition:leave-end="transform opacity-0 scale-95" class="relative right-0 w-full origin-top-right">
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('occupations.index')) {{ 'active' }} @endif" href="{{ route('occupations.index') }}">
-              Cargos
-            </a>
+            <a class="@if (request()->routeIs('occupations.index')) {{ 'active' }} @endif" href="{{ route('occupations.index') }}">Cargos</a>
           </div>
 
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('departments.index')) {{ 'active' }} @endif"
-              href="{{ route('departments.index') }}">
-              Departamentos
-            </a>
+            <a class="@if (request()->routeIs('departments.index')) {{ 'active' }} @endif" href="{{ route('departments.index') }}">Departamentos</a>
           </div>
 
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('directions.index')) {{ 'active' }} @endif" href="{{ route('directions.index') }}">
-              Diretorias
-            </a>
+            <a class="@if (request()->routeIs('directions.index')) {{ 'active' }} @endif" href="{{ route('directions.index') }}">Diretorias</a>
           </div>
 
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('general-contact-types.index')) {{ 'active' }} @endif" href="{{ route('general-contact-types.index') }}">
-              Tipo Contato
-            </a>
+            <a class="@if (request()->routeIs('general-contact-types.index')) {{ 'active' }} @endif" href="{{ route('general-contact-types.index') }}">Tipo Contato</a>
           </div>
 
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('segments.index')) {{ 'active' }} @endif"
-              href="{{ route('segments.index') }}">
-              Segmentos
-            </a>
+            <a class="@if (request()->routeIs('segments.index')) {{ 'active' }} @endif" href="{{ route('segments.index') }}">Segmentos</a>
           </div>
 
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('conversation-statuss.index')) {{ 'active' }} @endif" href="{{ route('conversation-statuss.index') }}">
-              Status de Interação
-            </a>
+            <a class="@if (request()->routeIs('conversation-statuss.index')) {{ 'active' }} @endif" href="{{ route('conversation-statuss.index') }}">Status de Interação</a>
           </div>
 
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('products.index')) {{ 'active' }} @endif" href="{{ route('products.index') }}">
-              Produtos
-            </a>
+            <a class="@if (request()->routeIs('products.index')) {{ 'active' }} @endif" href="{{ route('products.index') }}">Produtos</a>
           </div>
 
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('etapas.index')) {{ 'active' }} @endif" href="{{ route('etapas.index') }}">
-              Etapas
-            </a>
+            <a class="@if (request()->routeIs('etapas.index')) {{ 'active' }} @endif" href="{{ route('etapas.index') }}">Etapas</a>
           </div>
 
           <div class="px-0 py-0">
-            <a class="@if (request()->routeIs('cnpjs.index')) {{ 'active' }} @endif" href="{{ route('cnpjs.index') }}">
-              CNPJ CPEA
-            </a>
+            <a class="@if (request()->routeIs('cnpjs.index')) {{ 'active' }} @endif" href="{{ route('cnpjs.index') }}">CNPJ CPEA</a>
           </div>
 
         </div>
       </div>
 
-      <a class="@if (request()->routeIs('config.index')) {{ 'active' }} @endif" href="{{ route('config.index') }}">
-        <x-icon.tools/>
-        Configurações
-      </a>
-
-      <div class="relative" x-data="{ openConfig: {{ request()->routeIs('config.emails.*') ? 'true' : 'false' }} }">
+      <div class="relative" x-data="{ openConfig: {{ request()->routeIs('config.*') ? 'true' : 'false' }} }">
         <button @click="openConfig = !openConfig" class="submenu">
-          <x-icon.mail/>
-          <span>E-mail</span>
+          <x-icon.tools/>
+          <span>Configurações</span>
           <x-icon.arrow-down name="openConfig"/>
         </button>
         <div x-show="openConfig" x-transition:enter="transition ease-out duration-100"
@@ -130,10 +99,16 @@
           x-transition:leave-start="transform opacity-100 scale-100"
           x-transition:leave-end="transform opacity-0 scale-95" class="relative right-0 w-full origin-top-right">
           <div class="px-0 py-0 ">
-            <a class="@if (request()->routeIs('config.emails.index')) {{ 'active' }} @endif" href="{{ route('config.emails.index') }}">Configurações</a>
+            <a class="@if (request()->routeIs('config.index')) {{ 'active' }} @endif" href="{{ route('config.index') }}">Configurações Gerais</a>
           </div>
           <div class="px-0 py-0 ">
-            <a class="@if (request()->routeIs('config.emails.templates.index')) {{ 'active' }} @endif" href="{{ route('config.emails.templates.index') }}">Templates</a>
+            <a class="@if (request()->routeIs('config.goals.index')) {{ 'active' }} @endif" href="{{ route('config.goals.index') }}">Metas</a>
+          </div>
+          <div class="px-0 py-0 ">
+            <a class="@if (request()->routeIs('config.emails.index')) {{ 'active' }} @endif" href="{{ route('config.emails.index') }}">Emails</a>
+          </div>
+          <div class="px-0 py-0 ">
+            <a class="@if (request()->routeIs('config.emails.templates.index')) {{ 'active' }} @endif" href="{{ route('config.emails.templates.index') }}">Templates de Email</a>
           </div>
           <div class="px-0 py-0 ">
             <a class="@if (request()->routeIs('config.emails.email-audit.index')) {{ 'active' }} @endif" href="{{ route('config.emails.email-audit.index') }}">Email enviados</a>
