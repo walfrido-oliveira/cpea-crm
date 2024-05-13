@@ -288,7 +288,7 @@ class ConversationItem extends Model
 
       if (isset($query['product_id'])) {
         if (!is_null($query['product_id'])) {
-          $q->where('product_id', $query['product_id']);
+          $q->whereIn('product_id', explode(",", $query['product_id']));
         }
       }
     });
