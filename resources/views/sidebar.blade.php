@@ -10,6 +10,11 @@
     </div>
     <nav :class="{ 'block': open, 'hidden': !open }" class="flex-grow md:block px-0 pb-4 md:pb-0 md:overflow-y-auto">
 
+      <a class="@if (request()->routeIs('dashboard')) {{ 'active' }} @endif" href="{{ route('dashboard') }}">
+        <x-icon.dash/>
+        Dashboard
+      </a>
+
       <a class="@if (request()->routeIs('users.index')) {{ 'active' }} @endif" href="{{ route('users.index') }}?status=active">
         <x-icon.user/>
         Usuários
