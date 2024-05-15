@@ -13,8 +13,8 @@
         </div>
       </div>
       <div class="py-2 my-2 bg-white rounded-lg">
-        <div>
-          <canvas id="myChart"></canvas>
+        <div class="w-1/2 p-4 my-2">
+          <canvas id="chart-01" style="border: 2px solid #ccc; padding: 5px;"></canvas>
         </div>
       </div>
     </div>
@@ -22,25 +22,6 @@
 
   <script>
     window.addEventListener("load", function() {
-      const DATA_COUNT = 7;
-      const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
-
-      const MONTHS = @json(array_values(months()));
-
-      function months(config) {
-        var cfg = config || {};
-        var count = cfg.count || 12;
-        var section = cfg.section;
-        var values = [];
-        var i, value;
-
-        for (i = 0; i < count; ++i) {
-          value = MONTHS[Math.ceil(i) % 12];
-          values.push(value.substring(0, section));
-        }
-
-        return values;
-      }
 
       const CHART_COLORS = {
         red: 'rgb(255, 99, 132)',
@@ -87,52 +68,15 @@
         return window.colorLib(value).alpha(alpha).rgbString();
       }
 
-      var _seed = Date.now();
-
-      function srand(seed) {
-        _seed = seed;
-      }
-
-      function rand(min, max) {
-        min = window.Helper.valueOrDefault(min, 0);
-        max = window.Helper.valueOrDefault(max, 0);
-        _seed = (_seed * 9301 + 49297) % 233280;
-        return min + (_seed / 233280) * (max - min);
-      }
-
-      function numbers(config) {
-        var cfg = config || {};
-        var min = window.Helper.valueOrDefault(cfg.min, 0);
-        var max = window.Helper.valueOrDefault(cfg.max, 100);
-        var from = window.Helper.valueOrDefault(cfg.from, []);
-        var count = window.Helper.valueOrDefault(cfg.count, 8);
-        var decimals = window.Helper.valueOrDefault(cfg.decimals, 8);
-        var continuity = window.Helper.valueOrDefault(cfg.continuity, 1);
-        var dfactor = Math.pow(10, decimals) || 0;
-        var data = [];
-        var i, value;
-
-        for (i = 0; i < count; ++i) {
-          value = (from[i] || 0) + rand(min, max);
-          if (rand() <= continuity) {
-            data.push(Math.round(dfactor * value) / dfactor);
-          } else {
-            data.push(null);
-          }
-        }
-
-        return data;
-      }
-
-      const labels = months({count: 12});
+      const labels = @json(array_values(months()));
       const data = {
         labels: labels,
         datasets: [
           {
             label: '{{ $year }}',
             data: @json($items),
-            borderColor: CHART_COLORS.blue,
-            backgroundColor: transparentize(CHART_COLORS.blue, 0.5),
+            borderColor: "#005E10",
+            backgroundColor: transparentize("#005E10", 0.5),
           },
           {
             label: '{{ $year - 1 }}',
@@ -144,12 +88,40 @@
         ]
       };
 
+      const image = new Image();
+      image.src = '{{ asset('img/logo.png') }}';
+
       const config = {
         type: 'line',
         data: data,
+        plugins: [{
+          id: 'customCanvasBackgroundImage',
+          beforeDraw: (chart) => {
+            if (image.complete) {
+              const ctx = chart.ctx;
+              const {top, left, width, height} = chart.chartArea;
+              const x = left + width / 2 - image.width / 2;
+              const y = top + height / 2 - image.height / 2;
+              ctx.drawImage(image, x, y);
+            } else {
+              image.onload = () => chart.draw();
+            }
+          }
+        }],
         options: {
+          scales: {
+            x: {
+              grid: {
+                display: false
+              }
+            },
+          },
           responsive: true,
           plugins: {
+            chartAreaBorder: {
+              borderColor: 'gray',
+              borderWidth: 2,
+            },
             legend: {
               display: false
             },
@@ -185,12 +157,20 @@
                   return [label, label2];
                 }
               }
+            },
+            beforeDraw: chart => {
+              var ctx = chart.ctx;
+              ctx.save();
+              const image = new Image();
+              image.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/2560px-Stack_Overflow_logo.svg.png';
+              ctx.drawImage(image, chart.chartArea.left, chart.chartArea.top, chart.chartArea.width, chart.chartArea.height);
+              ctx.restore();
             }
-          }
+          },
         },
       };
 
-      const ctx = document.getElementById('myChart');
+      const ctx = document.getElementById('chart-01');
 
       window.chatTeste = new Chart(ctx, config);
 
