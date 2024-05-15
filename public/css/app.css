@@ -4038,6 +4038,10 @@ td.produtos:hover .more {
 		width: 66.666667%;
 	}
 
+	.md\:w-1\/6 {
+		width: 16.666667%;
+	}
+
 	.md\:w-3\/12 {
 		width: 25%;
 	}
@@ -4060,10 +4064,6 @@ td.produtos:hover .more {
 
 	.md\:w-1\/5 {
 		width: 20%;
-	}
-
-	.md\:w-1\/6 {
-		width: 16.666667%;
 	}
 
 	.md\:max-w-6xl {

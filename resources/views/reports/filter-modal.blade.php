@@ -48,7 +48,7 @@
 </div>
 
 <script>
-  function toggleValueModal(show = false) {
+  function toggleFilterModal(show = false) {
     const modal = document.querySelector("#filter_modal");
     if (show) modal.classList.remove("hidden");
     if (!show) modal.classList.add("hidden");
@@ -56,7 +56,7 @@
 
   document.querySelectorAll("#cancel_filter_modal, #confirm_filter_modal").forEach(item => {
     item.addEventListener("click", function(e) {
-      toggleValueModal(false);
+      toggleFilterModal(false);
     });
   });
 
@@ -64,7 +64,7 @@
     document.querySelectorAll(".filter-reports").forEach(item => {
       item.addEventListener("click", function(e) {
         e.preventDefault();
-        toggleValueModal(true);
+        toggleFilterModal(true);
         var confirm = document.querySelector("#filter_modal #confirm_filter_modal");
         confirm.href = this.href;
         confirm.dataset.root = this.href;

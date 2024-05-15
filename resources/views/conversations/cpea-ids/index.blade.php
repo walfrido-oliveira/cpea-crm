@@ -49,23 +49,19 @@
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="direction_id">
                 {{ __('Diretoria') }}
               </label>
-              <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id"
-                :value="app('request')->input('direction_id')" />
+              <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id" :value="app('request')->input('direction_id')" />
             </div>
             <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="department_id">
                 {{ __('Departamento') }}
               </label>
-              <x-custom-select class="mt-1" :options="$departments" name="department_id" id="department_id"
-                :value="app('request')->input('department_id')" />
+              <x-custom-select class="mt-1" :options="$departments" name="department_id" id="department_id" :value="app('request')->input('department_id')" />
             </div>
             <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                for="conversation_status_id">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="conversation_status_id">
                 {{ __('Status') }}
               </label>
-              <x-custom-select class="mt-1" :options="$conversationStatuses" name="conversation_status_id"
-                id="conversation_status_id" :value="app('request')->input('conversation_status_id')" />
+              <x-custom-select class="mt-1" :options="$conversationStatuses" name="conversation_status_id" id="conversation_status_id" :value="app('request')->input('conversation_status_id')" />
             </div>
           </div>
         </div>

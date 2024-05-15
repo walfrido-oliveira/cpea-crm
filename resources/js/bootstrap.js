@@ -11,4 +11,4 @@ window.NiceSelect = require('./nice-select2/nice-select2');
 require('./validate');
 require('./scripts');
 
-
+window.Helper = require('../../node_modules/chart.js/helpers')

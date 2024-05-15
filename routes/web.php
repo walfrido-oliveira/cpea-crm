@@ -1,14 +1,20 @@
 <?php
 
+use App\Models\Value;
 use App\Models\ConversationItem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CnpjController;
+use App\Http\Controllers\GoalController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EtapaController;
 use App\Http\Controllers\ValueController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\CpeaIdController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SegmentController;
@@ -17,7 +23,6 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\AzureAcessController;
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmailAuditController;
 use App\Http\Controllers\OccupationController;
@@ -32,10 +37,7 @@ use App\Http\Controllers\ScheduleAddressController;
 use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\ConversationStatusController;
-use App\Http\Controllers\CpeaIdController;
 use App\Http\Controllers\GeneralContactTypeController;
-use App\Http\Controllers\GoalController;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +57,32 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
   Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    $year = 2024;
+    $items = Value::select(
+            DB::raw('sum(value) as sums'),
+            DB::raw("DATE_FORMAT(created_at,'%M %Y') as months"))
+            ->whereHas('conversationItem', function($q) {
+              $q->where("item_type", "Proposta");
+              //$q->where("conversation_status_id", 14);
+            })
+            ->whereYear('created_at', $year)
+            ->groupBy('months')
+            ->pluck('sums');
+
+    $itemsOld = Value::select(
+      DB::raw('sum(value) as sums'),
+      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months"))
+      ->whereHas('conversationItem', function($q) {
+        $q->where("item_type", "Proposta");
+        //$q->where("conversation_status_id", 14);
+      })
+      ->whereYear('created_at', $year-1)
+      ->groupBy('months')
+      ->pluck('sums');
+
+    $sum = array_sum($items->toArray());
+
+    return view('dashboard', compact('items', 'year', 'sum', 'itemsOld'));
   })->name('dashboard');
 
   Route::resource('usuarios', UserController::class, ['names' => 'users'])->parameters([
