@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Value;
+use App\Models\Direction;
+use App\Models\Department;
 use App\Models\ConversationItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +39,7 @@ use App\Http\Controllers\ScheduleAddressController;
 use App\Http\Controllers\ConversationItemController;
 use App\Http\Controllers\ProspectingStatusController;
 use App\Http\Controllers\ConversationStatusController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GeneralContactTypeController;
 
 /*
@@ -56,34 +59,10 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
-  Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    $year = 2024;
-    $items = Value::select(
-            DB::raw('sum(value) as sums'),
-            DB::raw("DATE_FORMAT(created_at,'%M %Y') as months"))
-            ->whereHas('conversationItem', function($q) {
-              $q->where("item_type", "Proposta");
-              //$q->where("conversation_status_id", 14);
-            })
-            ->whereYear('created_at', $year)
-            ->groupBy('months')
-            ->pluck('sums');
-
-    $itemsOld = Value::select(
-      DB::raw('sum(value) as sums'),
-      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months"))
-      ->whereHas('conversationItem', function($q) {
-        $q->where("item_type", "Proposta");
-        //$q->where("conversation_status_id", 14);
-      })
-      ->whereYear('created_at', $year-1)
-      ->groupBy('months')
-      ->pluck('sums');
-
-    $sum = array_sum($items->toArray());
-
-    return view('dashboard', compact('items', 'year', 'sum', 'itemsOld'));
-  })->name('dashboard');
+  Route::prefix('dashboard')->name('dashboard.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::post('/filter-chart01', [DashboardController::class, 'filterChar01'])->name('filter-chart01');
+  });
 
   Route::resource('usuarios', UserController::class, ['names' => 'users'])->parameters([
     'usuarios' => 'user'

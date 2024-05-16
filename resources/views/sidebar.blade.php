@@ -10,7 +10,7 @@
     </div>
     <nav :class="{ 'block': open, 'hidden': !open }" class="flex-grow md:block px-0 pb-4 md:pb-0 md:overflow-y-auto">
 
-      <a class="@if (request()->routeIs('dashboard')) {{ 'active' }} @endif" href="{{ route('dashboard') }}">
+      <a class="@if (request()->routeIs('')) {{ 'active' }} @endif" href="{{ route('dashboard.index') }}">
         <x-icon.dash/>
         Dashboard
       </a>
