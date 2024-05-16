@@ -18,22 +18,19 @@
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="year">
               {{ __('Ano') }}
             </label>
-            <x-custom-select class="mt-1" :options="$years" name="year" id="year"
-              :value="app('request')->input('year')" />
+            <x-custom-select class="mt-1" :options="$years" name="year" id="year" :value="now()->format('Y')" />
           </div>
           <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="department_id">
               {{ __('Departamento') }}
             </label>
-            <x-custom-select class="mt-1" :options="$departments" name="department_id" id="department_id"
-              :value="app('request')->input('department_id')" />
+            <x-custom-select class="mt-1" :options="$departments" name="department_id" id="department_id" :value="app('request')->input('department_id')" />
           </div>
           <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="direction_id">
               {{ __('Diretoria') }}
             </label>
-            <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id"
-              :value="app('request')->input('direction_id')" />
+            <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id" :value="app('request')->input('direction_id')" />
           </div>
         </div>
         <div class="w-1/2 p-4 my-2">

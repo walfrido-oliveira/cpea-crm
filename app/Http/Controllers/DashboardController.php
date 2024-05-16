@@ -18,7 +18,7 @@ class DashboardController extends Controller
    */
   public function index(Request $request)
   {
-    $year = 2024;
+    $year = now()->format('Y');
     $years = [2023 => 2023, 2024 => 2024];
     $directions = Direction::pluck("name", "id");
     $departments = Department::pluck("name", "id");
