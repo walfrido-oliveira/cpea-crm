@@ -136,8 +136,15 @@
               x: {
                 grid: {
                   display: false
-                }
+                },
               },
+              y: {
+                ticks: {
+                  callback: function(value, index, values) {
+                    return value.toLocaleString("pt-BR",{style:"currency", currency:"BRL"});
+                  }
+                }
+              }
             },
             responsive: true,
             plugins: {
