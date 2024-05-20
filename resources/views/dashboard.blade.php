@@ -40,6 +40,11 @@
             <canvas id="chart-02"></canvas>
           </div>
         </div>
+        <div class="w-full flex items-end">
+          <div class="w-3/5 p-4 my-2">
+            <canvas id="chart-03" style="border: 2px solid #ccc; padding: 5px;"></canvas>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -106,8 +111,6 @@
             {
               label: '{{ $year - 1 }}',
               data: @json($itemsOld),
-              borderColor: CHART_COLORS.red,
-              backgroundColor: transparentize(CHART_COLORS.red, 0.5),
               hidden: true
             }
           ]
@@ -275,8 +278,100 @@
         window.chart02 = new Chart(ctx02, config);
       }
 
+      function setChat03() {
+        const labels = @json(array_values(months()));
+        const data = {
+          labels: labels,
+          datasets: [
+            {
+              label: '{{ $year }}',
+              data: @json($cumulative),
+              borderColor: "#005E10",
+              backgroundColor: transparentize("#005E10", 0.5),
+            },
+            {
+              label: '{{ $year }}',
+              data: @json($goals),
+              borderColor: "#A2B97C",
+              backgroundColor: transparentize("#A2B97C", 0.5),
+              borderDash: [5, 5],
+            },
+          ]
+        };
+
+        const image = new Image();
+        image.src = '{{ asset('img/logo.png') }}';
+
+        const config = {
+          type: 'line',
+          data: data,
+          plugins: [{
+            id: 'customCanvasBackgroundImage',
+            beforeDraw: (chart) => {
+              if (image.complete) {
+                const ctx = chart.ctx;
+                const {top, left, width, height} = chart.chartArea;
+                const x = left + width / 2 - image.width / 2;
+                const y = top + height / 2 - image.height / 2;
+                ctx.drawImage(image, x, y);
+              } else {
+                image.onload = () => chart.draw();
+              }
+            }
+          }],
+          options: {
+            scales: {
+              x: {
+                grid: {
+                  display: false
+                },
+              },
+              y: {
+                ticks: {
+                  callback: function(value, index, values) {
+                    return value.toLocaleString("pt-BR",{style:"currency", currency:"BRL"});
+                  }
+                }
+              }
+            },
+            responsive: true,
+            plugins: {
+              chartAreaBorder: {
+                borderColor: 'gray',
+                borderWidth: 2,
+              },
+              legend: {
+                display: false
+              },
+              title: {
+                display: true,
+                text: 'Meta vendas {{ $year }} x Real'
+              },
+              tooltip: {
+                displayColors: false,
+                callbacks: {
+                  label: function(context) {
+                    let label = '';
+
+                    if (context.parsed.y !== null) {
+                      label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                    }
+
+                    return [label];
+                  }
+                }
+              }
+            },
+          },
+        };
+
+        const ctx03 = document.getElementById('chart-03');
+        window.chart03 = new Chart(ctx03, config);
+      }
+
       setChat01();
       setChat02();
+      setChat03();
 
       function filterChart01() {
         let ajax = new XMLHttpRequest();
