@@ -23,30 +23,33 @@ class DashboardController extends Controller
     $years = [2023 => 2023, 2024 => 2024];
     $directions = Direction::pluck("name", "id");
     $departments = Department::pluck("name", "id");
-    $items = Value::select(
+    $items = $this->getItems($year);
+    $itemsOld = $this->getItems($year - 1);
+    $cumulative = $this->getCumulative($year);
+    $goals = $this->getGoal($year);
+    $sum = array_sum($items->toArray());
+    $sumOld = array_sum($itemsOld->toArray());
+    return view('dashboard', compact('items', 'year', 'sum', 'itemsOld',
+    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals'));
+  }
+
+  private function getItems($year)
+  {
+    return Value::select(
       DB::raw('sum(value) as sums'),
       DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
     )
-      ->whereHas('conversationItem', function ($q) {
-        $q->where("item_type", "Proposta");
-        //$q->where("conversation_status_id", 14);
-      })
-      ->whereYear('created_at', $year)
-      ->groupBy('months')
-      ->pluck('sums');
+    ->whereHas('conversationItem', function ($q) {
+      $q->where("item_type", "Proposta");
+      //$q->where("conversation_status_id", 14);
+    })
+    ->whereYear('created_at', $year)
+    ->groupBy('months')
+    ->pluck('sums');
+  }
 
-    $itemsOld = Value::select(
-      DB::raw('sum(value) as sums'),
-      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
-    )
-      ->whereHas('conversationItem', function ($q) {
-        $q->where("item_type", "Proposta");
-        //$q->where("conversation_status_id", 14);
-      })
-      ->whereYear('created_at', $year - 1)
-      ->groupBy('months')
-      ->pluck('sums');
-
+  private function getCumulative($year, $department_id = null, $direction_id = null)
+  {
     $cumulative = Value::from('values AS v1')
     ->select(
       DB::raw('sum(v1.value) as sums'),
@@ -56,69 +59,32 @@ class DashboardController extends Controller
     ->join('values AS v2', 'v1.created_at', '>=', 'v2.created_at')
     ->whereYear('v1.created_at', $year);
 
-    if($request->has('department_id'))
-      $cumulative->where("conversation_items.department_id", $request->get('department_id'));
+    if($department_id)
+      $cumulative->where("conversation_items.department_id", $department_id);
 
-    if($request->has('direction_id'))
-      $cumulative->where("conversation_items.direction_id", $request->get('direction_id'));
+    if($direction_id )
+      $cumulative->where("conversation_items.direction_id", $direction_id );
 
-    $cumulative = $cumulative->groupBy('months')->pluck('sums');
+    return $cumulative->groupBy('months')->pluck('sums');
+  }
 
-    $goals = Goal::select('value', 'month')
-    ->where('year', $year);
+  private function getGoal($year, $department_id = null, $direction_id = null)
+  {
+    $goals = Goal::select('value', 'month')->where('year', $year);
 
-    if($request->has('department_id'))
-      $goals->where("department_id", $request->get('department_id'));
+    if($department_id)
+      $goals->where("department_id", $department_id);
 
-    if($request->has('direction_id'))
-      $goals->where("direction_id", $request->get('direction_id'));
+    if($direction_id)
+      $goals->where("direction_id", $direction_id);
 
-    $goals = $goals->groupBy('month')
-    ->pluck('value');
-
-    $sum = array_sum($items->toArray());
-    $sumOld = array_sum($itemsOld->toArray());
-
-    return view('dashboard', compact('items', 'year', 'sum', 'itemsOld',
-    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals'));
+    return $goals->groupBy('month')->pluck('value');
   }
 
   public function filterChar01(Request $request)
   {
-    $items = Value::select(
-      DB::raw('sum(value) as sums'),
-      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
-    )
-    ->whereHas('conversationItem', function ($q) use($request) {
-      $q->where("item_type", "Proposta");
-      //$q->where("conversation_status_id", 14);
-      if($request->has('department_id'))
-        $q->where("department_id", $request->get('department_id'));
-
-      if($request->has('direction_id'))
-        $q->where("direction_id", $request->get('direction_id'));
-    })
-    ->whereYear('created_at', $request->get('year'))
-    ->groupBy('months')
-    ->pluck('sums');
-
-    $itemsOld = Value::select(
-      DB::raw('sum(value) as sums'),
-      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
-    )
-    ->whereHas('conversationItem', function ($q) use($request) {
-      $q->where("item_type", "Proposta");
-      //$q->where("conversation_status_id", 14);
-      if($request->has('department_id'))
-        $q->where("department_id", $request->get('department_id'));
-
-      if($request->has('direction_id'))
-        $q->where("direction_id", $request->get('direction_id'));
-    })
-    ->whereYear('created_at', $request->get('year') - 1)
-    ->groupBy('months')
-    ->pluck('sums');
-
+    $items = $this->getItems($request->get('year'));
+    $itemsOld = $this->getItems($request->get('year') - 1);
     $sum = array_sum($items->toArray());
 
     return response()->json([
@@ -131,41 +97,8 @@ class DashboardController extends Controller
 
   public function filterChar02(Request $request)
   {
-    $items = Value::select(
-      DB::raw('sum(value) as sums'),
-      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
-    )
-    ->whereHas('conversationItem', function ($q) use($request) {
-      $q->where("item_type", "Proposta");
-      //$q->where("conversation_status_id", 14);
-      if($request->has('department_id'))
-        $q->where("department_id", $request->get('department_id'));
-
-      if($request->has('direction_id'))
-        $q->where("direction_id", $request->get('direction_id'));
-    })
-    ->whereYear('created_at', $request->get('year'))
-    ->groupBy('months')
-    ->pluck('sums');
-
-    $itemsOld = Value::select(
-      DB::raw('sum(value) as sums'),
-      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
-    )
-    ->whereHas('conversationItem', function ($q) use($request) {
-      $q->where("item_type", "Proposta");
-      //$q->where("conversation_status_id", 14);
-      if($request->has('department_id'))
-        $q->where("department_id", $request->get('department_id'));
-
-      if($request->has('direction_id'))
-        $q->where("direction_id", $request->get('direction_id'));
-    })
-    ->whereYear('created_at', $request->get('year') - 1)
-    ->groupBy('months')
-    ->pluck('sums');
-
-
+    $items = $this->getItems($request->get('year'));
+    $itemsOld = $this->getItems($request->get('year') - 1);
     $sum = array_sum($items->toArray());
     $sumOld = array_sum($itemsOld->toArray());
 
@@ -178,34 +111,8 @@ class DashboardController extends Controller
 
   public function filterChar03(Request $request)
   {
-    $cumulative = Value::from('values AS v1')
-    ->select(
-      DB::raw('sum(v1.value) as sums'),
-      DB::raw("DATE_FORMAT(v1.created_at,'%M %Y') as months")
-    )
-    ->join('conversation_items', 'v1.conversation_item_id', '=', 'conversation_items.id')
-    ->join('values AS v2', 'v1.created_at', '>=', 'v2.created_at')
-    ->whereYear('v1.created_at', $request->get('year'));
-
-    if($request->has('department_id'))
-      $cumulative->where("conversation_items.department_id", $request->get('department_id'));
-
-    if($request->has('direction_id'))
-      $cumulative->where("conversation_items.direction_id", $request->get('direction_id'));
-
-    $cumulative = $cumulative->groupBy('months')->pluck('sums');
-
-    $goals = Goal::select('value', 'month')
-    ->where('year', $request->get('year'));
-
-    if($request->has('department_id'))
-      $goals->where("department_id", $request->get('department_id'));
-
-    if($request->has('direction_id'))
-      $goals->where("direction_id", $request->get('direction_id'));
-
-    $goals = $goals->groupBy('month')
-    ->pluck('value');
+    $cumulative = $this->getCumulative($request->get('year'), $request->get('department_id'), $request->get('direction_id'));
+    $goals =  $goals = $this->getGoal($request->get('year'), $request->get('department_id'), $request->get('direction_id'));
 
     return response()->json([
       'cumulative' => $cumulative,
