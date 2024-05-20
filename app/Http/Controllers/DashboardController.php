@@ -47,8 +47,9 @@ class DashboardController extends Controller
       ->pluck('sums');
 
     $sum = array_sum($items->toArray());
+    $sumOld = array_sum($itemsOld->toArray());
 
-    return view('dashboard', compact('items', 'year', 'sum', 'itemsOld', 'directions', 'departments', 'years'));
+    return view('dashboard', compact('items', 'year', 'sum', 'itemsOld', 'directions', 'departments', 'years', 'sumOld'));
   }
 
   public function filterChar01(Request $request)
@@ -93,6 +94,52 @@ class DashboardController extends Controller
       'items' => $items,
       'itemOlds' => $itemsOld,
       'sum' => $sum,
+      'year' => $request->get('year')
+    ]);
+  }
+
+  public function filterChar02(Request $request)
+  {
+    $items = Value::select(
+      DB::raw('sum(value) as sums'),
+      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
+    )
+    ->whereHas('conversationItem', function ($q) use($request) {
+      $q->where("item_type", "Proposta");
+      //$q->where("conversation_status_id", 14);
+      if($request->has('department_id'))
+        $q->where("department_id", $request->get('department_id'));
+
+      if($request->has('direction_id'))
+        $q->where("direction_id", $request->get('direction_id'));
+    })
+    ->whereYear('created_at', $request->get('year'))
+    ->groupBy('months')
+    ->pluck('sums');
+
+    $itemsOld = Value::select(
+      DB::raw('sum(value) as sums'),
+      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
+    )
+    ->whereHas('conversationItem', function ($q) use($request) {
+      $q->where("item_type", "Proposta");
+      //$q->where("conversation_status_id", 14);
+      if($request->has('department_id'))
+        $q->where("department_id", $request->get('department_id'));
+
+      if($request->has('direction_id'))
+        $q->where("direction_id", $request->get('direction_id'));
+    })
+    ->whereYear('created_at', $request->get('year') - 1)
+    ->groupBy('months')
+    ->pluck('sums');
+
+    $sum = array_sum($items->toArray());
+    $sumOld = array_sum($itemsOld->toArray());
+
+    return response()->json([
+      'sum' => $sum,
+      'sumOld' => $sumOld,
       'year' => $request->get('year')
     ]);
   }

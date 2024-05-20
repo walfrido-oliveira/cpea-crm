@@ -3657,13 +3657,8 @@ window.addEventListener("load", function () {
 /*!*********************************!*\
   !*** ./resources/js/scripts.js ***!
   \*********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (() => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "months": () => (/* binding */ months)
-/* harmony export */ });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
@@ -3781,77 +3776,6 @@ var SpinLoad = /*#__PURE__*/function () {
   }]);
   return SpinLoad;
 }();
-var DATA_COUNT = 7;
-var NUMBER_CFG = {
-  count: DATA_COUNT,
-  min: -100,
-  max: 100
-};
-var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-function months(config) {
-  var cfg = config || {};
-  var count = cfg.count || 12;
-  var section = cfg.section;
-  var values = [];
-  var i, value;
-  for (i = 0; i < count; ++i) {
-    value = MONTHS[Math.ceil(i) % 12];
-    values.push(value.substring(0, section));
-  }
-  return values;
-}
-var CHART_COLORS = {
-  red: 'rgb(255, 99, 132)',
-  orange: 'rgb(255, 159, 64)',
-  yellow: 'rgb(255, 205, 86)',
-  green: 'rgb(75, 192, 192)',
-  blue: 'rgb(54, 162, 235)',
-  purple: 'rgb(153, 102, 255)',
-  grey: 'rgb(201, 203, 207)'
-};
-var NAMED_COLORS = [CHART_COLORS.red, CHART_COLORS.orange, CHART_COLORS.yellow, CHART_COLORS.green, CHART_COLORS.blue, CHART_COLORS.purple, CHART_COLORS.grey];
-function namedColor(index) {
-  return NAMED_COLORS[index % NAMED_COLORS.length];
-}
-var COLORS = ['#4dc9f6', '#f67019', '#f53794', '#537bc4', '#acc236', '#166a8f', '#00a950', '#58595b', '#8549ba'];
-function color(index) {
-  return COLORS[index % COLORS.length];
-}
-function transparentize(value, opacity) {
-  var alpha = opacity === undefined ? 0.5 : 1 - opacity;
-  return window.colorLib(value).alpha(alpha).rgbString();
-}
-var _seed = Date.now();
-function srand(seed) {
-  _seed = seed;
-}
-function rand(min, max) {
-  min = window.Helper.valueOrDefault(min, 0);
-  max = window.Helper.valueOrDefault(max, 0);
-  _seed = (_seed * 9301 + 49297) % 233280;
-  return min + _seed / 233280 * (max - min);
-}
-function numbers(config) {
-  var cfg = config || {};
-  var min = window.Helper.valueOrDefault(cfg.min, 0);
-  var max = window.Helper.valueOrDefault(cfg.max, 100);
-  var from = window.Helper.valueOrDefault(cfg.from, []);
-  var count = window.Helper.valueOrDefault(cfg.count, 8);
-  var decimals = window.Helper.valueOrDefault(cfg.decimals, 8);
-  var continuity = window.Helper.valueOrDefault(cfg.continuity, 1);
-  var dfactor = Math.pow(10, decimals) || 0;
-  var data = [];
-  var i, value;
-  for (i = 0; i < count; ++i) {
-    value = (from[i] || 0) + rand(min, max);
-    if (rand() <= continuity) {
-      data.push(Math.round(dfactor * value) / dfactor);
-    } else {
-      data.push(null);
-    }
-  }
-  return data;
-}
 
 /***/ }),
 

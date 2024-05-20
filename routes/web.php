@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
   Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::post('/filter-chart01', [DashboardController::class, 'filterChar01'])->name('filter-chart01');
+    Route::post('/filter-chart02', [DashboardController::class, 'filterChar02'])->name('filter-chart02');
   });
 
   Route::resource('usuarios', UserController::class, ['names' => 'users'])->parameters([

@@ -7,8 +7,7 @@
         </div>
         <div class="w-full flex justify-end">
           <div class="m-2 ">
-            <a href="{{ route('customers.conversations.item.faster-create') }}" class="btn-outline-success">{{ __('Nova
-              Interação') }}</a>
+            <a href="{{ route('customers.conversations.item.faster-create') }}" class="btn-outline-success">{{ __('Nova Interação') }}</a>
           </div>
         </div>
       </div>
@@ -33,8 +32,13 @@
             <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id" :value="app('request')->input('direction_id')" />
           </div>
         </div>
-        <div class="w-1/2 p-4 my-2">
-          <canvas id="chart-01" style="border: 2px solid #ccc; padding: 5px;"></canvas>
+        <div class="w-full flex items-end">
+          <div class="w-3/5 p-4 my-2">
+            <canvas id="chart-01" style="border: 2px solid #ccc; padding: 5px;"></canvas>
+          </div>
+          <div class="w-2/5 p-4 my-2">
+            <canvas id="chart-02"></canvas>
+          </div>
         </div>
       </div>
     </div>
@@ -87,8 +91,6 @@
         var alpha = opacity === undefined ? 0.5 : 1 - opacity;
         return window.colorLib(value).alpha(alpha).rgbString();
       }
-
-      setChat01();
 
       function setChat01() {
         const labels = @json(array_values(months()));
@@ -192,10 +194,104 @@
           },
         };
 
-        const ctx = document.getElementById('chart-01');
-
-        window.chart01 = new Chart(ctx, config);
+        const ctx01 = document.getElementById('chart-01');
+        window.chart01 = new Chart(ctx01, config);
       }
+
+      function setChat02() {
+        const labels = @json([
+          $year - 1,
+          $year
+        ]);
+        const data = {
+          labels: labels,
+          datasets: [
+            {
+              label: '{{ $year }}',
+              data: @json([
+                $sumOld,
+                $sum
+              ]),
+              borderColor: "#005E10",
+              backgroundColor: "#005E10",
+            }
+          ]
+        };
+
+
+        const config = {
+          type: 'bar',
+          data: data,
+          options: {
+            scales: {
+              x: {
+                grid: {
+                  display: false
+                },
+              },
+              y: {
+                display: false,
+                grid: {
+                  display: false
+                },
+                ticks: {
+                  callback: function(value, index, values) {
+                    return value.toLocaleString("pt-BR",{style:"currency", currency:"BRL"});
+                  }
+                }
+              }
+            },
+            responsive: true,
+            plugins: {
+              chartAreaBorder: {
+                borderColor: 'gray',
+                borderWidth: 2,
+              },
+              legend: {
+                display: false
+              },
+              title: {
+                display: false,
+              },
+              tooltip: {
+                displayColors: false,
+                callbacks: {
+                  label: function(context) {
+                    let label = context.dataset.label || '';
+                    let label2 = window.chart01.config.data.datasets[1].label || '';
+
+                    if (label) {
+                      label += ': ';
+                    }
+
+                    if (label2) {
+                      label2 += ': ';
+                    }
+
+                    if (context.parsed.y !== null) {
+                      label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                    }
+
+                    if (window.chart01.config.data.datasets[1].data[context.dataIndex]) {
+                      label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(window.chart01.config.data.datasets[1].data[context.dataIndex]);
+                    } else {
+                      label2+= "-"
+                    }
+
+                    return [label, label2];
+                  }
+                }
+              }
+            },
+          },
+        };
+
+        const ctx02 = document.getElementById('chart-02');
+        window.chart02 = new Chart(ctx02, config);
+      }
+
+      setChat01();
+      setChat02();
 
       function filterChart01() {
         let ajax = new XMLHttpRequest();
@@ -251,9 +347,62 @@
         ajax.send(data);
       }
 
+      function filterChart02() {
+        let ajax = new XMLHttpRequest();
+        let token = document.querySelector('meta[name="csrf-token"]').content;
+        let method = 'POST';
+        let year = document.querySelector(`#year`).value;
+        let department_id = document.querySelector(`#department_id`).value;
+        let direction_id = document.querySelector(`#direction_id`).value;
+        let url = "{{ route('dashboard.filter-chart02') }}";
+
+        ajax.open(method, url);
+
+        ajax.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            var resp = JSON.parse(ajax.response);
+
+            window.chart02.data.labels.splice(0,  window.chart02.data.labels.length);
+
+            window.chart02.data.datasets.forEach((dataset) => {
+              dataset.data.splice(0,  dataset.data.length);
+              dataset.label = "";
+            });
+
+            window.chart02.update();
+
+            const sum = resp.sum;
+            const sumOld = resp.sumOld;
+
+            window.chart02.data.datasets[0].data.push(sumOld);
+            window.chart02.data.datasets[0].data.push(sum);
+            window.chart02.data.datasets[0].label = resp.year - 1
+
+            window.chart02.data.labels.push(resp.year - 1);
+            window.chart02.data.labels.push(resp.year);
+
+            window.chart02.update();
+
+          } else if (this.readyState == 4 && this.status != 200) {
+            toastr.error("{!! __('Um erro ocorreu ao solicitar a consulta') !!}");
+            that.value = '';
+          }
+        }
+
+        var data = new FormData();
+        data.append('_token', token);
+        data.append('_method', method);
+        if(year) data.append('year', year);
+        if(department_id) data.append('department_id', department_id);
+        if(direction_id) data.append('direction_id', direction_id);
+
+        ajax.send(data);
+      }
+
       document.querySelectorAll("#year, #department_id, #direction_id").forEach(item => {
         item.addEventListener("change", function() {
           filterChart01();
+          filterChart02();
         });
       });
 
