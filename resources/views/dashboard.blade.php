@@ -257,28 +257,13 @@
                 displayColors: false,
                 callbacks: {
                   label: function(context) {
-                    let label = context.dataset.label || '';
-                    let label2 = window.chart01.config.data.datasets[1].label || '';
-
-                    if (label) {
-                      label += ': ';
-                    }
-
-                    if (label2) {
-                      label2 += ': ';
-                    }
+                    let label = '';
 
                     if (context.parsed.y !== null) {
                       label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
                     }
 
-                    if (window.chart01.config.data.datasets[1].data[context.dataIndex]) {
-                      label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(window.chart01.config.data.datasets[1].data[context.dataIndex]);
-                    } else {
-                      label2+= "-"
-                    }
-
-                    return [label, label2];
+                    return [label];
                   }
                 }
               }
