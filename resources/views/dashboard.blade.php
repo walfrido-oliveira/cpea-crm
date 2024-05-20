@@ -479,10 +479,63 @@
         ajax.send(data);
       }
 
+      function filterChart03() {
+        let ajax = new XMLHttpRequest();
+        let token = document.querySelector('meta[name="csrf-token"]').content;
+        let method = 'POST';
+        let year = document.querySelector(`#year`).value;
+        let department_id = document.querySelector(`#department_id`).value;
+        let direction_id = document.querySelector(`#direction_id`).value;
+        let url = "{{ route('dashboard.filter-chart03') }}";
+
+        ajax.open(method, url);
+
+        ajax.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            var resp = JSON.parse(ajax.response);
+
+            window.chart03.data.datasets.forEach((dataset) => {
+              dataset.data.splice(0, dataset.data.length);
+              dataset.label = "";
+            });
+
+            window.chart03.update();
+
+            const cumulative = resp.cumulative;
+            const goals = resp.goals;
+            Object.keys(cumulative).forEach(key => {
+              window.chart03.data.datasets[0].data.push(cumulative[key]);
+              window.chart03.data.datasets[0].label = resp.year
+            });
+
+            Object.keys(goals).forEach(key => {
+              window.chart03.data.datasets[1].data.push(goals[key]);
+              window.chart03.data.datasets[1].label = resp.year - 1
+            });
+
+            window.chart03.update();
+
+          } else if (this.readyState == 4 && this.status != 200) {
+            toastr.error("{!! __('Um erro ocorreu ao solicitar a consulta') !!}");
+            that.value = '';
+          }
+        }
+
+        var data = new FormData();
+        data.append('_token', token);
+        data.append('_method', method);
+        if (year) data.append('year', year);
+        if (department_id) data.append('department_id', department_id);
+        if (direction_id) data.append('direction_id', direction_id);
+
+        ajax.send(data);
+      }
+
       document.querySelectorAll("#year, #department_id, #direction_id").forEach(item => {
         item.addEventListener("change", function() {
           filterChart01();
           filterChart02();
+          filterChart03();
         });
       });
 
