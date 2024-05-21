@@ -1,0 +1,570 @@
+<script>
+  window.addEventListener("load", function() {
+
+    const CHART_COLORS = {
+      red: 'rgb(255, 99, 132)',
+      orange: 'rgb(255, 159, 64)',
+      yellow: 'rgb(255, 205, 86)',
+      green: 'rgb(75, 192, 192)',
+      blue: 'rgb(54, 162, 235)',
+      purple: 'rgb(153, 102, 255)',
+      grey: 'rgb(201, 203, 207)'
+    };
+
+    const NAMED_COLORS = [
+      CHART_COLORS.red,
+      CHART_COLORS.orange,
+      CHART_COLORS.yellow,
+      CHART_COLORS.green,
+      CHART_COLORS.blue,
+      CHART_COLORS.purple,
+      CHART_COLORS.grey,
+    ];
+
+    function namedColor(index) {
+      return NAMED_COLORS[index % NAMED_COLORS.length];
+    }
+
+    const COLORS = [
+      '#4dc9f6',
+      '#f67019',
+      '#f53794',
+      '#537bc4',
+      '#acc236',
+      '#166a8f',
+      '#00a950',
+      '#58595b',
+      '#8549ba'
+    ];
+
+    function color(index) {
+      return COLORS[index % COLORS.length];
+    }
+
+    function transparentize(value, opacity) {
+      var alpha = opacity === undefined ? 0.5 : 1 - opacity;
+      return window.colorLib(value).alpha(alpha).rgbString();
+    }
+
+    function setChat01() {
+      const labels = @json(array_values(months()));
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: '{{ $year }}',
+            data: @json($items),
+            borderColor: "#005E10",
+            backgroundColor: transparentize("#005E10", 0.5),
+          },
+          {
+            label: '{{ $year - 1 }}',
+            data: @json($itemsOld),
+            hidden: true
+          }
+        ]
+      };
+
+      const image = new Image();
+      image.src = '{{ asset('img/logo.png') }}';
+
+      const config = {
+        type: 'line',
+        data: data,
+        plugins: [{
+          id: 'customCanvasBackgroundImage',
+          beforeDraw: (chart) => {
+            if (image.complete) {
+              const ctx = chart.ctx;
+              const {top, left, width, height} = chart.chartArea;
+              const x = left + width / 2 - image.width / 2;
+              const y = top + height / 2 - image.height / 2;
+              ctx.drawImage(image, x, y);
+            } else {
+              image.onload = () => chart.draw();
+            }
+          }
+        }],
+        options: {
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+            },
+            y: {
+              ticks: {
+                callback: function(value, index, values) {
+                  return value.toLocaleString("pt-BR",{style:"currency", currency:"BRL"});
+                }
+              }
+            }
+          },
+          responsive: true,
+          plugins: {
+            chartAreaBorder: {
+              borderColor: 'gray',
+              borderWidth: 2,
+            },
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: 'Vendas {{ $year }} - R$ {{ number_format($sum, 2, ",", ".") }}'
+            },
+            tooltip: {
+              displayColors: false,
+              callbacks: {
+                label: function(context) {
+                  let label = context.dataset.label || '';
+                  let label2 = window.chart01.config.data.datasets[1].label || '';
+
+                  if (label) {
+                    label += ': ';
+                  }
+
+                  if (label2) {
+                    label2 += ': ';
+                  }
+
+                  if (context.parsed.y !== null) {
+                    label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                  }
+
+                  if (window.chart01.config.data.datasets[1].data[context.dataIndex]) {
+                    label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(window.chart01.config.data.datasets[1].data[context.dataIndex]);
+                  } else {
+                    label2+= "-"
+                  }
+
+                  return [label, label2];
+                }
+              }
+            }
+          },
+        },
+      };
+
+      const ctx01 = document.getElementById('chart-01');
+      window.chart01 = new Chart(ctx01, config);
+    }
+
+    function setChat02() {
+      const labels = @json([
+        $year - 1,
+        $year
+      ]);
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: '{{ $year }}',
+            data: @json([
+              $sumOld,
+              $sum
+            ]),
+            borderColor: "#005E10",
+            backgroundColor: "#005E10",
+          }
+        ]
+      };
+
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+            },
+            y: {
+              display: false,
+              grid: {
+                display: false
+              },
+              ticks: {
+                callback: function(value, index, values) {
+                  return value.toLocaleString("pt-BR",{style:"currency", currency:"BRL"});
+                }
+              }
+            }
+          },
+          responsive: true,
+          plugins: {
+            chartAreaBorder: {
+              borderColor: 'gray',
+              borderWidth: 2,
+            },
+            legend: {
+              display: false
+            },
+            title: {
+              display: false,
+            },
+            tooltip: {
+              displayColors: false,
+              callbacks: {
+                label: function(context) {
+                  let label = '';
+
+                  if (context.parsed.y !== null) {
+                    label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                  }
+
+                  return [label];
+                }
+              }
+            }
+          },
+        },
+      };
+
+      const ctx02 = document.getElementById('chart-02');
+      window.chart02 = new Chart(ctx02, config);
+    }
+
+    function setChat03() {
+      const labels = @json(array_values(months()));
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: '{{ $year }}',
+            data: @json($cumulative),
+            borderColor: "#005E10",
+            backgroundColor: transparentize("#005E10", 0.5),
+          },
+          {
+            label: '{{ $year }}',
+            data: @json($goals),
+            borderColor: "#A2B97C",
+            backgroundColor: transparentize("#A2B97C", 0.5),
+            borderDash: [5, 5],
+          },
+        ]
+      };
+
+      const image = new Image();
+      image.src = '{{ asset('img/logo.png') }}';
+
+      const config = {
+        type: 'line',
+        data: data,
+        plugins: [{
+          id: 'customCanvasBackgroundImage',
+          beforeDraw: (chart) => {
+            if (image.complete) {
+              const ctx = chart.ctx;
+              const {top, left, width, height} = chart.chartArea;
+              const x = left + width / 2 - image.width / 2;
+              const y = top + height / 2 - image.height / 2;
+              ctx.drawImage(image, x, y);
+            } else {
+              image.onload = () => chart.draw();
+            }
+          }
+        }],
+        options: {
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+            },
+            y: {
+              ticks: {
+                callback: function(value, index, values) {
+                  return value.toLocaleString("pt-BR",{style:"currency", currency:"BRL"});
+                }
+              }
+            }
+          },
+          responsive: true,
+          plugins: {
+            chartAreaBorder: {
+              borderColor: 'gray',
+              borderWidth: 2,
+            },
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: 'Meta vendas {{ $year }} x Real'
+            },
+            tooltip: {
+              displayColors: false,
+              callbacks: {
+                label: function(context) {
+                  let label = '';
+
+                  if (context.parsed.y !== null) {
+                    label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                  }
+
+                  return [label];
+                }
+              }
+            }
+          },
+        },
+      };
+
+      const ctx03 = document.getElementById('chart-03');
+      window.chart03 = new Chart(ctx03, config);
+    }
+
+    function setChat04() {
+      const labels = @json([
+        'Todas as Proposta',
+        'Proposta Aprovadas'
+      ]);
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: '{{ $year }}',
+            data: @json([
+              $sumTotalItems,
+              $sum
+            ]),
+            backgroundColor: ["#A2B97C", "#005E10"],
+          }
+        ]
+      };
+
+
+      const config = {
+        type: 'pie',
+        data: data,
+      };
+
+      const ctx04 = document.getElementById('chart-04');
+      window.chart04 = new Chart(ctx04, config);
+    }
+
+    setChat01();
+    setChat02();
+    setChat03();
+    setChat04();
+
+    function filterChart01() {
+      let ajax = new XMLHttpRequest();
+      let token = document.querySelector('meta[name="csrf-token"]').content;
+      let method = 'POST';
+      let year = document.querySelector(`#year`).value;
+      let department_id = document.querySelector(`#department_id`).value;
+      let direction_id = document.querySelector(`#direction_id`).value;
+      let url = "{{ route('dashboard.filter-chart01') }}";
+
+      ajax.open(method, url);
+
+      ajax.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var resp = JSON.parse(ajax.response);
+
+          window.chart01.data.datasets.forEach((dataset) => {
+            dataset.data.splice(0,  dataset.data.length);
+            dataset.label = "";
+          });
+
+          window.chart01.update();
+
+          const items = resp.items;
+          const itemsOld = resp.itemOlds;
+          Object.keys(items).forEach(key => {
+            window.chart01.data.datasets[0].data.push(items[key]);
+            window.chart01.data.datasets[0].label = resp.year
+          });
+
+          Object.keys(itemsOld).forEach(key => {
+            window.chart01.data.datasets[1].data.push(itemsOld[key]);
+            window.chart01.data.datasets[1].label = resp.year - 1
+          });
+
+          window.chart01.options.plugins.title.text = `Vendas ${resp.year} - R$ ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(resp.sum)}`;
+
+          window.chart01.update();
+
+        } else if (this.readyState == 4 && this.status != 200) {
+          toastr.error("{!! __('Um erro ocorreu ao solicitar a consulta') !!}");
+          that.value = '';
+        }
+      }
+
+      var data = new FormData();
+      data.append('_token', token);
+      data.append('_method', method);
+      if(year) data.append('year', year);
+      if(department_id) data.append('department_id', department_id);
+      if(direction_id) data.append('direction_id', direction_id);
+
+      ajax.send(data);
+    }
+
+    function filterChart02() {
+      let ajax = new XMLHttpRequest();
+      let token = document.querySelector('meta[name="csrf-token"]').content;
+      let method = 'POST';
+      let year = document.querySelector(`#year`).value;
+      let department_id = document.querySelector(`#department_id`).value;
+      let direction_id = document.querySelector(`#direction_id`).value;
+      let url = "{{ route('dashboard.filter-chart02') }}";
+
+      ajax.open(method, url);
+
+      ajax.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var resp = JSON.parse(ajax.response);
+
+          window.chart02.data.labels.splice(0,  window.chart02.data.labels.length);
+
+          window.chart02.data.datasets.forEach((dataset) => {
+            dataset.data.splice(0,  dataset.data.length);
+            dataset.label = "";
+          });
+
+          window.chart02.update();
+
+          const sum = resp.sum;
+          const sumOld = resp.sumOld;
+
+          window.chart02.data.datasets[0].data.push(sumOld);
+          window.chart02.data.datasets[0].data.push(sum);
+          window.chart02.data.datasets[0].label = resp.year
+
+          window.chart02.data.labels.push(resp.year - 1);
+          window.chart02.data.labels.push(resp.year);
+
+          window.chart02.update();
+
+        } else if (this.readyState == 4 && this.status != 200) {
+          toastr.error("{!! __('Um erro ocorreu ao solicitar a consulta') !!}");
+          that.value = '';
+        }
+      }
+
+      var data = new FormData();
+      data.append('_token', token);
+      data.append('_method', method);
+      if(year) data.append('year', year);
+      if(department_id) data.append('department_id', department_id);
+      if(direction_id) data.append('direction_id', direction_id);
+
+      ajax.send(data);
+    }
+
+    function filterChart03() {
+      let ajax = new XMLHttpRequest();
+      let token = document.querySelector('meta[name="csrf-token"]').content;
+      let method = 'POST';
+      let year = document.querySelector(`#year`).value;
+      let department_id = document.querySelector(`#department_id`).value;
+      let direction_id = document.querySelector(`#direction_id`).value;
+      let url = "{{ route('dashboard.filter-chart03') }}";
+
+      ajax.open(method, url);
+
+      ajax.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var resp = JSON.parse(ajax.response);
+
+          window.chart03.data.datasets.forEach((dataset) => {
+            dataset.data.splice(0, dataset.data.length);
+            dataset.label = "";
+          });
+
+          window.chart03.update();
+
+          const cumulative = resp.cumulative;
+          const goals = resp.goals;
+          Object.keys(cumulative).forEach(key => {
+            window.chart03.data.datasets[0].data.push(cumulative[key]);
+            window.chart03.data.datasets[0].label = resp.year
+          });
+
+          Object.keys(goals).forEach(key => {
+            window.chart03.data.datasets[1].data.push(goals[key]);
+            window.chart03.data.datasets[1].label = resp.year - 1
+          });
+
+          window.chart03.update();
+
+        } else if (this.readyState == 4 && this.status != 200) {
+          toastr.error("{!! __('Um erro ocorreu ao solicitar a consulta') !!}");
+          that.value = '';
+        }
+      }
+
+      var data = new FormData();
+      data.append('_token', token);
+      data.append('_method', method);
+      if (year) data.append('year', year);
+      if (department_id) data.append('department_id', department_id);
+      if (direction_id) data.append('direction_id', direction_id);
+
+      ajax.send(data);
+    }
+
+    function filterchart04() {
+      let ajax = new XMLHttpRequest();
+      let token = document.querySelector('meta[name="csrf-token"]').content;
+      let method = 'POST';
+      let year = document.querySelector(`#year`).value;
+      let department_id = document.querySelector(`#department_id`).value;
+      let direction_id = document.querySelector(`#direction_id`).value;
+      let url = "{{ route('dashboard.filter-chart04') }}";
+
+      ajax.open(method, url);
+
+      ajax.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var resp = JSON.parse(ajax.response);
+
+          window.chart04.data.datasets.forEach((dataset) => {
+            dataset.data.splice(0,  dataset.data.length);
+          });
+
+          window.chart04.update();
+
+          const sum = resp.sum;
+          const sumTotalItems = resp.sumTotalItems;
+
+          window.chart04.data.datasets[0].data.push(sumTotalItems);
+          window.chart04.data.datasets[0].data.push(sum);
+          window.chart04.data.datasets[0].label = resp.year
+
+          window.chart04.update();
+
+        } else if (this.readyState == 4 && this.status != 200) {
+          toastr.error("{!! __('Um erro ocorreu ao solicitar a consulta') !!}");
+          that.value = '';
+        }
+      }
+
+      var data = new FormData();
+      data.append('_token', token);
+      data.append('_method', method);
+      if(year) data.append('year', year);
+      if(department_id) data.append('department_id', department_id);
+      if(direction_id) data.append('direction_id', direction_id);
+
+      ajax.send(data);
+    }
+
+    document.querySelectorAll("#year, #department_id, #direction_id").forEach(item => {
+      item.addEventListener("change", function() {
+        filterChart01();
+        filterChart02();
+        filterChart03();
+        filterchart04();
+      });
+    });
+
+  });
+
+</script>

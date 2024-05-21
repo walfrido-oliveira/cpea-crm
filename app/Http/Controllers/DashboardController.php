@@ -23,25 +23,27 @@ class DashboardController extends Controller
     $years = [2023 => 2023, 2024 => 2024];
     $directions = Direction::pluck("name", "id");
     $departments = Department::pluck("name", "id");
-    $items = $this->getItems($year);
-    $itemsOld = $this->getItems($year - 1);
+    $items = $this->getItems($year, true);
+    $itemsOld = $this->getItems($year - 1, true);
     $cumulative = $this->getCumulative($year);
     $goals = $this->getGoal($year);
     $sum = array_sum($items->toArray());
     $sumOld = array_sum($itemsOld->toArray());
+    $sumTotalItems = array_sum($this->getItems($year)->toArray());
     return view('dashboard', compact('items', 'year', 'sum', 'itemsOld',
-    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals'));
+    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals', 'sumTotalItems'));
   }
 
-  private function getItems($year)
+  private function getItems($year, $approved = false)
   {
     return Value::select(
       DB::raw('sum(value) as sums'),
       DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
     )
-    ->whereHas('conversationItem', function ($q) {
+    ->whereHas('conversationItem', function ($q) use($approved) {
       $q->where("item_type", "Proposta");
-      //$q->where("conversation_status_id", 14);
+      if($approved)
+        $q->where("conversation_status_id", 14);
     })
     ->whereYear('created_at', $year)
     ->groupBy('months')
@@ -57,7 +59,8 @@ class DashboardController extends Controller
     )
     ->join('conversation_items', 'v1.conversation_item_id', '=', 'conversation_items.id')
     ->join('values AS v2', 'v1.created_at', '>=', 'v2.created_at')
-    ->whereYear('v1.created_at', $year);
+    ->whereYear('v1.created_at', $year)
+    ->where("conversation_status_id", 14);
 
     if($department_id)
       $cumulative->where("conversation_items.department_id", $department_id);
@@ -83,8 +86,8 @@ class DashboardController extends Controller
 
   public function filterChar01(Request $request)
   {
-    $items = $this->getItems($request->get('year'));
-    $itemsOld = $this->getItems($request->get('year') - 1);
+    $items = $this->getItems($request->get('year'), true);
+    $itemsOld = $this->getItems($request->get('year') - 1, true);
     $sum = array_sum($items->toArray());
 
     return response()->json([
@@ -97,8 +100,8 @@ class DashboardController extends Controller
 
   public function filterChar02(Request $request)
   {
-    $items = $this->getItems($request->get('year'));
-    $itemsOld = $this->getItems($request->get('year') - 1);
+    $items = $this->getItems($request->get('year'), true);
+    $itemsOld = $this->getItems($request->get('year') - 1, true);
     $sum = array_sum($items->toArray());
     $sumOld = array_sum($itemsOld->toArray());
 
@@ -117,6 +120,20 @@ class DashboardController extends Controller
     return response()->json([
       'cumulative' => $cumulative,
       'goals' => $goals,
+      'year' => $request->get('year')
+    ]);
+  }
+
+  public function filterChar04(Request $request)
+  {
+    $items = $this->getItems($request->get('year'), true);
+    $totalIems = $this->getItems($request->get('year'), false);
+    $sum = array_sum($items->toArray());
+    $sumTotalItems = array_sum($totalIems->toArray());
+
+    return response()->json([
+      'sum' => $sum,
+      'sumTotalItems' => $sumTotalItems,
       'year' => $request->get('year')
     ]);
   }

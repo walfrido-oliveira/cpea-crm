@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/filter-chart01', [DashboardController::class, 'filterChar01'])->name('filter-chart01');
     Route::post('/filter-chart02', [DashboardController::class, 'filterChar02'])->name('filter-chart02');
     Route::post('/filter-chart03', [DashboardController::class, 'filterChar03'])->name('filter-chart03');
+    Route::post('/filter-chart04', [DashboardController::class, 'filterChar04'])->name('filter-chart04');
   });
 
   Route::resource('usuarios', UserController::class, ['names' => 'users'])->parameters([
