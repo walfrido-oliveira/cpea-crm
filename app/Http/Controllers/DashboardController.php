@@ -34,41 +34,50 @@ class DashboardController extends Controller
     'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals', 'sumTotalItems'));
   }
 
-  private function getItems($year, $approved = false)
+  private function getItems($year, $approved = false, $department_id = null, $direction_id = null)
   {
     return Value::select(
       DB::raw('sum(value) as sums'),
-      DB::raw("DATE_FORMAT(created_at,'%M %Y') as months")
+      DB::raw("DATE_FORMAT(interaction_at,'%M %Y') as months")
     )
-    ->whereHas('conversationItem', function ($q) use($approved) {
-      $q->where("item_type", "Proposta");
+    ->join('conversation_items', 'values.conversation_item_id', '=', 'conversation_items.id')
+    ->where("item_type", "Proposta")
+    ->whereYear("interaction_at", $year)
+    ->whereHas('conversationItem', function ($q) use($approved, $department_id, $direction_id) {
       if($approved)
         $q->where("conversation_status_id", 14);
+
+      if($department_id)
+        $q->where("ci2.department_id", $department_id);
+
+      if($direction_id )
+        $q->where("ci2.direction_id", $direction_id );
     })
-    ->whereYear('created_at', $year)
     ->groupBy('months')
+    ->orderBy('conversation_items.interaction_at')
     ->pluck('sums');
   }
 
   private function getCumulative($year, $department_id = null, $direction_id = null)
   {
-    $cumulative = Value::from('values AS v1')
+    $cumulative = Value::from('values AS s1')
     ->select(
-      DB::raw('sum(v1.value) as sums'),
-      DB::raw("DATE_FORMAT(v1.created_at,'%M %Y') as months")
+      DB::raw("date_format(ci.interaction_at,'%b-%Y') as month"),
+      DB::raw("(select sum(s2.value) from `values` s2 inner join conversation_items ci2 on ci2.id = s2.conversation_item_id where ci2.interaction_at <= last_day(ci.interaction_at)) as sums")
     )
-    ->join('conversation_items', 'v1.conversation_item_id', '=', 'conversation_items.id')
-    ->join('values AS v2', 'v1.created_at', '>=', 'v2.created_at')
-    ->whereYear('v1.created_at', $year)
-    ->where("conversation_status_id", 14);
+    ->join('conversation_items AS ci', 'ci.id', '=', 's1.conversation_item_id')
+    ->whereYear('ci.interaction_at', $year)
+    ->where("ci.conversation_status_id", 14);
 
     if($department_id)
-      $cumulative->where("conversation_items.department_id", $department_id);
+      $cumulative->where("ci.department_id", $department_id);
 
     if($direction_id )
-      $cumulative->where("conversation_items.direction_id", $direction_id );
+      $cumulative->where("ci.direction_id", $direction_id );
 
-    return $cumulative->groupBy('months')->pluck('sums');
+    return $cumulative->groupBy('month')
+    ->orderBy('ci.interaction_at')
+    ->pluck('sums');
   }
 
   private function getGoal($year, $department_id = null, $direction_id = null)
@@ -86,8 +95,8 @@ class DashboardController extends Controller
 
   public function filterChar01(Request $request)
   {
-    $items = $this->getItems($request->get('year'), true);
-    $itemsOld = $this->getItems($request->get('year') - 1, true);
+    $items = $this->getItems($request->get('year'), true, $request->get('department_id'), $request->get('direction_id'));
+    $itemsOld = $this->getItems($request->get('year') - 1, true, $request->get('department_id'), $request->get('direction_id'));
     $sum = array_sum($items->toArray());
 
     return response()->json([
@@ -100,8 +109,8 @@ class DashboardController extends Controller
 
   public function filterChar02(Request $request)
   {
-    $items = $this->getItems($request->get('year'), true);
-    $itemsOld = $this->getItems($request->get('year') - 1, true);
+    $items = $this->getItems($request->get('year'), true, $request->get('department_id'), $request->get('direction_id'));
+    $itemsOld = $this->getItems($request->get('year') - 1, true, $request->get('department_id'), $request->get('direction_id'));
     $sum = array_sum($items->toArray());
     $sumOld = array_sum($itemsOld->toArray());
 
@@ -126,8 +135,8 @@ class DashboardController extends Controller
 
   public function filterChar04(Request $request)
   {
-    $items = $this->getItems($request->get('year'), true);
-    $totalIems = $this->getItems($request->get('year'), false);
+    $items = $this->getItems($request->get('year'), true, $request->get('department_id'), $request->get('direction_id'));
+    $totalIems = $this->getItems($request->get('year'), false, $request->get('department_id'), $request->get('direction_id'));
     $sum = array_sum($items->toArray());
     $sumTotalItems = array_sum($totalIems->toArray());
 
