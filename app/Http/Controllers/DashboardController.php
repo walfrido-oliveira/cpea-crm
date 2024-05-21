@@ -48,10 +48,10 @@ class DashboardController extends Controller
         $q->where("conversation_status_id", 14);
 
       if($department_id)
-        $q->where("ci2.department_id", $department_id);
+        $q->where("department_id", $department_id);
 
       if($direction_id )
-        $q->where("ci2.direction_id", $direction_id );
+        $q->where("direction_id", $direction_id );
     })
     ->groupBy('months')
     ->orderBy('conversation_items.interaction_at')
