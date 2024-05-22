@@ -226,8 +226,7 @@
               <p class="font-bold">{{ __('Diretoria') }}</p>
             </div>
             <div class="w-full md:w-1/2">
-              <p class="text-gray-500 font-bold">{{ $conversationItem->direction ? $conversationItem->direction->name :
-                '-' }}</p>
+              <p class="text-gray-500 font-bold">{{ $conversationItem->direction ? $conversationItem->direction->name : '-' }}</p>
             </div>
           </div>
 
@@ -236,8 +235,7 @@
               <p class="font-bold">{{ __('Gestor') }}</p>
             </div>
             <div class="w-full md:w-1/2">
-              <p class="text-gray-500 font-bold">{{ $conversationItem->employee ? $conversationItem->employee->full_name
-                : '-' }}</p>
+              <p class="text-gray-500 font-bold">{{ $conversationItem->employee ? $conversationItem->employee->name : '-' }}</p>
             </div>
           </div>
 
@@ -246,8 +244,7 @@
               <p class="font-bold">{{ __('Departamento') }}</p>
             </div>
             <div class="w-full md:w-1/2">
-              <p class="text-gray-500 font-bold">{{ $conversationItem->employee ?
-                $conversationItem->employee->department->name : '-' }}</p>
+              <p class="text-gray-500 font-bold">{{ $conversationItem->employee ? $conversationItem->employee->department->name : '-' }}</p>
             </div>
           </div>
           @endif
