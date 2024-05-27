@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\ScheduleAddress;
 use App\Models\ConversationItem;
 use App\Models\ConversationStatus;
+use App\Models\CpeaId;
 use App\Models\Customer;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
@@ -213,10 +214,9 @@ class ConversationItemController extends Controller
     $conversationItem->notify(true);
 
     if ($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
-      DB::transaction(function () use ($conversation) {
-        $conversation->cpea_id = Conversation::max('cpea_id') + 1;
-        $conversation->save();
-      });
+      $cpeaId = CpeaId::create();
+      $conversation->cpea_id = $cpeaId->id;
+      $conversation->save();
     }
 
     $resp = [

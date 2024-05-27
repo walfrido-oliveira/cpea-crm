@@ -40,7 +40,7 @@
             <canvas id="chart-02"></canvas>
           </div>
         </div>
-        <div class="w-full flex items-end">
+        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 items-end">
           <div class="w-3/5 p-4 my-2">
             <canvas id="chart-03" style="border: 2px solid #ccc; padding: 5px;"></canvas>
           </div>
