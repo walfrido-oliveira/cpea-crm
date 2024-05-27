@@ -131,14 +131,14 @@ class ConversationItemController extends Controller
     $input = $request->all();
 
     if(!$input['conversation_id']) {
-        if(isset($input['customer_value'])) {
-            $conversation = Conversation::create([
-                'customer_id' => $input['customer_value']
-            ]);
-            $input['conversation_id'] = $conversation->id;
-        }
+      if(isset($input['customer_value'])) {
+        $conversation = Conversation::create([
+          'customer_id' => $input['customer_value']
+        ]);
+        $input['conversation_id'] = $conversation->id;
+      }
     } else {
-        $conversation = Conversation::findOrFail($input['conversation_id']);
+      $conversation = Conversation::findOrFail($input['conversation_id']);
     }
 
     $conversationItem = ConversationItem::create([
@@ -364,6 +364,12 @@ class ConversationItemController extends Controller
         ]);
       }
     endif;
+
+    if ($input['item_type'] == "Proposta" && !$conversationItem->conversation->cpea_id) {
+      $cpeaId = CpeaId::create();
+      $conversationItem->conversation->cpea_id = $cpeaId->id;
+      $conversationItem->conversation->save();
+    }
 
     $conversationItem->notify(false);
 
