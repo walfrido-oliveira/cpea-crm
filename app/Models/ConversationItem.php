@@ -37,12 +37,36 @@ class ConversationItem extends Model
    * @var array
    */
   protected $fillable = [
-    'item_type', 'interaction_at', 'additive', 'cpea_linked_id', 'schedule_type',
-    'schedule_name', 'schedule_at', 'schedule_details',
-    'conversation_id', 'conversation_status_id', 'detailed_contact_id', 'organizer_id',
-    'user_id', 'item_details', 'direction_id', 'employee_id', 'order',
-    'meeting_form', 'meeting_place', 'teams_url', 'teams_id', 'teams_token', 'schedule_end', 'etapa_id',
-    'ppi', 'cnpj_id', 'department_id', 'state', 'city', 'probability'
+    'item_type',
+    'interaction_at',
+    'additive',
+    'cpea_linked_id',
+    'schedule_type',
+    'schedule_name',
+    'schedule_at',
+    'schedule_details',
+    'conversation_id',
+    'conversation_status_id',
+    'detailed_contact_id',
+    'organizer_id',
+    'user_id',
+    'item_details',
+    'direction_id',
+    'employee_id',
+    'order',
+    'meeting_form',
+    'meeting_place',
+    'teams_url',
+    'teams_id',
+    'teams_token',
+    'schedule_end',
+    'etapa_id',
+    'ppi',
+    'cnpj_id',
+    'department_id',
+    'state',
+    'city',
+    'probability'
   ];
 
   /**
@@ -94,6 +118,14 @@ class ConversationItem extends Model
   public function employee()
   {
     return $this->belongsTo(Employee::class);
+  }
+
+  /**
+   * The occupation
+   */
+  public function department()
+  {
+    return $this->belongsTo(Department::class);
   }
 
   /**
