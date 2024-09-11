@@ -54,7 +54,7 @@
       <td>{{ $conversation->additive ? "Sim" : "Não" }}</td>
       <td>{{ $conversation->cpea_linked_id ? $conversation->cpea_linked_id : '-' }}</td>
       <td>{{ $conversation->direction ? $conversation->direction->name : '-' }}</td>
-      <td>{{ $conversation->employee ? $conversation->employee->department->name : '-' }}</td>
+      <td>@if($conversation->employee) {{ $conversation->employee->department ? $conversation->employee->department->name : '-' }} @endif</td>
       <td>{{ $conversation->employee ? $conversation->employee->full_name : '-' }}</td>
       <td>{{ $conversation->etapa ? $conversation->etapa->name : '-' }}</td>
       <td>{{ __($conversation->ppi) }}</td>
