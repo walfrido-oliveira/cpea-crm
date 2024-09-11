@@ -33,7 +33,7 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.conversations.item.show', ['item' => $conversation->id]) }}">
-                    {{ $conversation->employee ? $conversation->employee->user->full_name : '-' }}
+                    {{ $conversation->employee ? $conversation->employee->name : '-' }}
                 </a>
             </td>
             <td>
@@ -43,7 +43,7 @@
             </td>
             <td>
                 <a class="text-item-table" href="{{ route('customers.conversations.item.show', ['item' => $conversation->id]) }}">
-                    {{ $conversation->employee ? $conversation->employee->department->name : '-' }}
+                    {{ $conversation->employee ? $conversation->department->name : '-' }}
                 </a>
             </td>
             <td>

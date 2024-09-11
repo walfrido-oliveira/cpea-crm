@@ -44,8 +44,7 @@
               @foreach ($conversation->items as $key => $item)
               <tr>
                 <td>
-                  <a class="text-green-600 underline font-bold" href="{{ route(" customers.conversations.item.show",
-                    ["item"=> $item->id]) }}">
+                  <a class="text-green-600 underline font-bold" href="{{ route("customers.conversations.item.show", ["item"=> $item->id]) }}">
                     {{ $item->order }}
                   </a>
                 </td>

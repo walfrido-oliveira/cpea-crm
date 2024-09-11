@@ -244,7 +244,7 @@
               <p class="font-bold">{{ __('Departamento') }}</p>
             </div>
             <div class="w-full md:w-1/2">
-              <p class="text-gray-500 font-bold">{{ $conversationItem->employee ? $conversationItem->employee->department->name : '-' }}</p>
+              <p class="text-gray-500 font-bold">{{ $conversationItem->department ? $conversationItem->department->name : '-' }}</p>
             </div>
           </div>
           @endif
