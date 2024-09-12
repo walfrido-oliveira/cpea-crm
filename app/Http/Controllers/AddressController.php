@@ -16,7 +16,7 @@ class AddressController extends Controller
   {
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://servicodados.ibge.gov.br/api/v1/localidades/estados/$state/distritos?orderBy=nome");
+    curl_setopt($ch, CURLOPT_URL, "https://servicodados.ibge.gov.br/api/v1/localidades/estados/$state/municipios?orderBy=nome&view=nivelado");
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 

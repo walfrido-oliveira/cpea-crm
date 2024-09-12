@@ -117,10 +117,9 @@
 
                 for (let index = 0; index < response.length; index++) {
                     const element = response[index];
-
                     var option = document.createElement("option");
-                    option.text = element.nome;
-                    option.value = element.nome;
+                    option.text = element['municipio-nome'];
+                    option.value = element['municipio-nome'];
 
                     city.add(option);
                 }
