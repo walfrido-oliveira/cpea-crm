@@ -3776,6 +3776,9 @@ var SpinLoad = /*#__PURE__*/function () {
   }]);
   return SpinLoad;
 }();
+ClassicEditor.create(document.querySelector('.ckeditor'))["catch"](function (error) {
+  console.error(error);
+});
 
 /***/ }),
 

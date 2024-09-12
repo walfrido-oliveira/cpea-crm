@@ -333,7 +333,7 @@
             method="DELETE"
             redirect-url="{{ route('customers.conversations.item.edit', ['item' => $conversationItem->id]) }}"/>
 
-    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
     @include("conversations.item.attachment-modal", ['type' => 'edit'])
     @include("conversations.item.value-modal", ['type' => 'edit'])
