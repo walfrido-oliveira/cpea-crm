@@ -37,8 +37,10 @@ class OnlineMeeting extends Model
     return $response;
   }
 
-  public static function createEvent(ConversationItem $conversationItem, $userId)
+  public static function createEvent(ConversationItem $conversationItem, $userId = null)
   {
+    if($userId == null) $userId = env('AZURE_USER_ONLINE_MEETING', '');
+
     $attendees[] = [
       "emailAddress" => [
         "address" => $conversationItem->organizer->email,
