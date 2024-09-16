@@ -334,6 +334,13 @@
             redirect-url="{{ route('customers.conversations.item.edit', ['item' => $conversationItem->id]) }}"/>
 
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script>
+      ClassicEditor
+      .create( document.querySelector( '.ckeditor' ) )
+      .catch( error => {
+          console.error( error );
+      } );
+    </script>
 
     @include("conversations.item.attachment-modal", ['type' => 'edit'])
     @include("conversations.item.value-modal", ['type' => 'edit'])

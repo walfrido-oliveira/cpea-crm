@@ -326,6 +326,13 @@
         </form>
     </div>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script>
+      ClassicEditor
+      .create( document.querySelector( '.ckeditor' ) )
+      .catch( error => {
+          console.error( error );
+      } );
+    </script>
 
     @include("conversations.item.attachment-modal", ['type' => 'create'])
     @include("conversations.item.value-modal", ['type' => 'create'])

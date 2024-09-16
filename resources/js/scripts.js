@@ -115,10 +115,3 @@ class SpinLoad {
     this.spinLoad.classList.add("hidden");
   }
 }
-
-
-ClassicEditor
-.create( document.querySelector( '.ckeditor' ) )
-.catch( error => {
-    console.error( error );
-} );

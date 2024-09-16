@@ -14,12 +14,12 @@ leonardo.oliveira@cpeanet.com (ec17ef13-885a-4c1b-8089-6fa18f929609)
 amanda.silva@cpeanet.com (74a6cd22-9e49-4a85-9d17-ed8fa62c64d8)
 vitoria.paula@cpeanet.com (f7f5aea4-790a-473b-a5af-8c77141df486)
 
-
-crmcpea@cpeanet.com
-Softuplik@2024
-
 Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "aad123f6-c660-4e88-8817-2cfe0b9d201a"
 Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "dd0517c0-19eb-4a27-af6d-ef67d041c939"
 Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "ec17ef13-885a-4c1b-8089-6fa18f929609"
 Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "74a6cd22-9e49-4a85-9d17-ed8fa62c64d8"
 Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "f7f5aea4-790a-473b-a5af-8c77141df486"
+
+Acesso
+crmcpea@cpeanet.com
+Softuplik@2024

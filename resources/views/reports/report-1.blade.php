@@ -54,21 +54,20 @@
       <td>{{ $conversation->additive ? "Sim" : "Não" }}</td>
       <td>{{ $conversation->cpea_linked_id ? $conversation->cpea_linked_id : '-' }}</td>
       <td>{{ $conversation->direction ? $conversation->direction->name : '-' }}</td>
-      <td>@if($conversation->employee) {{ $conversation->employee->department ? $conversation->employee->department->name : '-' }} @endif</td>
-      <td>{{ $conversation->employee ? $conversation->employee->full_name : '-' }}</td>
+      <td>@if($conversation->employee) {{ $conversation->department ? $conversation->department->name : '-' }} @endif</td>
+      <td>{{ $conversation->employee ? $conversation->employee->name : '-' }}</td>
       <td>{{ $conversation->etapa ? $conversation->etapa->name : '-' }}</td>
       <td>{{ __($conversation->ppi) }}</td>
       <td>
         @if ($conversation->conversation->customer)
-        {{ $conversation->conversation->customer->cnpj ? $conversation->conversation->customer->formatted_cnpj : '-' }}
+          {{ $conversation->conversation->customer->cnpj ? $conversation->conversation->customer->formatted_cnpj : '-' }}
         @endif
       </td>
       <td>{{ $conversation->state ? $conversation->state : '-' }}</td>
       <td>{{ $conversation->city ? $conversation->city : '-' }}</td>
       <td>
         @foreach ($conversation->values as $key => $value)
-        <p>TIPO DE VALOR: {{ __($value->value_type) }}, DESCRIÇÃO: {{ $value->description }}, VALOR: R$ {{
-          number_format($value->value, 2, ",", ".") }}</p>
+          <p>TIPO DE VALOR: {{ __($value->value_type) }}, DESCRIÇÃO: {{ $value->description }}, VALOR: R$ {{ number_format($value->value, 2, ",", ".") }}</p>
         @endforeach
       </td>
       <td>{{ strip_tags($conversation->item_details) }}</td>
