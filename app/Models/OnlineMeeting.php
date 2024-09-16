@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class OnlineMeeting extends Model
 {
-  public static function createOnlineMeeting(ConversationItem $conversationItem, $userId)
+  public static function createOnlineMeeting(ConversationItem $conversationItem, $userId = NULL)
   {
+    if($userId == null) $userId = env('AZURE_USER_ONLINE_MEETING', '');
+
     $data =  [
       "startDateTime" => $conversationItem->schedule_at,
       "endDateTime" => $conversationItem->schedule_end,
@@ -54,6 +56,14 @@ class OnlineMeeting extends Model
         "type" => "required"
       ];
     }
+
+    $attendees[] = [
+      "emailAddress" => [
+        "address" => $conversationItem->organizer->email,
+        "name" => $conversationItem->organizer->name
+      ],
+      "type" => "required"
+    ];
 
     $data =   [
       "subject" => $conversationItem->schedule_name,

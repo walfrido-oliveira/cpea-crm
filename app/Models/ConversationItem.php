@@ -249,13 +249,15 @@ class ConversationItem extends Model
     }
 
     if ($this->schedule_type == 'external' && $isNew) {
-      $onlieMeetingResp = OnlineMeeting::createOnlineMeeting($this, Azure::user($this->organizer->email));
+      #$onlieMeetingResp = OnlineMeeting::createOnlineMeeting($this, Azure::user($this->organizer->email));
+      $onlieMeetingResp = OnlineMeeting::createOnlineMeeting($this, null);
       $this->teams_url = $onlieMeetingResp->joinWebUrl;
       $this->teams_id = $onlieMeetingResp->joinMeetingIdSettings->joinMeetingId;
       $this->teams_token = $onlieMeetingResp->joinMeetingIdSettings->passcode;
       $this->save();
       $this->sendExternalMeetingNotification();
-      OnlineMeeting::createEvent($this, Azure::user($this->organizer->email));
+      OnlineMeeting::createEvent($this, null);
+      #OnlineMeeting::createEvent($this, Azure::user($this->organizer->email));
     }
 
     if ($this->proposedStatus) {

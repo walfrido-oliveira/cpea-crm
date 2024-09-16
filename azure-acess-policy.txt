@@ -19,7 +19,9 @@ Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "dd0517c0-19eb-
 Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "ec17ef13-885a-4c1b-8089-6fa18f929609"
 Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "74a6cd22-9e49-4a85-9d17-ed8fa62c64d8"
 Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "f7f5aea4-790a-473b-a5af-8c77141df486"
+Grant-CsApplicationAccessPolicy -PolicyName crm-policy -Identity "2ab6db7c-d49d-43f7-b2f0-5bb41b9b6f72"
 
 Acesso
 crmcpea@cpeanet.com
 Softuplik@2024
+2ab6db7c-d49d-43f7-b2f0-5bb41b9b6f72
