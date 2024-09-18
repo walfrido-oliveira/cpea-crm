@@ -68,15 +68,16 @@
         var confirm = document.querySelector("#filter_modal #confirm_filter_modal");
         confirm.href = this.href;
         confirm.dataset.root = this.href;
+        setDate();
       });
     });
   }
 
   function setDate() {
-    var startDate = document.querySelector("#start_date").value;;
+    var startDate = document.querySelector("#start_date").value;
     var endDate = document.querySelector("#end_date").value;
     var confirm = document.querySelector("#filter_modal #confirm_filter_modal");
-    confirm.href = confirm.dataset.root + `?start_date=${startDate}&end_date=${endDate}`
+    confirm.href = confirm.dataset.root + `?start_date=${startDate}&end_date=${endDate}`;
   }
 
   document.querySelector("#start_date").addEventListener("change", function() {

@@ -30,7 +30,7 @@
     @foreach ($conversations as $conversation)
     <tr>
       <td>{{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }}</td>
-      <td>{{ $conversation->cpea_linked_id ? $conversation->cpea_linked_id : '-' }}</td>
+      <td>{{ $conversation->conversation->cpea_id ? $conversation->conversation->cpea_id : '-' }}</td>
       <td>{{ $conversation->interaction_at->format('d/m/Y H:i:s') }}</td>
       <td>{{ $conversation->item_type }}</td>
       <td>{{ $conversation->conversationStatus ? $conversation->conversationStatus->name : "-" }}</td>
