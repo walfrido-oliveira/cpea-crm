@@ -335,8 +335,17 @@
 
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     <script>
+      var theEditor;
+
       ClassicEditor
       .create( document.querySelector( '.ckeditor' ) )
+      .then(editor => {
+        editor.ui.focusTracker.on( 'change:isFocused', ( evt, name, isFocused ) => {
+          if ( !isFocused ) {
+            document.querySelector('.ckeditor').value = editor.getData();
+          }
+        } );
+      })
       .catch( error => {
           console.error( error );
       } );
