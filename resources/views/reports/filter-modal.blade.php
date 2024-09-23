@@ -25,8 +25,10 @@
                   <div class="w-full pr-3 mb-6 md:mb-1">
                     <x-jet-label for="start_date" value="{{ __('Intervalo de data') }}" />
                     <div class="flex gap-2">
-                      <x-jet-input id="start_date" class="form-control block mt-1 w-full" type="date" value="" name="start_date" />
-                      <x-jet-input id="end_date" class="form-control block mt-1 w-full" type="date" value="" name="end_date" />
+                      <x-jet-input id="start_date" class="form-control block mt-1 w-full" type="date" value=""
+                        name="start_date" />
+                      <x-jet-input id="end_date" class="form-control block mt-1 w-full" type="date" value=""
+                        name="end_date" />
                     </div>
                   </div>
                 </div>
@@ -36,7 +38,7 @@
         </div>
       </div>
       <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-        <a id="confirm_filter_modal" class="btn-confirm" href="#" data-root="">
+        <a id="confirm_filter_modal" class="btn-confirm" href="#" data-root="" data-reportname="">
           Confirmar
         </a>
         <button type="button" id="cancel_filter_modal" class="btn-cancel">
@@ -54,10 +56,51 @@
     if (!show) modal.classList.add("hidden");
   }
 
-  document.querySelectorAll("#cancel_filter_modal, #confirm_filter_modal").forEach(item => {
+  document.querySelectorAll("#cancel_filter_modal").forEach(item => {
     item.addEventListener("click", function(e) {
       toggleFilterModal(false);
     });
+  });
+
+  document.getElementById("confirm_filter_modal").addEventListener("click", function(e) {
+    e.preventDefault();
+    var that = this;
+    var blob = "";
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.onload = function() {
+      if (this.status == 200) {
+        blob = new Blob([xhr.response], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        });
+
+        var link = document.createElement('a');
+
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `${that.dataset.reportname}.xls`;
+
+        link.click();
+        window.SpinLoad.hidden();
+      } else {
+        window.SpinLoad.hidden();
+        toastr.error("{{ __('Não foi possível gerar o arquivo, devido a dados inconsistentes. ') }}");
+      }
+    };
+
+    try {
+        xhr.open('GET', that.href, true);
+
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.responseType = 'blob';
+
+        window.SpinLoad.show();
+        xhr.send();
+    } catch (e) {
+        alert(e);
+    }
+
   });
 
   if (document.querySelector(".filter-reports")) {
@@ -68,6 +111,7 @@
         var confirm = document.querySelector("#filter_modal #confirm_filter_modal");
         confirm.href = this.href;
         confirm.dataset.root = this.href;
+        confirm.dataset.reportname= this.innerHTML;
         setDate();
       });
     });
@@ -88,3 +132,5 @@
     setDate();
   });
 </script>
+
+<x-spin-load />
