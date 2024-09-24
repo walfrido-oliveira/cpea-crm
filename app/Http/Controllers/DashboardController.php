@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Goal;
 use App\Models\Value;
 use App\Models\Direction;
 use App\Models\Department;
-use App\Models\Goal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +21,7 @@ class DashboardController extends Controller
   public function index(Request $request)
   {
     $year = now()->format('Y');
-    $years = [2023 => 2023, 2024 => 2024];
+    $years = [$year - 1 => $year - 1, $year => $year];
     $directions = Direction::pluck("name", "id");
     $departments = Department::pluck("name", "id");
     $items = $this->getItems($year, true);
@@ -28,22 +29,33 @@ class DashboardController extends Controller
     $cumulative = $this->getCumulative($year);
     $goals = $this->getGoal($year);
     $sum = array_sum($items->toArray());
-    $sumOld = array_sum($itemsOld->toArray());
+    $sumOld = array_sum($this->getItems($year - 1, true, null, null, true)->toArray());
     $sumTotalItems = array_sum($this->getItems($year)->toArray());
     return view('dashboard', compact('items', 'year', 'sum', 'itemsOld',
     'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals', 'sumTotalItems'));
   }
 
-  private function getItems($year, $approved = false, $department_id = null, $direction_id = null)
+  private function getItems($year, $approved = false, $department_id = null, $direction_id = null, $partialyear = false)
   {
-    return Value::select(
+    $currentMonth = Carbon::now()->month;
+    $currentDay = Carbon::now()->day;
+    $startDate = Carbon::parse("$year-01-01");
+    $endDate = Carbon::parse("$year-$currentMonth-$currentDay");
+
+    $value = Value::select(
       DB::raw('sum(value) as sums'),
       DB::raw("DATE_FORMAT(interaction_at,'%M %Y') as months")
     )
     ->join('conversation_items', 'values.conversation_item_id', '=', 'conversation_items.id')
-    ->where("item_type", "Proposta")
-    ->whereYear("interaction_at", $year)
-    ->whereHas('conversationItem', function ($q) use($approved, $department_id, $direction_id) {
+    ->where("item_type", "Proposta");
+
+    if($partialyear) {
+      $value = $value->whereBetween('interaction_at', [$startDate, $endDate]);
+    } else {
+      $value = $value->whereYear("interaction_at", $year);
+    }
+
+    $value = $value->whereHas('conversationItem', function ($q) use($approved, $department_id, $direction_id) {
       if($approved)
         $q->where("conversation_status_id", 14);
 
@@ -56,6 +68,8 @@ class DashboardController extends Controller
     ->groupBy('months')
     ->orderBy('conversation_items.interaction_at')
     ->pluck('sums');
+
+    return $value;
   }
 
   private function getCumulative($year, $department_id = null, $direction_id = null)
