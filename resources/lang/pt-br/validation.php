@@ -188,7 +188,9 @@ return [
         "time_preparation" => "Prazo Preparo",
         "time_analysis" => "Prazo Análise",
         "analysis_parameter_ids" => "Parametros de Análise",
-        "campaign_id" => "Campanha"
+        "campaign_id" => "Campanha",
+        "direction_id" => "diretoria",
+        "department_id"=> "departamento"
     ],
 
 ];
