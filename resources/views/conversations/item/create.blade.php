@@ -190,7 +190,6 @@
                             <thead>
                                 <tr class="thead-light">
                                     <th scope="col"  class="custom-th">{{ __('Tipo de valor') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Descrição do valor') }}</th>
                                     <th scope="col"  class="custom-th">{{ __('Valor') }}</th>
                                     <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
                                     <th scope="col"  class="custom-th">{{ __('') }}</th>

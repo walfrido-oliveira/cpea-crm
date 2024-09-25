@@ -23,7 +23,7 @@ class ReportController extends Controller
     $startDate = $request->has("start_date") ? new Carbon($request->get("start_date")) : now();
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date")) : now();
 
-    $conversations = ConversationItem::whereBetween("interaction_at", [$startDate, $endDate])->get();
+    $conversations = ConversationItem::whereBetween("interaction_at", [$startDate, $endDate])->orderBy('conversation_id')->get();
 
     if ($request->has("debug")) return view('reports.report-1', compact('conversations', 'startDate', 'endDate'));
 

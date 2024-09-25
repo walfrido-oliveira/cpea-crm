@@ -4,9 +4,6 @@
     {{ __($value->value_type) }}
   </td>
   <td>
-    {{ $value->description }}
-  </td>
-  <td>
     R$ {{ number_format($value->value, 2, ",", ".") }}
   </td>
   <td>

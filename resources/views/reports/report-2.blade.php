@@ -15,6 +15,7 @@
       <th>Estado</th>
       <th>Observações</th>
       <th>Concorrentes</th>
+      <th>DATA DE CRIAÇÃO</th>
     </tr>
   </thead>
   <tbody>
@@ -34,6 +35,7 @@
         <td>{{ isset($customer->addresses[0]) ? $customer->addresses[0]->state : '-' }}</td>
         <td>{{$customer->obs }}</td>
         <td>{{$customer->competitors }}</td>
+        <td>{{ $customer->created_at->format('d/m/Y') }}</td>
       </tr>
     @endforeach
   </tbody>

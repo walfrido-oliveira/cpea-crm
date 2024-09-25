@@ -1,7 +1,8 @@
 <table>
   <thead>
     <tr>
-      <th>Nº</th>
+      <th>Nº CONVERSA</th>
+      <th>Nº INTERAÇÃO</th>
       <th>IDCPEA</th>
       <th>DATA/HORA</th>
       <th>TIPO</th>
@@ -19,16 +20,26 @@
       <th>GESTOR</th>
       <th>ETAPA</th>
       <th>PPI</th>
-      <th>CNPJ</th>
+      <th>CNPJ CPEA</th>
       <th>ESTADO</th>
       <th>CIDADE</th>
-      <th>VALORES</th>
       <th>DESCRIÇÃO</th>
+      <th>VALOR CPEA (R$)</th>
+      <th>DESCRIÇÃO VALOR CPEA</th>
+      <th>FATURAMENTO DIRETO (R$)</th>
+      <th>DESCRIÇÃO FATURAMENTO DIRETO</th>
+      <th>ASSESSORIA TÉCNICA (R$)</th>
+      <th>DESCRIÇÃO ASSESSORIA TÉCNICA</th>
+      <th>VALOR PROPOSTA (R$)</th>
+      <th>FATURAMENTO DIRETO (OPÇÃO)</th>
+      <th>ASSESSORIA TÉCNICA (OPÇÃO)</th>
+      <th>RESPONSÁVEL PELA INTERAÇÃO</th>
     </tr>
   </thead>
   <tbody>
     @foreach ($conversations as $conversation)
     <tr>
+      <td>{{ $conversation->conversation->id }}</td>
       <td>{{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }}</td>
       <td>{{ $conversation->conversation->cpea_id ? $conversation->conversation->cpea_id : '-' }}</td>
       <td>{{ $conversation->interaction_at->format('d/m/Y H:i:s') }}</td>
@@ -58,19 +69,38 @@
       <td>{{ $conversation->employee ? $conversation->employee->name : '-' }}</td>
       <td>{{ $conversation->etapa ? $conversation->etapa->name : '-' }}</td>
       <td>{{ __($conversation->ppi) }}</td>
-      <td>
-        @if ($conversation->conversation->customer)
-          {{ $conversation->conversation->customer->cnpj ? $conversation->conversation->customer->formatted_cnpj : '-' }}
-        @endif
-      </td>
+      <td>{{ $conversation->cnpj ? $conversation->cnpj->formatted_cnpj : '-' }}</td>
       <td>{{ $conversation->state ? $conversation->state : '-' }}</td>
       <td>{{ $conversation->city ? $conversation->city : '-' }}</td>
-      <td>
-        @foreach ($conversation->values as $key => $value)
-          <p>TIPO DE VALOR: {{ __($value->value_type) }}, DESCRIÇÃO: {{ $value->description }}, VALOR: R$ {{ number_format($value->value, 2, ",", ".") }}</p>
-        @endforeach
-      </td>
       <td>{{ strip_tags($conversation->item_details) }}</td>
+      <td>
+        R$ {{ number_format($conversation->values()->where('value_type', 'proposed')->sum('value'), 2, ",", ".") }}
+      </td>
+      <td>
+        {{ $conversation->values()->where('value_type', 'proposed')->first() ? $conversation->values()->where('value_type', 'proposed')->first()->obs : '-' }}
+      </td>
+      <td>
+        R$ {{ number_format($conversation->values()->where('value_type', 'direct_billing')->sum('value'), 2, ",", ".") }}
+      </td>
+      <td>
+        {{ $conversation->values()->where('value_type', 'direct_billing')->first() ? $conversation->values()->where('value_type', 'direct_billing')->first()->obs : '-' }}
+      </td>
+      <td>
+        R$ {{ number_format($conversation->values()->where('value_type', 'technical_assistance')->sum('value'), 2, ",", ".") }}
+      </td>
+      <td>
+        {{ $conversation->values()->where('value_type', 'technical_assistance')->first() ? $conversation->values()->where('value_type', 'technical_assistance')->first()->obs : '-' }}
+      </td>
+      <td>
+        R$ {{ number_format($conversation->values()->sum('value'), 2, ",", ".") }}
+      </td>
+      <td>
+        {{ count($conversation->values()->where('value_type', 'direct_billing')->get()) > 0 ? 'SIM' : 'NÃO' }}
+      </td>
+      <td>
+        {{ count($conversation->values()->where('value_type', 'technical_assistance')->get()) > 0 ? 'SIM' : 'NÃO' }}
+      </td>
+      <td>{{ $conversation->user->full_name }}</td>
     </tr>
     @endforeach
   </tbody>

@@ -184,6 +184,14 @@ class ConversationItem extends Model
     return $this->hasMany(ScheduleAddress::class);
   }
 
+    /**
+   * The CPEA CNPJ
+   */
+  public function cnpj()
+  {
+    return $this->belongsTo(cnpj::class);
+  }
+
   public static function probabilities()
   {
     return ["10%" => "10%", "50%" => "50%", "90%" => "90%"];

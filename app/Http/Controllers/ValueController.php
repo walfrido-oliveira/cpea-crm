@@ -16,7 +16,7 @@ class ValueController extends Controller
       $request->all(),
       [
         'conversation_item_id' => ['required', 'exists:conversation_items,id'],
-        'description' => ['required', 'string', 'max:255'],
+        'description' => ['nullable', 'string', 'max:255'],
         'value_type' => ['required', 'string', 'in:proposed,others'],
         'obs' => ['nullable', 'string', 'max:255'],
         'value' => ['required', 'numeric']
