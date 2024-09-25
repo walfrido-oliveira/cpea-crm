@@ -48,6 +48,34 @@
             <canvas id="chart-04" class="border-2 border-[#CCCCCC] border-solid"></canvas>
           </div>
         </div>
+        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 justify-start">
+          <div class="w-full md:w-1/6 px-2 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="region">
+              {{ __('Região') }}
+            </label>
+            <x-jet-input id="region" class="form-control block mt-1 w-full" type="text" name="region" maxlength="255" placeholder="{{ __('Região') }}" />
+          </div>
+          <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="state">
+              {{ __('Estado') }}
+            </label>
+            <x-custom-select :options="states()" value="{{ old('state') }}" name="state" id="state"/>
+          </div>
+          <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="city">
+              {{ __('Cidade') }}
+            </label>
+            <x-jet-input id="city" class="form-control block mt-1 w-full" type="text" name="city" maxlength="255" placeholder="{{ __('Cidade') }}" />
+          </div>
+        </div>
+        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 items-stretch" style="min-height: 310px">
+          <div class="w-3/5 p-4 my-2">
+            <canvas id="chart-05" class="border-2 border-[#CCCCCC] border-solid"></canvas>
+          </div>
+          <div class="w-2/5 p-4 my-2">
+            <canvas id="chart-06" class="border-2 border-[#CCCCCC] border-solid"></canvas>
+          </div>
+        </div>
       </div>
     </div>
   </div>

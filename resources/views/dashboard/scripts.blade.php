@@ -414,10 +414,7 @@
     }
 
     function setChat04() {
-      const labels = @json([
-        'Todas as Proposta',
-        'Proposta Aprovadas'
-      ]);
+      const labels = ['Todas as Proposta', 'Proposta Aprovadas'];
       const data = {
         labels: labels,
         datasets: [
@@ -496,10 +493,113 @@
       window.chart04 = new Chart(ctx04, config);
     }
 
+    function setChat05() {
+
+      const data = {
+        labels: @json($segments),
+        datasets: [
+          {
+            label: 'Quantidade',
+            data: @json($segmentsValues),
+            borderColor: "#4F81BD",
+            backgroundColor: "#4F81BD",
+            borderWidth: 1
+          }
+        ]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+            }
+            },
+            y: {
+              grid: {
+                display: false
+              },
+            }
+          },
+
+          plugins: {
+            chartAreaBorder: {
+              borderColor: 'gray',
+              borderWidth: 2,
+            },
+            legend: {
+              display: true
+            },
+            title: {
+              display: true,
+            },
+            tooltip: {
+              displayColors: false,
+              backgroundColor: "rgb(97, 130, 87)",
+              callbacks: {
+                title: function (content) {
+                  return '';
+                },
+                label: function (context) {
+                  let index = context.dataIndex > 0 ? context.dataIndex - 1 : 1;
+                  let label = context.label || '';
+                  let label2 = window.chart05.config.data.labels[index];
+                  let label3 = "--------------------------";
+                  let label4 = `${label} vs ${label2}: `;
+                  let label5 = `${label} vs ${label2}: `;
+                  let currentMonthValue = context.parsed.y;
+                  let pastMonthValue = context.dataset.data[index];
+                  let diffMonthsValue = currentMonthValue - pastMonthValue;
+                  let diffMonthPercentage = currentMonthValue / pastMonthValue - 1;
+
+                  if (label) {
+                    label += ': ';
+                  }
+
+                  if (label2) {
+                    label2 += ': ';
+                  }
+
+                  if (diffMonthsValue >= 0) {
+                    label4 += '+';
+                  }
+
+                  if (diffMonthPercentage >= 0) {
+                    label5 += '+';
+                  }
+
+                  if (context.parsed.y !== null) {
+                    label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                  }
+
+                  label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.dataset.data[index]);
+                  label4 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(diffMonthsValue);
+                  label5 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffMonthPercentage);
+
+                  return [label, label2, label3, label4, label5];
+                }
+              }
+            }
+          },
+        },
+      };
+
+      const ctx05 = document.getElementById('chart-05');
+      window.chart05 = new Chart(ctx05, config);
+    }
+
     setChat01();
     setChat02();
     setChat03();
     setChat04();
+    setChat05();
 
     function filterChart01() {
       let ajax = new XMLHttpRequest();
@@ -705,15 +805,113 @@
       ajax.send(data);
     }
 
+    function filterchart05() {
+      let ajax = new XMLHttpRequest();
+      let token = document.querySelector('meta[name="csrf-token"]').content;
+      let method = 'POST';
+      let region = document.querySelector(`#region`).value;
+      let state = document.querySelector(`#state`).value;
+      let city = document.querySelector(`#city`).value;
+      let url = "{{ route('dashboard.filter-chart05') }}";
+
+      ajax.open(method, url);
+
+      ajax.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var resp = JSON.parse(ajax.response);
+
+          window.chart05.data.datasets.forEach((dataset) => {
+            dataset.data.splice(0, dataset.data.length);
+          });
+
+          window.chart05.data.labels.splice(0, window.chart05.data.labels.length);
+
+          window.chart05.update();
+
+          const segments = resp.segments;
+          const values = resp.values;
+
+          Object.keys(values).forEach(key => {
+            window.chart05.data.datasets[0].data.push(values[key]);
+          });
+
+          Object.keys(segments).forEach(key => {
+            window.chart05.data.labels.push(segments[key]);
+          });
+
+          window.chart05.update();
+
+        } else if (this.readyState == 4 && this.status != 200) {
+          toastr.error("{!! __('Um erro ocorreu ao solicitar a consulta') !!}");
+          that.value = '';
+        }
+      }
+
+      var data = new FormData();
+      data.append('_token', token);
+      data.append('_method', method);
+      if(region) data.append('region', region);
+      if(state) data.append('state', state);
+      if(city) data.append('city', city);
+
+      ajax.send(data);
+    }
+
+    function getCities(state) {
+      const dataForm = new FormData();
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const city = document.querySelector("#city");
+
+      dataForm.append("_method", "POST");
+      dataForm.append("_token", token);
+
+      fetch("{{ route('customers.address.cities', ['state' => '#']) }}".replace("#", state), {
+        method: 'POST',
+        body: dataForm
+      })
+      .then(res => res.text())
+      .then(data => {
+        const response = JSON.parse(data);
+
+        var i, L = city.options.length - 1;
+        for (i = L; i >= 0; i--) {
+            city.remove(i);
+        }
+
+        for (let index = 0; index < response.length; index++) {
+          const element = response[index];
+          var option = document.createElement("option");
+          option.text = element['municipio-nome'];
+          option.value = element['municipio-nome'];
+
+          city.add(option);
+        }
+
+        window.customSelectArray["city"].update();
+      }).catch(err => {
+          console.log(err);
+      });
+    }
+
     document.querySelectorAll("#year, #department_id, #direction_id").forEach(item => {
       item.addEventListener("change", function() {
         filterChart01();
         filterChart02();
         filterChart03();
         filterchart04();
+        filterchart05();
       });
     });
 
+    document.querySelectorAll("#region, #state, #city").forEach(item => {
+      item.addEventListener("change", function() {
+        filterchart05();
+        if(this.id == 'state') {
+          //getCities(this.value);
+        }
+      });
+    });
   });
+
 
 </script>

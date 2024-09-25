@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Carbon\Carbon;
 use App\Models\Goal;
 use App\Models\Value;
@@ -31,8 +32,39 @@ class DashboardController extends Controller
     $sum = array_sum($items->toArray());
     $sumOld = array_sum($this->getItems($year - 1, true, null, null, true)->toArray());
     $sumTotalItems = array_sum($this->getItems($year)->toArray());
+
+    $segmentsArr = $this->getSegments(null, 'RJ', null);
+    $segments = $segmentsArr[0];
+    $segmentsValues = $segmentsArr[1];
+
     return view('dashboard', compact('items', 'year', 'sum', 'itemsOld',
-    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals', 'sumTotalItems'));
+    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals', 'sumTotalItems', 'segments', 'segmentsValues'));
+  }
+
+  private function getSegments($region = null, $state = null, $city = null)
+  {
+    $segmentsQuery = Customer::select(DB::raw('segments.name as segment_name'), DB::raw('count(*) as total'))
+    ->join('segments', 'customers.segment_id', '=', 'segments.id');
+
+    if($state) {
+      $segmentsQuery = $segmentsQuery->whereHas('addresses', function ($q) use($state) {
+        $q->where('state', $state);
+      });
+    }
+
+    if($city) {
+      $segmentsQuery = $segmentsQuery->whereHas('addresses', function ($q) use($city) {
+        $q->where('city', $city);
+      });
+    }
+
+    $segmentsQuery = $segmentsQuery->groupBy('segment_name')
+    ->orderBy('segment_name')
+    ->pluck('total', 'segment_name');
+    $segments = $segmentsQuery->keys()->toArray();
+    $segmentsValues = $segmentsQuery->values()->toArray();
+
+    return [$segments, $segmentsValues];
   }
 
   private function getItems($year, $approved = false, $department_id = null, $direction_id = null, $partialyear = false)
@@ -158,6 +190,16 @@ class DashboardController extends Controller
       'sum' => $sum,
       'sumTotalItems' => $sumTotalItems,
       'year' => $request->get('year')
+    ]);
+  }
+
+  public function filterChar05(Request $request)
+  {
+    $segmentsArr = $this->getSegments(null, $request->get('state'), $request->get('city'));
+
+    return response()->json([
+      'segments' => $segmentsArr[0],
+      'values' => $segmentsArr[1],
     ]);
   }
 }
