@@ -33,12 +33,14 @@ class DashboardController extends Controller
     $sumOld = array_sum($this->getItems($year - 1, true, null, null, true)->toArray());
     $sumTotalItems = array_sum($this->getItems($year)->toArray());
 
-    $segmentsArr = $this->getSegments(null, 'RJ', null);
+    $segmentsArr = $this->getSegments(null, null, null);
     $segments = $segmentsArr[0];
     $segmentsValues = $segmentsArr[1];
+    $totalCustomer = array_sum($segmentsArr[1]);
 
     return view('dashboard', compact('items', 'year', 'sum', 'itemsOld',
-    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals', 'sumTotalItems', 'segments', 'segmentsValues'));
+    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals',
+    'sumTotalItems', 'segments', 'segmentsValues', 'totalCustomer'));
   }
 
   private function getSegments($region = null, $state = null, $city = null)

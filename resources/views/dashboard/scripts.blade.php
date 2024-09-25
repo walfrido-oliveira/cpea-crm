@@ -548,42 +548,16 @@
                   return '';
                 },
                 label: function (context) {
-                  let index = context.dataIndex > 0 ? context.dataIndex - 1 : 1;
                   let label = context.label || '';
-                  let label2 = window.chart05.config.data.labels[index];
-                  let label3 = "--------------------------";
-                  let label4 = `${label} vs ${label2}: `;
-                  let label5 = `${label} vs ${label2}: `;
-                  let currentMonthValue = context.parsed.y;
-                  let pastMonthValue = context.dataset.data[index];
-                  let diffMonthsValue = currentMonthValue - pastMonthValue;
-                  let diffMonthPercentage = currentMonthValue / pastMonthValue - 1;
+                  let currentValue = context.parsed.x;
+                  let total = window.chart05.config.data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+                  let diffPercentage = currentValue / total;
+                  let label2 = '';
 
-                  if (label) {
-                    label += ': ';
-                  }
+                  label += ": " + currentValue;
+                  label2 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffPercentage);;
 
-                  if (label2) {
-                    label2 += ': ';
-                  }
-
-                  if (diffMonthsValue >= 0) {
-                    label4 += '+';
-                  }
-
-                  if (diffMonthPercentage >= 0) {
-                    label5 += '+';
-                  }
-
-                  if (context.parsed.y !== null) {
-                    label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
-                  }
-
-                  label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.dataset.data[index]);
-                  label4 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(diffMonthsValue);
-                  label5 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffMonthPercentage);
-
-                  return [label, label2, label3, label4, label5];
+                  return [label, label2];
                 }
               }
             }
