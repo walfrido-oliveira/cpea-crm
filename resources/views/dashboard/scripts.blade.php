@@ -37,6 +37,9 @@
       '#8549ba'
     ];
 
+    const image = new Image();
+    image.src = '{{ asset('img/logo.png') }}';
+
     function color(index) {
       return COLORS[index % COLORS.length];
     }
@@ -65,9 +68,6 @@
         ]
       };
 
-      const image = new Image();
-      image.src = '{{ asset('img/logo.png') }}';
-
       const config = {
         type: 'line',
         data: data,
@@ -86,6 +86,9 @@
           }
         }],
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
+
           scales: {
             x: {
               grid: {
@@ -100,7 +103,7 @@
               }
             }
           },
-          responsive: true,
+
           plugins: {
             chartAreaBorder: {
               borderColor: 'gray',
@@ -178,6 +181,7 @@
         $year - 1,
         $year
       ]);
+
       const data = {
         labels: labels,
         datasets: [
@@ -193,11 +197,12 @@
         ]
       };
 
-
       const config = {
         type: 'bar',
         data: data,
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
           scales: {
             x: {
               grid: {
@@ -216,7 +221,7 @@
               }
             }
           },
-          responsive: true,
+
           plugins: {
             chartAreaBorder: {
               borderColor: 'gray',
@@ -236,13 +241,14 @@
                   return '';
                 },
                 label: function(context) {
+                  let index = context.dataIndex > 0 ? context.dataIndex - 1 : 1;
                   let label = context.label || '';
-                  let label2 = context.dataIndex > 0 ? window.chart02.config.data.labels[context.dataIndex - 1] : '';
+                  let label2 = window.chart02.config.data.labels[index];
                   let label3 = "--------------------------";
                   let label4 = `${label} vs ${label2}: `;
                   let label5 = `${label} vs ${label2}: `;
                   let currentMonthValue = context.parsed.y;
-                  let pastMonthValue = context.dataIndex > 0 ? context.dataset.data[context.dataIndex - 1] : 0;
+                  let pastMonthValue = context.dataset.data[index];
                   let diffMonthsValue = currentMonthValue - pastMonthValue;
                   let diffMonthPercentage = currentMonthValue / pastMonthValue - 1;
 
@@ -266,15 +272,9 @@
                     label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
                   }
 
-                  if (context.dataIndex > 0) {
-                    label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.dataset.data[context.dataIndex - 1]);
-                    label4 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(diffMonthsValue);
-                    label5 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffMonthPercentage);
-                  } else {
-                    label2+= "-";
-                    label4+= "-";
-                    label5+= "-";
-                  }
+                  label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.dataset.data[index]);
+                  label4 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(diffMonthsValue);
+                  label5 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffMonthPercentage);
 
                   return [label, label2, label3, label4, label5];
                 }
@@ -309,9 +309,6 @@
         ]
       };
 
-      const image = new Image();
-      image.src = '{{ asset('img/logo.png') }}';
-
       const config = {
         type: 'line',
         data: data,
@@ -330,6 +327,9 @@
           }
         }],
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
+
           scales: {
             x: {
               grid: {
@@ -344,12 +344,8 @@
               }
             }
           },
-          responsive: true,
+
           plugins: {
-            chartAreaBorder: {
-              borderColor: 'gray',
-              borderWidth: 2,
-            },
             legend: {
               display: false
             },
@@ -440,6 +436,60 @@
       const config = {
         type: 'pie',
         data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+
+          plugins: {
+            tooltip: {
+              displayColors: false,
+              backgroundColor: "rgb(97, 130, 87)",
+              callbacks: {
+                title: function(content) {
+                  return '';
+                },
+                label: function(context) {
+                  let index = context.dataIndex > 0 ? context.dataIndex - 1 : 1;
+                  let label = context.label || '';
+                  let label2 = window.chart04.config.data.labels[index];
+                  let label3 = "--------------------------";
+                  let label4 = `${label} vs ${label2}: `;
+                  let label5 = `${label} vs ${label2}: `;
+                  let currentMonthValue = context.parsed;
+                  let pastMonthValue = context.dataset.data[index];
+                  let diffMonthsValue = currentMonthValue - pastMonthValue;
+                  let diffMonthPercentage = currentMonthValue / pastMonthValue - 1;
+
+                  if (label) {
+                    label += ': ';
+                  }
+
+                  if (label2) {
+                    label2 += ': ';
+                  }
+
+                  if (diffMonthsValue >= 0) {
+                    label4 += '+';
+                  }
+
+                  if (diffMonthPercentage >= 0) {
+                    label5 += '+';
+                  }
+
+                  if (context.parsed.y !== null) {
+                    label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed);
+                  }
+
+                  label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.dataset.data[index]);
+                  label4 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(diffMonthsValue);
+                  label5 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffMonthPercentage);
+
+                  return [label, label2, label3, label4, label5];
+                }
+              }
+            }
+          }
+        },
       };
 
       const ctx04 = document.getElementById('chart-04');

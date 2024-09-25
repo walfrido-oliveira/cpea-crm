@@ -32,20 +32,20 @@
             <x-custom-select class="mt-1" :options="$directions" name="direction_id" id="direction_id" :value="app('request')->input('direction_id')" />
           </div>
         </div>
-        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 items-end">
+        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 items-stretch" style="min-height: 310px">
           <div class="w-3/5 p-4 my-2">
-            <canvas id="chart-01" style="border: 2px solid #ccc; padding: 5px;"></canvas>
+            <canvas id="chart-01" class="border-2 border-[#CCCCCC] border-solid"></canvas>
           </div>
           <div class="w-2/5 p-4 my-2">
-            <canvas id="chart-02"></canvas>
+            <canvas id="chart-02" class="border-2 border-[#CCCCCC] border-solid"></canvas>
           </div>
         </div>
-        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 items-end">
+        <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 items-stretch" style="min-height: 310px">
           <div class="w-3/5 p-4 my-2">
-            <canvas id="chart-03" style="border: 2px solid #ccc; padding: 5px;"></canvas>
+            <canvas id="chart-03" class="border-2 border-[#CCCCCC] border-solid"></canvas>
           </div>
           <div class="w-2/5 p-4 my-2">
-            <canvas id="chart-04"></canvas>
+            <canvas id="chart-04" class="border-2 border-[#CCCCCC] border-solid"></canvas>
           </div>
         </div>
       </div>
