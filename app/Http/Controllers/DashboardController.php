@@ -96,7 +96,7 @@ class DashboardController extends Controller
 
   private function getGoal($year, $department_id = null, $direction_id = null)
   {
-    $goals = Goal::select('value', 'month')->where('year', $year);
+    $goals = Goal::select(DB::raw('SUM(value) as value'), DB::raw('month as month'))->where('year', $year);
 
     if($department_id)
       $goals->where("department_id", $department_id);
