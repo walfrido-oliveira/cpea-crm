@@ -69,10 +69,10 @@
           </div>
         </div>
         <div class="flex flex-wrap mx-4 px-3 py-2 mt-0 items-stretch" style="min-height: 310px">
-          <div class="w-3/5 p-4 my-2">
+          <div class="w-1/2 p-4 my-2">
             <canvas id="chart-05" class="border-2 border-[#CCCCCC] border-solid"></canvas>
           </div>
-          <div class="w-2/5 p-4 my-2">
+          <div class="w-1/2 p-4 my-2">
             <canvas id="chart-06" class="border-2 border-[#CCCCCC] border-solid"></canvas>
           </div>
         </div>

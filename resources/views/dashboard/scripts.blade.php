@@ -569,11 +569,88 @@
       window.chart05 = new Chart(ctx05, config);
     }
 
+    function setChat06() {
+
+      const data = {
+        labels: @json($products),
+        datasets: [
+          {
+            label: 'Quantidade',
+            data: @json($productsValues),
+            borderColor: "#4F81BD",
+            backgroundColor: "#4F81BD",
+            borderWidth: 1
+          }
+        ]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+            }
+            },
+            y: {
+              grid: {
+                display: false
+              },
+            }
+          },
+
+          plugins: {
+            chartAreaBorder: {
+              borderColor: 'gray',
+              borderWidth: 2,
+            },
+            legend: {
+              display: true
+            },
+            title: {
+              display: true,
+            },
+            tooltip: {
+              displayColors: false,
+              backgroundColor: "rgb(97, 130, 87)",
+              callbacks: {
+                title: function (content) {
+                  return '';
+                },
+                label: function (context) {
+                  let label = context.label || '';
+                  let currentValue = context.parsed.x;
+                  let total = window.chart06.config.data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+                  let diffPercentage = currentValue / total;
+                  let label2 = '';
+
+                  label += ": " + currentValue;
+                  label2 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffPercentage);;
+
+                  return [label, label2];
+                }
+              }
+            }
+          },
+        },
+      };
+
+      const ctx06 = document.getElementById('chart-06');
+      window.chart06 = new Chart(ctx06, config);
+    }
+
     setChat01();
     setChat02();
     setChat03();
     setChat04();
     setChat05();
+    setChat06();
 
     function filterChart01() {
       let ajax = new XMLHttpRequest();
@@ -831,6 +908,58 @@
       ajax.send(data);
     }
 
+    function filterchart06() {
+      let ajax = new XMLHttpRequest();
+      let token = document.querySelector('meta[name="csrf-token"]').content;
+      let method = 'POST';
+      let year = document.querySelector(`#year`).value;
+      let department_id = document.querySelector(`#department_id`).value;
+      let direction_id = document.querySelector(`#direction_id`).value;
+      let url = "{{ route('dashboard.filter-chart06') }}";
+
+      ajax.open(method, url);
+
+      ajax.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var resp = JSON.parse(ajax.response);
+
+          window.chart06.data.datasets.forEach((dataset) => {
+            dataset.data.splice(0, dataset.data.length);
+          });
+
+          window.chart06.data.labels.splice(0, window.chart06.data.labels.length);
+
+          window.chart06.update();
+
+          const products = resp.products;
+          const values = resp.values;
+
+          Object.keys(values).forEach(key => {
+            window.chart06.data.datasets[0].data.push(values[key]);
+          });
+
+          Object.keys(products).forEach(key => {
+            window.chart06.data.labels.push(products[key]);
+          });
+
+          window.chart06.update();
+
+        } else if (this.readyState == 4 && this.status != 200) {
+          toastr.error("{!! __('Um erro ocorreu ao solicitar a consulta') !!}");
+          that.value = '';
+        }
+      }
+
+      var data = new FormData();
+      data.append('_token', token);
+      data.append('_method', method);
+      if(year) data.append('year', year);
+      if(department_id) data.append('department_id', department_id);
+      if(direction_id) data.append('direction_id', direction_id);
+
+      ajax.send(data);
+    }
+
     function getCities(state) {
       const dataForm = new FormData();
       const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -873,7 +1002,7 @@
         filterChart02();
         filterChart03();
         filterchart04();
-        filterchart05();
+        filterchart06();
       });
     });
 
