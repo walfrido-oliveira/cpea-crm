@@ -189,7 +189,7 @@ class ConversationItem extends Model
    */
   public function cnpj()
   {
-    return $this->belongsTo(cnpj::class);
+    return $this->belongsTo(Cnpj::class);
   }
 
   public static function probabilities()
