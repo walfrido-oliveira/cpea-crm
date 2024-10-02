@@ -392,7 +392,7 @@
 
         if (valueType.value == 'proposed' && proposed > 0) {
             valueType.setCustomValidity(
-                `Não é permitido adicionar mais de um valor do tipo "Proposta", só pode existir apenas um valor do tipo "Proposta"`
+                `Não é permitido adicionar mais de um valor do tipo "Proposta", só pode existir apenas um valor do tipo "Valor CPEA"`
             )
         } else {
             valueType.setCustomValidity('');
@@ -529,25 +529,26 @@
         deleteAttachmentModalHandle(row.querySelector(".delete-attachment"));
     }
 
+    var totalLocalValue = 0;
+    var brl = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+    });
+
     function addLocalValue() {
         if (!checkValidityValue()) {
             event.preventDefault();
             return;
         }
 
-        var table = document.querySelector(".table-values");
+        var table = document.querySelector(".table-values tbody");
         var row = table.insertRow();
         const value_type = document.querySelector("#value_modal #value_type").value;
-        const value_type_text = document.querySelector("#value_modal #value_type").options[document.querySelector(
-            "#value_modal #value_type").selectedIndex].text;
+        const value_type_text = document.querySelector("#value_modal #value_type").options[document.querySelector("#value_modal #value_type").selectedIndex].text;
         const value = document.querySelector("#value_modal #value").value.replace(".", "").replace(",", ".");
         const description = document.querySelector("#value_modal #description").value;
         const obs = document.querySelector("#value_modal #obs").value;
         const rowLength = table.rows.length;
-        var brl = new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-        });
         const index = rowLength - 2;
 
         row.innerHTML = `<tr>
@@ -555,10 +556,10 @@
                                 ${value_type_text}
                                 <input type="hidden" name="values[${index}][value_type]" value="${value_type}" class="value-type">
                             </td>
-                            <td>
+                            <!--<td>
                                 ${description}
                                 <input type="hidden" name="values[${index}][description]" value="${description}">
-                            </td>
+                            </td>-->
                             <td>
                                 ${brl.format(value)}
                                 <input type="hidden" name="values[${index}][value]" value="${value}">
@@ -575,8 +576,14 @@
                                 </button>
                             </td>
                         </tr>`;
+        updateTotalLocalValue(value);
         toggleValueModal(false);
         deleteValueModalHandle(row.querySelector(".delete-value"));
+    }
+
+    function updateTotalLocalValue(value) {
+      totalLocalValue += parseFloat(value);
+      document.querySelector("#total_value").innerHTML = brl.format(totalLocalValue)
     }
 
     function addLocalAddress() {

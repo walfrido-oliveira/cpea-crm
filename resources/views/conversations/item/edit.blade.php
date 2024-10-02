@@ -181,19 +181,7 @@
                     </div>
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <table class="table-values table md:table w-full">
-                            <thead>
-                                <tr class="thead-light">
-                                    <th scope="col"  class="custom-th">{{ __('Tipo de valor') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Valor') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($conversationItem->values as $value)
-                                    @include('conversations.item.value-content', ['value' => $value])
-                                @endforeach
-                            </tbody>
+                          @include('conversations.item.value-content')
                         </table>
                     </div>
                 </div>

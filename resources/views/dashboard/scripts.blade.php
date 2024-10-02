@@ -114,7 +114,7 @@
             },
             title: {
               display: true,
-              text: 'Vendas {{ $year }} - R$ {{ number_format($sum, 2, ",", ".") }}'
+              text: 'Vendas {{ $year }} - R$ {{ number_format($sums[2], 2, ",", ".") }}'
             },
             tooltip: {
               displayColors: false,
@@ -176,10 +176,12 @@
       window.chart01 = new Chart(ctx01, config);
     }
 
+    var sums  =  @json($sums);
+
     function setChat02() {
       const labels = @json([
         $year - 1,
-        $year
+        $year - 0
       ]);
 
       const data = {
@@ -188,8 +190,8 @@
           {
             label: '{{ $year }}',
             data: @json([
-              $sumOld,
-              $sum
+              $sums[1],
+              $sums[2]
             ]),
             borderColor: "#005E10",
             backgroundColor: "#005E10",
@@ -241,16 +243,17 @@
                   return '';
                 },
                 label: function(context) {
-                  let index = context.dataIndex > 0 ? context.dataIndex - 1 : 1;
+                  let index = context.dataIndex > 0 ? context.dataIndex - 1 : -1;
                   let label = context.label || '';
-                  let label2 = window.chart02.config.data.labels[index];
+                  let label2 = index > -1 ? window.chart02.config.data.labels[index] : window.chart02.config.data.labels[0] - 1;
                   let label3 = "--------------------------";
                   let label4 = `${label} vs ${label2}: `;
                   let label5 = `${label} vs ${label2}: `;
-                  let currentMonthValue = context.parsed.y;
-                  let pastMonthValue = context.dataset.data[index];
-                  let diffMonthsValue = currentMonthValue - pastMonthValue;
-                  let diffMonthPercentage = currentMonthValue / pastMonthValue - 1;
+                  let currentValue = context.parsed.y;
+                  let pastValue = index > -1 ? context.dataset.data[index] : sums[0];
+                  console.log(sums[0]);
+                  let diffValue = currentValue - pastValue;
+                  let diffPercentag = currentValue / pastValue - 1;
 
                   if (label) {
                     label += ': ';
@@ -260,11 +263,11 @@
                     label2 += ': ';
                   }
 
-                  if (diffMonthsValue >= 0) {
+                  if (diffValue >= 0) {
                     label4 += '+';
                   }
 
-                  if (diffMonthPercentage >= 0) {
+                  if (diffPercentag >= 0) {
                     label5 += '+';
                   }
 
@@ -272,9 +275,9 @@
                     label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
                   }
 
-                  label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.dataset.data[index]);
-                  label4 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(diffMonthsValue);
-                  label5 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffMonthPercentage);
+                  label2 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(pastValue);
+                  label4 += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(diffValue);
+                  label5 += new Intl.NumberFormat('pt-BR', { style: 'percent', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(diffPercentag);
 
                   return [label, label2, label3, label4, label5];
                 }
@@ -422,7 +425,7 @@
             label: '{{ $year }}',
             data: @json([
               $sumTotalItems,
-              $sum
+              $sums[2]
             ]),
             backgroundColor: ["#A2B97C", "#005E10"],
           }
@@ -730,11 +733,10 @@
 
           window.chart02.update();
 
-          const sum = resp.sum;
-          const sumOld = resp.sumOld;
+          sums = resp.sums;
 
-          window.chart02.data.datasets[0].data.push(sumOld);
-          window.chart02.data.datasets[0].data.push(sum);
+          window.chart02.data.datasets[0].data.push(resp.sums[1]);
+          window.chart02.data.datasets[0].data.push(resp.sums[2]);
           window.chart02.data.datasets[0].label = resp.year
 
           window.chart02.data.labels.push(resp.year - 1);

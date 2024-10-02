@@ -23,15 +23,18 @@ class DashboardController extends Controller
   public function index(Request $request)
   {
     $year = now()->format('Y');
-    $years = [$year - 1 => $year - 1, $year => $year];
+    $years = [$year - 2 => $year - 2, $year - 1 => $year - 1, $year => $year];
     $directions = Direction::pluck("name", "id");
     $departments = Department::pluck("name", "id");
     $items = $this->getItems($year, true);
     $itemsOld = $this->getItems($year - 1, true);
     $cumulative = $this->getCumulative($year);
     $goals = $this->getGoal($year);
-    $sum = array_sum($items->toArray());
-    $sumOld = array_sum($this->getItems($year - 1, true, null, null, true)->toArray());
+    $sums =  [
+      array_sum($this->getItems($year - 2, true, null, null, true)->toArray()),
+      array_sum($this->getItems($year - 1, true, null, null, true)->toArray()),
+      array_sum($items->toArray()),
+    ];
     $sumTotalItems = array_sum($this->getItems($year)->toArray());
 
     $segmentsArr = $this->getSegments(null, null, null);
@@ -42,8 +45,8 @@ class DashboardController extends Controller
     $products = $productsArr[0];
     $productsValues = $productsArr[1];
 
-    return view('dashboard', compact('items', 'year', 'sum', 'itemsOld',
-    'directions', 'departments', 'years', 'sumOld', 'cumulative', 'goals',
+    return view('dashboard', compact('items', 'year', 'sums', 'itemsOld',
+    'directions', 'departments', 'years', 'cumulative', 'goals',
     'sumTotalItems', 'segments', 'segmentsValues', 'products', 'productsValues'));
   }
 
@@ -204,13 +207,12 @@ class DashboardController extends Controller
   public function filterChar02(Request $request)
   {
     $items = $this->getItems($request->get('year'), true, $request->get('department_id'), $request->get('direction_id'));
-    $itemsOld = $this->getItems($request->get('year') - 1, true, $request->get('department_id'), $request->get('direction_id'));
-    $sum = array_sum($items->toArray());
-    $sumOld = array_sum($itemsOld->toArray());
+    $items2 = $this->getItems($request->get('year') - 1, true, $request->get('department_id'), $request->get('direction_id'));
+    $items3 = $this->getItems($request->get('year') - 2, true, $request->get('department_id'), $request->get('direction_id'));
+    $sums = [array_sum($items3->toArray()), array_sum($items2->toArray()), array_sum($items->toArray())];
 
     return response()->json([
-      'sum' => $sum,
-      'sumOld' => $sumOld,
+      'sums' => $sums,
       'year' => $request->get('year')
     ]);
   }

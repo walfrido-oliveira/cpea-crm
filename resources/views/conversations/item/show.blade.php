@@ -368,34 +368,35 @@
                   <thead>
                     <tr class="thead-light">
                       <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Tipo de valor') }}</th>
-                      <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Descrição do valor') }}</th>
                       <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Valor') }}</th>
                       <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Observações') }}</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach ($conversationItem->values as $key => $value)
-                    <tr @if($key> 3) x-show="isOpen()"
-                      x-transition:enter="transition ease-out duration-300"
-                      x-transition:enter-start="opacity-0 transform scale-90"
-                      x-transition:enter-end="opacity-100 transform scale-100"
-                      x-transition:leave="transition ease-in duration-300"
-                      x-transition:leave-start="opacity-100 transform scale-100"
-                      x-transition:leave-end="opacity-0 transform scale-90 hidden" @endif>
-                      <td>
-                        {{ __($value->value_type) }}
-                      </td>
-                      <td>
-                        {{ $value->description }}
-                      </td>
-                      <td style="white-space: nowrap;">
-                        R$ {{ number_format($value->value, 2, ",", ".") }}
-                      </td>
-                      <td>
-                        {{ $value->obs }}
-                      </td>
-                    </tr>
+                      <tr @if($key> 3) x-show="isOpen()"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 transform scale-90"
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        x-transition:leave="transition ease-in duration-300"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-90 hidden" @endif>
+                        <td>
+                          {{ __($value->value_type) }}
+                        </td>
+                        <td style="white-space: nowrap;">
+                          R$ {{ number_format($value->value, 2, ",", ".") }}
+                        </td>
+                        <td>
+                          {{ $value->obs }}
+                        </td>
+                      </tr>
                     @endforeach
+                  </tbody>
+                  <tbody>
+                    <td>Proposta</td>
+                    <td>R$ {{ number_format( $conversationItem->values()->sum('value'), 2, ",", ".") }}</td>
+                    <td></td>
                   </tbody>
                 </table>
               </div>

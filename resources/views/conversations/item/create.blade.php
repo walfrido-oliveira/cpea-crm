@@ -117,7 +117,7 @@
                             <x-custom-select :options="array('y' => 'Sim', 'n' => 'Não')" value="{{ old('ppi') }}" name="ppi" id="ppi" class="mt-1"/>
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <x-jet-label for="cnpj_id" value="{{ __('CNPJ') }}"/>
+                            <x-jet-label for="cnpj_id" value="{{ __('CNPJ CPEA') }}"/>
                             <x-custom-select :options="$cnpjs" value="{{ old('cnpj_id') }}" name="cnpj_id" id="cnpj_id" class="mt-1"/>
                         </div>
                     </div>
@@ -187,16 +187,7 @@
                     </div>
                     <div class="flex mx-4 px-3 py-2 mt-4">
                         <table class="table-values table md:table w-full">
-                            <thead>
-                                <tr class="thead-light">
-                                    <th scope="col"  class="custom-th">{{ __('Tipo de valor') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Valor') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
-                                    <th scope="col"  class="custom-th">{{ __('') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
+                            @include('conversations.item.value-content', ['value' => []])
                         </table>
                     </div>
                 </div>
