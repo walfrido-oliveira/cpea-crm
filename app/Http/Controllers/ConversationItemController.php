@@ -171,6 +171,12 @@ class ConversationItemController extends Controller
       'probability' => $input['probability'],
     ]);
 
+    if ($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
+      $cpeaId = CpeaId::create();
+      $conversation->cpea_id = $cpeaId->id;
+      $conversation->save();
+    }
+
     if (isset($input['products'])) :
       $conversationItem->products()->sync($input['products']);
     endif;
@@ -211,12 +217,6 @@ class ConversationItemController extends Controller
     endif;
 
     $conversationItem->notify(true);
-
-    if ($input['item_type'] == "Proposta" && !$conversation->cpea_id) {
-      $cpeaId = CpeaId::create();
-      $conversation->cpea_id = $cpeaId->id;
-      $conversation->save();
-    }
 
     $resp = [
       'message' => __('Interação  Cadastrada com Sucesso!'),
@@ -324,6 +324,12 @@ class ConversationItemController extends Controller
       'probability' => $input['probability'],
     ]);
 
+    if ($input['item_type'] == "Proposta" && !$conversationItem->conversation->cpea_id) {
+      $cpeaId = CpeaId::create();
+      $conversationItem->conversation->cpea_id = $cpeaId->id;
+      $conversationItem->conversation->save();
+    }
+
     if (isset($input['products'])) :
       $conversationItem->products()->sync($input['products']);
     endif;
@@ -362,12 +368,6 @@ class ConversationItemController extends Controller
         ]);
       }
     endif;
-
-    if ($input['item_type'] == "Proposta" && !$conversationItem->conversation->cpea_id) {
-      $cpeaId = CpeaId::create();
-      $conversationItem->conversation->cpea_id = $cpeaId->id;
-      $conversationItem->conversation->save();
-    }
 
     $conversationItem->notify(false);
 
