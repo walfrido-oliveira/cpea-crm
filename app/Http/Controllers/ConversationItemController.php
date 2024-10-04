@@ -192,7 +192,6 @@ class ConversationItemController extends Controller
       foreach ($input['values'] as $value) {
         Value::create([
           'conversation_item_id' => $conversationItem->id,
-          'description' => $value['description'],
           'obs' => $value['obs'],
           'value_type' => $value['value_type'],
           'value' => $value['value'],
@@ -346,7 +345,6 @@ class ConversationItemController extends Controller
       foreach ($input['values'] as $value) {
         Value::create([
           'conversation_item_id' => $conversationItem->id,
-          'description' => $value['description'],
           'obs' => $value['obs'],
           'value_type' => $value['value_type'],
           'value' => $value['value'],
