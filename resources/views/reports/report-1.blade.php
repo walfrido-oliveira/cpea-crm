@@ -40,7 +40,7 @@
     @foreach ($conversations as $conversation)
     <tr>
       <td>{{ $conversation->conversation->id }}</td>
-      <td>{{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }}</td>
+      <td>{{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }} {{ $conversation->id }}</td>
       <td>{{ $conversation->conversation->cpea_id ? $conversation->conversation->cpea_id : '-' }}</td>
       <td>{{ $conversation->interaction_at->format('d/m/Y H:i:s') }}</td>
       <td>{{ $conversation->item_type }}</td>
@@ -61,18 +61,24 @@
       <td>{{ $conversation->detailedContact ? $conversation->detailedContact->contact : '-' }}</td>
       <td>
         @foreach ($conversation->products as $key => $product)
-        {{ $product->name }} @if(count($conversation->products) - 1 < $key),@endif @endforeach </td>
+          {{ $product->name }} @if(count($conversation->products) - 1 < $key),@endif
+        @endforeach
+      </td>
       <td>{{ $conversation->additive ? "Sim" : "Não" }}</td>
       <td>{{ $conversation->cpea_linked_id ? $conversation->cpea_linked_id : '-' }}</td>
       <td>{{ $conversation->direction ? $conversation->direction->name : '-' }}</td>
-      <td>@if($conversation->employee) {{ $conversation->department ? $conversation->department->name : '-' }} @endif</td>
+      <td>
+        @if($conversation->employee)
+          {{ $conversation->department ? $conversation->department->name : '-' }}
+        @endif
+      </td>
       <td>{{ $conversation->employee ? $conversation->employee->name : '-' }}</td>
       <td>{{ $conversation->etapa ? $conversation->etapa->name : '-' }}</td>
       <td>{{ __($conversation->ppi) }}</td>
       <td>{{ $conversation->cnpj ? $conversation->cnpj->formatted_cnpj : '-' }}</td>
       <td>{{ $conversation->state ? $conversation->state : '-' }}</td>
       <td>{{ $conversation->city ? $conversation->city : '-' }}</td>
-      <td>{{ strip_tags($conversation->item_details) }}</td>
+      <td>{{ Str::length(strip_tags($conversation->item_details)) > 100 ? Str::substr(strip_tags($conversation->item_details), 0, 100) . ' [...]' : strip_tags($conversation->item_details)  }}</td>
       <td>
         R$ {{ number_format($conversation->values()->where('value_type', 'proposed')->sum('value'), 2, ",", ".") }}
       </td>
