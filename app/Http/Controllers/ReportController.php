@@ -92,6 +92,26 @@ class ReportController extends Controller
     return $this->reportFactory($html, "Relatório Contatos Gerais do Cliente-Empresa.xls");
   }
 
+  /**
+   * Gets conversation items list in XLS format
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function report5(Request $request)
+  {
+    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 00:00:00') : now();
+    $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
+
+    $conversations = ConversationItem::whereBetween("created_at", [$startDate, $endDate])->orderBy('conversation_id')->orderBy('created_at')->get();
+
+    if ($request->has("debug")) return view('reports.report-5', compact('conversations', 'startDate', 'endDate'));
+
+    $html = view('reports.report-5', compact('conversations', 'startDate', 'endDate'))->render();
+
+    return $this->reportFactory($html, "Relatório de Interações.xls");
+  }
+
   private function reportFactory($html, $reportName)
   {
     return response()->streamDownload(function () use ($html) {

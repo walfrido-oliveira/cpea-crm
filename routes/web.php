@@ -248,6 +248,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/relatorio-3', [ReportController::class, 'report3'])->name('report-3');
     Route::get('/relatorio-4', [ReportController::class, 'report4'])->name('report-4');
     Route::post('/relatorio-4', [ReportController::class, 'report4'])->name('report-4');
+    Route::get('/relatorio-5', [ReportController::class, 'report5'])->name('report-5');
+    Route::post('/relatorio-5', [ReportController::class, 'report5'])->name('report-5');
   });
 
   Route::prefix('azure')->name('azure.')->group(function () {
