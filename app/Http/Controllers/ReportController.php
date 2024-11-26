@@ -133,6 +133,35 @@ class ReportController extends Controller
     return $this->reportFactory($html, "Relatório de Interações.xls");
   }
 
+  /**
+   * Gets conversation items list in XLS format
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function report6(Request $request)
+  {
+    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 00:00:00') : now();
+    $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
+
+    $subQuery = ConversationItem::select('conversation_id', DB::raw('MAX(created_at) AS max_data'))
+      ->groupBy('conversation_id');
+
+    $conversations = ConversationItem::from('conversation_items as t1')
+      ->joinSub($subQuery, 't2', function ($join) {
+        $join->on('t1.conversation_id', '=', 't2.conversation_id')
+          ->on('t1.created_at', '=', 't2.max_data');
+      })
+      ->whereBetween('t1.created_at', [$startDate, $endDate])
+      ->get();
+
+    if ($request->has("debug")) return view('reports.report-5', compact('conversations', 'startDate', 'endDate'));
+
+    $html = view('reports.report-5', compact('conversations', 'startDate', 'endDate'))->render();
+
+    return $this->reportFactory($html, "Relatório de Interações.xls");
+  }
+
   private function reportFactory($html, $reportName)
   {
     return response()->streamDownload(function () use ($html) {

@@ -139,6 +139,9 @@
             <a  href="{{ route('reports.report-5') }}" class="filter-reports">Interações Comerciais</a>
           </div>
           <div class="px-0 py-0 ">
+            <a  href="{{ route('reports.report-6') }}" class="filter-reports">Interações Executiva</a>
+          </div>
+          <div class="px-0 py-0 ">
             <a  href="{{ route('reports.report-2') }}" class="filter-reports">Clientes/Empresas</a>
           </div>
           <div class="px-0 py-0 ">
