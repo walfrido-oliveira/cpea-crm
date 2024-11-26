@@ -19,7 +19,7 @@ class ValueController extends Controller
         'description' => ['nullable', 'string', 'max:255'],
         'value_type' => ['required', 'string', 'in:proposed,others'],
         'obs' => ['nullable', 'string', 'max:255'],
-        'value' => ['required', 'numeric']
+        'value' => ['required', 'numeric'],
       ]
     );
 
@@ -47,6 +47,7 @@ class ValueController extends Controller
       'value_type' => $input['value_type'],
       'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
       'additional_value' =>  $input['additional_value'] ? true : false,
+      'user_id' => auth()->user()->id,
     ]);
 
     $value = Value::find($value->id);
@@ -80,6 +81,7 @@ class ValueController extends Controller
       'value_type' => $input['value_type'],
       'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
       'additional_value' =>  $input['additional_value'] ? true : false,
+      'user_id' => auth()->user->id,
     ]);
 
     return response()->json([

@@ -4,6 +4,8 @@
     <th scope="col"  class="custom-th">{{ __('Valor') }}</th>
     <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
     <th scope="col"  class="custom-th">{{ __('Valor Adicional') }}</th>
+    <th scope="col"  class="custom-th">{{ __('Data de Criação') }}</th>
+    <th scope="col"  class="custom-th">{{ __('Data de Modificação') }}</th>
     <th scope="col"  class="custom-th">{{ __('') }}</th>
   </tr>
 </thead>
@@ -23,6 +25,13 @@
         </td>
         <td>
           {{ $value->additional_value ? 'Sim' : 'Não' }}
+        </td>
+        <td>
+          {{ $value->created_at->format('d/m/Y h:i') }}<br>
+          {{ $value->user ? $value->user->full_name : '-' }}
+        </td>
+        <td>
+          {{ $value->updated_at->format('d/m/Y h:i') }}
         </td>
         <td>
           <button type="button" class="btn-transition-danger delete-value edit"
@@ -47,6 +56,7 @@
         R$ 0,00
       @endif
     </td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>

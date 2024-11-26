@@ -4,7 +4,9 @@
       <th>Nº CONVERSA</th>
       <th>Nº INTERAÇÃO</th>
       <th>IDCPEA</th>
-      <th>DATA/HORA</th>
+      <th>DATA/HORA INTERAÇÃO</th>
+      <th>DATA/HORA SISTEMA</th>
+      <th>FLAG VALOR ADICIONAL</th>
       <th>TIPO</th>
       <th>STATUS</th>
       <th>PROBABILIDADE</th>
@@ -40,17 +42,18 @@
     @foreach ($conversations as $conversation)
     <tr>
       <td>{{ $conversation->conversation->id }}</td>
-      <td>{{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }} {{ $conversation->id }}</td>
+      <td>{{ str_pad($conversation->id, 5, 0, STR_PAD_LEFT) }}</td>
       <td>{{ $conversation->conversation->cpea_id ? $conversation->conversation->cpea_id : '-' }}</td>
       <td>{{ $conversation->interaction_at->format('d/m/Y H:i:s') }}</td>
+      <td>{{ $conversation->created_at->format('d/m/Y H:i:s') }}</td>
+      <td>{{ count($conversation->values()->where('additional_value', true)->get()) > 0 ? 'SIM' : 'NÃO' }}</td>
       <td>{{ $conversation->item_type }}</td>
       <td>{{ $conversation->conversationStatus ? $conversation->conversationStatus->name : "-" }}</td>
       <td>{{ $conversation->probability ? $conversation->probability : '-' }}</td>
       <td>{{ $conversation->conversation->customer ? $conversation->conversation->customer->name : '-' }}</td>
       <td>
         @if ($conversation->conversation->customer)
-        {{ $conversation->conversation->customer->segment ? $conversation->conversation->customer->segment->name : '-'
-        }}
+          {{ $conversation->conversation->customer->segment ? $conversation->conversation->customer->segment->name : '-' }}
         @endif
       </td>
       <td>

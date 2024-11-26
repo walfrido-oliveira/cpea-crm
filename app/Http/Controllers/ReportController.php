@@ -20,7 +20,7 @@ class ReportController extends Controller
    */
   public function report1(Request $request)
   {
-    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 23:59:59') : now();
+    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 00:00:00') : now();
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
 
     $conversations = ConversationItem::whereBetween("interaction_at", [$startDate, $endDate])->orderBy('conversation_id')->get();
@@ -40,7 +40,7 @@ class ReportController extends Controller
    */
   public function report2(Request $request)
   {
-    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 23:59:59') : now();
+    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 00:00:00') : now();
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
 
     $customers = Customer::whereBetween("created_at", [$startDate, $endDate])->get();
@@ -60,7 +60,7 @@ class ReportController extends Controller
    */
   public function report3(Request $request)
   {
-    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 23:59:59') : now();
+    $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 00:00:00') : now();
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
 
     $contacts = Contact::whereBetween("created_at", [$startDate, $endDate])->get();
