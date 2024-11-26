@@ -3,6 +3,7 @@
     <th scope="col"  class="custom-th">{{ __('Tipo de valor') }}</th>
     <th scope="col"  class="custom-th">{{ __('Valor') }}</th>
     <th scope="col"  class="custom-th">{{ __('Observações') }}</th>
+    <th scope="col"  class="custom-th">{{ __('Valor Adicional') }}</th>
     <th scope="col"  class="custom-th">{{ __('') }}</th>
   </tr>
 </thead>
@@ -19,6 +20,9 @@
         </td>
         <td>
           {{ $value->obs }}
+        </td>
+        <td>
+          {{ $value->additional_value ? 'Sim' : 'Não' }}
         </td>
         <td>
           <button type="button" class="btn-transition-danger delete-value edit"
@@ -43,6 +47,7 @@
         R$ 0,00
       @endif
     </td>
+    <td></td>
     <td></td>
     <td></td>
   </tr>

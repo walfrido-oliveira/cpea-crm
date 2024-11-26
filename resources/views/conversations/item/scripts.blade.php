@@ -417,6 +417,7 @@
         dataForm.append("description", document.querySelector("#value_modal #description").value);
         dataForm.append("value", document.querySelector("#value_modal #value").value);
         dataForm.append("obs", document.querySelector("#value_modal #obs").value);
+        dataForm.append("additional_value", document.querySelector("#value_modal #additional_value").value);
         dataForm.append("_method", "POST");
         dataForm.append("_token", token);
 
@@ -434,9 +435,9 @@
 
                 var table = document.querySelector(".table-values");
 
-                var row = table.insertRow();
-                row.innerHTML = response.value;
-
+                //var row = table.insertRow();
+                table.innerHTML = response.value;
+                console.log(response.value);
                 deleteValueModalHandle();
 
             }).catch(err => {
@@ -548,6 +549,7 @@
         const value = document.querySelector("#value_modal #value").value.replaceAll(".", "").replace(",", ".");
         const description = document.querySelector("#value_modal #description").value;
         const obs = document.querySelector("#value_modal #obs").value;
+        const additional_value = document.querySelector('#value_modal #additional_value').value;
         const rowLength = table.rows.length;
         const index = rowLength - 2;
 
@@ -567,6 +569,10 @@
                             <td>
                                 ${obs}
                                 <input type="hidden" name="values[${index}][obs]" value="${obs}">
+                            </td>
+                            <td>
+                                ${additional_value ? 'Sim' : 'Não'}
+                                <input type="hidden" name="values[${index}][obs]" value="${additional_value}">
                             </td>
                             <td>
                                 <button type="button" class="btn-transition-danger delete-value">

@@ -15,7 +15,7 @@ class Value extends Model
      * @var array
      */
     protected $fillable = [
-        'description', 'obs', 'conversation_item_id', 'value_type', 'value'
+        'description', 'obs', 'conversation_item_id', 'value_type', 'value', 'additional_value'
     ];
 
     /**

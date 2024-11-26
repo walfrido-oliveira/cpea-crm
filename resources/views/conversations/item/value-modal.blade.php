@@ -24,16 +24,15 @@
                 <div class="flex flex-wrap mt-2 w-full">
                   <div class="w-full pr-3 mb-6 md:mb-1">
                     <x-jet-label for="value_type" value="{{ __('Tipo de valor') }}" required />
-                    <x-custom-select
-                      :options="array('proposed' => 'Valor CPEA',
+                    <x-custom-select :options="array('proposed' => 'Valor CPEA',
                                       'direct_billing' => 'Faturamento Direto',
-                                      'technical_assistance' => 'Assessoria Técnica')" value=""
-                      name="value_type" id="value_type" class="mt-1" required />
+                                      'technical_assistance' => 'Assessoria Técnica')" value="" name="value_type"
+                      id="value_type" class="mt-1" required />
                   </div>
                   <div class="w-full pr-3 mb-6 md:mb-1" style="display: none">
-                    <x-jet-label for="description" value="{{ __('Descrição do valor') }}"  />
+                    <x-jet-label for="description" value="{{ __('Descrição do valor') }}" />
                     <x-jet-input id="description" class="form-control block mt-1 w-full" type="text" value=""
-                      name="description"  />
+                      name="description" />
                   </div>
                   <div class="w-full pr-3 mb-6 md:mb-1">
                     <x-jet-label for="value" value="{{ __('Valor') }}" required />
@@ -44,6 +43,12 @@
                     <x-jet-label for="obs" value="{{ __('Observações') }}" />
                     <textarea name="obs" id="obs" cols="30" rows="5"
                       class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm form-control block mt-1 w-full">{{ old('obs') }}</textarea>
+                  </div>
+                  <div class="w-full pr-3 mb-6 md:mb-1">
+                    <label for="additional_value" class="flex items-center">
+                      <input id="additional_value" type="checkbox" class="form-checkbox" name="additional_value" value="1">
+                      <span class="ml-2 text-sm text-gray-600">{{ __('Valor Adicional') }}</span>
+                    </label>
                   </div>
                 </div>
               </form>

@@ -46,14 +46,16 @@ class ValueController extends Controller
       'obs' => $input['obs'],
       'value_type' => $input['value_type'],
       'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
+      'additional_value' =>  $input['additional_value'] ? true : false,
     ]);
 
     $value = Value::find($value->id);
+    $conversationItem = $value->conversationItem;
 
     return response()->json([
       'message' => __('Valor Salvo com Sucesso!'),
       'alert-type' => 'success',
-      'value' => view('conversations.item.value-content', compact('value'))->render()
+      'value' => view('conversations.item.value-content', compact('conversationItem'))->render()
     ]);
   }
 
@@ -77,6 +79,7 @@ class ValueController extends Controller
       'obs' => $input['obs'],
       'value_type' => $input['value_type'],
       'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
+      'additional_value' =>  $input['additional_value'] ? true : false,
     ]);
 
     return response()->json([
