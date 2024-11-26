@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use App\Models\ConversationItem;
+use App\Models\Contact;
 use App\Models\Customer;
+use Illuminate\Http\Request;
 use App\Models\DetailedContact;
+use App\Models\ConversationItem;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -103,7 +104,27 @@ class ReportController extends Controller
     $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 00:00:00') : now();
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
 
-    $conversations = ConversationItem::whereBetween("created_at", [$startDate, $endDate])->orderBy('conversation_id')->orderBy('created_at')->get();
+    $conversations1 = ConversationItem::whereBetween("created_at", [$startDate, $endDate])
+      ->whereHas("values", function ($q) {
+        $q->where("additional_value", true);
+      })
+      ->orderBy('conversation_id')
+      ->get();
+
+    $subQuery = ConversationItem::select('conversation_id', DB::raw('MAX(created_at) AS max_data'))
+      ->groupBy('conversation_id');
+
+    $conversations2 = ConversationItem::from('conversation_items as t1')
+      ->joinSub($subQuery, 't2', function ($join) {
+        $join->on('t1.conversation_id', '=', 't2.conversation_id')
+          ->on('t1.created_at', '=', 't2.max_data');
+      })
+      ->whereBetween('t1.created_at', [$startDate, $endDate])
+      ->get();
+
+    $conversations = $conversations1->merge($conversations2)->unique('id');
+
+    $conversations = $conversations->sortBy('conversation_id')->values();
 
     if ($request->has("debug")) return view('reports.report-5', compact('conversations', 'startDate', 'endDate'));
 
