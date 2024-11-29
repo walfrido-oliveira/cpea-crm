@@ -404,10 +404,10 @@
     }
 
     function addValue() {
-        if (!checkValidityValue()) {
+        /*if (!checkValidityValue()) {
             event.preventDefault();
             return;
-        }
+        }*/
 
         const dataForm = new FormData();
         const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -537,10 +537,10 @@
     });
 
     function addLocalValue() {
-        if (!checkValidityValue()) {
+        /*if (!checkValidityValue()) {
             event.preventDefault();
             return;
-        }
+        }*/
 
         var table = document.querySelector(".table-values tbody");
         var row = table.insertRow();
