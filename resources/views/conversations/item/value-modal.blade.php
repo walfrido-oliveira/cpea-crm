@@ -31,13 +31,11 @@
                   </div>
                   <div class="w-full pr-3 mb-6 md:mb-1" style="display: none">
                     <x-jet-label for="description" value="{{ __('Descrição do valor') }}" />
-                    <x-jet-input id="description" class="form-control block mt-1 w-full" type="text" value=""
-                      name="description" />
+                    <x-jet-input id="description" class="form-control block mt-1 w-full" type="text" value="" name="description" />
                   </div>
                   <div class="w-full pr-3 mb-6 md:mb-1">
                     <x-jet-label for="value" value="{{ __('Valor') }}" required />
-                    <x-jet-input id="value" class="form-control block mt-1 w-full" type="text" value="" stype="any"
-                      name="value" required />
+                    <x-jet-input id="value" class="form-control block mt-1 w-full" type="text" value="" stype="any" name="value" required />
                   </div>
                   <div class="w-full pr-3 mb-6 md:mb-1">
                     <x-jet-label for="obs" value="{{ __('Observações') }}" />

@@ -104,22 +104,24 @@ class ReportController extends Controller
     $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 00:00:00') : now();
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
 
-    $conversations1 = ConversationItem::whereBetween("created_at", [$startDate, $endDate])
+    $conversations1 = ConversationItem::whereBetween("interaction_at", [$startDate, $endDate])
+    ->where('item_type', 'Proposta')
       ->whereHas("values", function ($q) {
         $q->where("additional_value", true);
       })
       ->orderBy('conversation_id')
       ->get();
 
-    $subQuery = ConversationItem::select('conversation_id', DB::raw('MAX(created_at) AS max_data'))
+    $subQuery = ConversationItem::select('conversation_id', DB::raw('MAX(interaction_at) AS max_data'))
       ->groupBy('conversation_id');
 
     $conversations2 = ConversationItem::from('conversation_items as t1')
       ->joinSub($subQuery, 't2', function ($join) {
         $join->on('t1.conversation_id', '=', 't2.conversation_id')
-          ->on('t1.created_at', '=', 't2.max_data');
+          ->on('t1.interaction_at', '=', 't2.max_data');
       })
-      ->whereBetween('t1.created_at', [$startDate, $endDate])
+      ->whereBetween('t1.interaction_at', [$startDate, $endDate])
+      ->where('item_type', 'Proposta')
       ->get();
 
     $conversations = $conversations1->merge($conversations2)->unique('id');
@@ -144,15 +146,16 @@ class ReportController extends Controller
     $startDate = $request->has("start_date") ? new Carbon($request->get("start_date") . ' 00:00:00') : now();
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
 
-    $subQuery = ConversationItem::select('conversation_id', DB::raw('MAX(created_at) AS max_data'))
+    $subQuery = ConversationItem::select('conversation_id', DB::raw('MAX(interaction_at) AS max_data'))
       ->groupBy('conversation_id');
 
     $conversations = ConversationItem::from('conversation_items as t1')
       ->joinSub($subQuery, 't2', function ($join) {
         $join->on('t1.conversation_id', '=', 't2.conversation_id')
-          ->on('t1.created_at', '=', 't2.max_data');
+          ->on('t1.interaction_at', '=', 't2.max_data');
       })
-      ->whereBetween('t1.created_at', [$startDate, $endDate])
+      ->whereBetween('t1.interaction_at', [$startDate, $endDate])
+      ->where('item_type', 'Proposta')
       ->get();
 
     if ($request->has("debug")) return view('reports.report-5', compact('conversations', 'startDate', 'endDate'));
