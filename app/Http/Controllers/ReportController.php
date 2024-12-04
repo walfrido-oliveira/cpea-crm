@@ -105,24 +105,28 @@ class ReportController extends Controller
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
 
     $conversations1 = ConversationItem::whereBetween("interaction_at", [$startDate, $endDate])
-    ->where('item_type', 'Proposta')
+      ->where('item_type', 'Proposta')
       ->whereHas("values", function ($q) {
         $q->where("additional_value", true);
       })
       ->orderBy('conversation_id')
       ->get();
 
-    $subQuery = ConversationItem::select('conversation_id', DB::raw('MAX(interaction_at) AS max_data'))
+    $subQuery = ConversationItem::select('id', DB::raw('MAX(interaction_at) AS max_data'))
+      ->whereHas("values", function ($q) {
+        $q->where("additional_value", false);
+      })
       ->groupBy('conversation_id');
 
     $conversations2 = ConversationItem::from('conversation_items as t1')
       ->joinSub($subQuery, 't2', function ($join) {
-        $join->on('t1.conversation_id', '=', 't2.conversation_id')
+        $join->on('t1.id', '=', 't2.id')
           ->on('t1.interaction_at', '=', 't2.max_data');
       })
       ->whereBetween('t1.interaction_at', [$startDate, $endDate])
       ->where('item_type', 'Proposta')
       ->get();
+
 
     $conversations = $conversations1->merge($conversations2)->unique('id');
 
