@@ -435,9 +435,7 @@
 
                 var table = document.querySelector(".table-values");
 
-                //var row = table.insertRow();
                 table.innerHTML = response.value;
-                console.log(response.value);
                 deleteValueModalHandle();
 
             }).catch(err => {
@@ -551,7 +549,7 @@
         const obs = document.querySelector("#value_modal #obs").value;
         const additional_value = document.querySelector('#value_modal #additional_value').value;
         const rowLength = table.rows.length;
-        const index = rowLength - 2;
+        const index = rowLength - 1;
 
         row.innerHTML = `<tr>
                             <td>
@@ -572,14 +570,20 @@
                             </td>
                             <td>
                                 ${additional_value ? 'Sim' : 'Não'}
-                                <input type="hidden" name="values[${index}][obs]" value="${additional_value}">
+                                <input type="hidden" name="values[${index}][additional_value]" value="${additional_value}">
                             </td>
                             <td>
-                                <button type="button" class="btn-transition-danger delete-value">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
+                              -
+                            </td>
+                            <td>
+                              -
+                            </td>
+                            <td>
+                              <button type="button" class="btn-transition-danger delete-value">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              </button>
                             </td>
                         </tr>`;
         updateTotalLocalValue(value);

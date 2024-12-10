@@ -120,8 +120,7 @@ class ReportController extends Controller
 
     $conversations2 = ConversationItem::from('conversation_items as t1')
       ->joinSub($subQuery, 't2', function ($join) {
-        $join->on('t1.id', '=', 't2.id')
-          ->on('t1.interaction_at', '=', 't2.max_data');
+        $join->on('t1.id', '=', 't2.id')->on('t1.interaction_at', '=', 't2.max_data');
       })
       ->whereBetween('t1.interaction_at', [$startDate, $endDate])
       ->where('item_type', 'Proposta')
