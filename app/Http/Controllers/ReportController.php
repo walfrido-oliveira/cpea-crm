@@ -112,24 +112,35 @@ class ReportController extends Controller
       ->orderBy('conversation_id')
       ->get();
 
-    $subQuery = ConversationItem::select('id', DB::raw('MAX(interaction_at) AS max_data'))
-      ->whereHas("values", function ($q) {
-        $q->where("additional_value", false);
+    $subQuery1 = ConversationItem::select('conversation_id', DB::raw('MAX(interaction_at) as max_data'))
+      ->whereExists(function ($query) {
+        $query->select(DB::raw(1))
+          ->from('values')
+          ->whereColumn('conversation_items.id', 'values.conversation_item_id')
+          ->where('additional_value', false);
       })
       ->groupBy('conversation_id');
 
+    $subQuery2 = ConversationItem::from('conversation_items as ci1')
+      ->select('ci1.conversation_id', 'ci1.id as max_id', 'ci1.interaction_at as max_data')
+      ->joinSub($subQuery1, 'ci2', function ($join) {
+        $join->on('ci1.conversation_id', '=', 'ci2.conversation_id')
+          ->on('ci1.interaction_at', '=', 'ci2.max_data');
+      });
+
     $conversations2 = ConversationItem::from('conversation_items as t1')
-      ->joinSub($subQuery, 't2', function ($join) {
-        $join->on('t1.id', '=', 't2.id')->on('t1.interaction_at', '=', 't2.max_data');
+      ->select('t1.*')
+      ->joinSub($subQuery2, 't2', function ($join) {
+        $join->on('t1.id', '=', 't2.max_id');
       })
-      ->whereBetween('t1.interaction_at', [$startDate, $endDate])
-      ->where('item_type', 'Proposta')
+      ->whereBetween('t1.interaction_at', ['2002-01-01', '2024-12-31'])
+      ->where('t1.item_type', 'Proposta')
       ->get();
 
 
-    $conversations = $conversations1->merge($conversations2)->unique('id');
+    //$conversations =   //$conversations1->merge($conversations2)->unique('id');
 
-    $conversations = $conversations->sortBy('conversation_id')->values();
+    $conversations = $conversations2; //$conversations->sortBy('conversation_id')->values();
 
     if ($request->has("debug")) return view('reports.report-5', compact('conversations', 'startDate', 'endDate'));
 

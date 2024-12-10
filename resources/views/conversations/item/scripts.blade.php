@@ -547,7 +547,7 @@
         const value = document.querySelector("#value_modal #value").value.replaceAll(".", "").replace(",", ".");
         const description = document.querySelector("#value_modal #description").value;
         const obs = document.querySelector("#value_modal #obs").value;
-        const additional_value = document.querySelector('#value_modal #additional_value').value;
+        const additional_value = document.querySelector('#value_modal #additional_value').checked;
         const rowLength = table.rows.length;
         const index = rowLength - 1;
 
