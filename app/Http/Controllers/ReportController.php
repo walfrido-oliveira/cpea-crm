@@ -112,28 +112,28 @@ class ReportController extends Controller
       ->orderBy('conversation_id')
       ->get();
 
+    // Subconsulta 1: Encontra a maior data (interaction_at) por conversation_id
     $subQuery1 = ConversationItem::select('conversation_id', DB::raw('MAX(interaction_at) as max_data'))
-      ->whereExists(function ($query) {
-        $query->select(DB::raw(1))
-          ->from('values')
-          ->whereColumn('conversation_items.id', 'values.conversation_item_id')
-          ->where('additional_value', false);
+      ->whereHas("values", function ($q) {
+        $q->where("additional_value", false);
       })
       ->groupBy('conversation_id');
 
+    // Subconsulta 2: Encontra o maior ID correspondente à maior data por conversation_id
     $subQuery2 = ConversationItem::from('conversation_items as ci1')
-      ->select('ci1.conversation_id', 'ci1.id as max_id', 'ci1.interaction_at as max_data')
+      ->select('ci1.conversation_id', DB::raw('MAX(ci1.id) as max_id'), 'ci1.interaction_at')
       ->joinSub($subQuery1, 'ci2', function ($join) {
         $join->on('ci1.conversation_id', '=', 'ci2.conversation_id')
           ->on('ci1.interaction_at', '=', 'ci2.max_data');
-      });
+      })
+      ->groupBy('ci1.conversation_id', 'ci1.interaction_at'); // Garantir agrupamento correto
 
+    // Query final: Junta com a tabela principal e aplica os filtros adicionais
     $conversations2 = ConversationItem::from('conversation_items as t1')
-      ->select('t1.*')
       ->joinSub($subQuery2, 't2', function ($join) {
         $join->on('t1.id', '=', 't2.max_id');
       })
-      ->whereBetween('t1.interaction_at', ['2002-01-01', '2024-12-31'])
+      ->whereBetween('t1.interaction_at', [$startDate, $endDate])
       ->where('t1.item_type', 'Proposta')
       ->get();
 
