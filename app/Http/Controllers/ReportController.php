@@ -138,9 +138,9 @@ class ReportController extends Controller
       ->get();
 
 
-    //$conversations =   //$conversations1->merge($conversations2)->unique('id');
+    $conversations =   $conversations1->merge($conversations2)->unique('id');
 
-    $conversations = $conversations2; //$conversations->sortBy('conversation_id')->values();
+    $conversations = $conversations->sortBy('conversation_id')->values();
 
     if ($request->has("debug")) return view('reports.report-5', compact('conversations', 'startDate', 'endDate'));
 
