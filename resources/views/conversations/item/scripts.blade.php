@@ -417,7 +417,7 @@
         dataForm.append("description", document.querySelector("#value_modal #description").value);
         dataForm.append("value", document.querySelector("#value_modal #value").value);
         dataForm.append("obs", document.querySelector("#value_modal #obs").value);
-        dataForm.append("additional_value", document.querySelector("#value_modal #additional_value").value);
+        dataForm.append("additional_value", document.querySelector('#value_modal #additional_value').checked);
         dataForm.append("_method", "POST");
         dataForm.append("_token", token);
 
