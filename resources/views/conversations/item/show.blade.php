@@ -370,6 +370,9 @@
                       <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Tipo de valor') }}</th>
                       <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Valor') }}</th>
                       <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Observações') }}</th>
+                      <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Valor Adicional') }}</th>
+                      <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Data de Criação') }}</th>
+                      <th scope="col" class="custom-th" style="white-space: nowrap;">{{ __('Data de Modificação') }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -389,6 +392,16 @@
                         </td>
                         <td>
                           {{ $value->obs }}
+                        </td>
+                        <td>
+                          {{ $value->additional_value ? 'Sim' : 'Não' }}
+                        </td>
+                        <td>
+                          {{ $value->created_at->format('d/m/Y h:i') }}<br>
+                          {{ $value->user ? $value->user->full_name : '-' }}
+                        </td>
+                        <td>
+                          {{ $value->updated_at->format('d/m/Y h:i') }}
                         </td>
                       </tr>
                     @endforeach
