@@ -46,7 +46,7 @@ class ValueController extends Controller
       'obs' => $input['obs'],
       'value_type' => $input['value_type'],
       'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
-      'additional_value' =>  $input['additional_value'] ? true : false,
+      'additional_value' =>  $input['additional_value'] == 'true' ? true : false,
       'user_id' => auth()->user()->id,
     ]);
 
@@ -80,7 +80,7 @@ class ValueController extends Controller
       'obs' => $input['obs'],
       'value_type' => $input['value_type'],
       'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
-      'additional_value' =>  $input['additional_value'] ? true : false,
+      'additional_value' =>  $input['additional_value'] == 'true' ? true : false,
       'user_id' => auth()->user->id,
     ]);
 

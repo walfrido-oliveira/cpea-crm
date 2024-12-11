@@ -201,7 +201,7 @@ class ConversationItemController extends Controller
           'obs' => $value['obs'],
           'value_type' => $value['value_type'],
           'value' => $value['value'],
-          'additional_value' =>  $value['additional_value'] ? true : false,
+          'additional_value' =>  $value['additional_value'] == 'true' ? true : false,
           'user_id' => auth()->user()->id,
         ]);
       }
