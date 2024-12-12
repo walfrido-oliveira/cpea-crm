@@ -397,11 +397,11 @@
                           {{ $value->additional_value ? 'Sim' : 'Não' }}
                         </td>
                         <td>
-                          {{ $value->created_at->format('d/m/Y h:i') }}<br>
+                          {{ $value->created_at->format('d/m/Y H:i') }}<br>
                           {{ $value->user ? $value->user->full_name : '-' }}
                         </td>
                         <td>
-                          {{ $value->updated_at->format('d/m/Y h:i') }}
+                          {{ $value->updated_at->format('d/m/Y H:i') }}
                         </td>
                       </tr>
                     @endforeach

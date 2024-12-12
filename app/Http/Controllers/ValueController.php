@@ -71,7 +71,7 @@ class ValueController extends Controller
     $this->validation($request);
 
     $value = Value::findOrFail($id);
-
+    $conversationItem = $value->conversationItem;
     $input = $request->all();
 
     $value->update([
@@ -81,13 +81,13 @@ class ValueController extends Controller
       'value_type' => $input['value_type'],
       'value' => Str::replace(",", ".", Str::replace(".", "", $input['value'])),
       'additional_value' =>  $input['additional_value'] == 'true' ? true : false,
-      'user_id' => auth()->user->id,
+      'user_id' => auth()->user()->id,
     ]);
 
     return response()->json([
       'message' => __('Valor Atualizado com Sucesso!'),
       'alert-type' => 'success',
-      'value' => view('conversations.item.value-content', compact('value'))->render()
+      'value' => view('conversations.item.value-content', compact('conversationItem'))->render()
     ]);
   }
 

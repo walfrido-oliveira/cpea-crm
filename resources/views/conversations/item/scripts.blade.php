@@ -404,13 +404,12 @@
     }
 
     function addValue() {
-        /*if (!checkValidityValue()) {
-            event.preventDefault();
-            return;
-        }*/
-
         const dataForm = new FormData();
         const token = document.querySelector('meta[name="csrf-token"]').content;
+        const id = document.querySelector("#value_modal #value_id").value;
+        const method = id == '' ? 'POST' : 'PUT';
+        const url = id == '' ? "{{ route('customers.conversations.item.values.store') }}" :
+        "{{ route('customers.conversations.item.values.update', ['#']) }}".replace('#', id);
 
         dataForm.append("conversation_item_id", document.querySelector("#conversation_item_id").value);
         dataForm.append("value_type", document.querySelector("#value_modal #value_type").value);
@@ -418,12 +417,16 @@
         dataForm.append("value", document.querySelector("#value_modal #value").value);
         dataForm.append("obs", document.querySelector("#value_modal #obs").value);
         dataForm.append("additional_value", document.querySelector('#value_modal #additional_value').checked);
-        dataForm.append("_method", "POST");
+        dataForm.append("_method", method);
         dataForm.append("_token", token);
 
-        fetch("{{ route('customers.conversations.item.values.store') }}", {
+        fetch(url, {
                 method: 'POST',
-                body: dataForm
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json'
+                },
+                body: dataForm,
             })
             .then(res => res.text())
             .then(data => {
@@ -437,6 +440,7 @@
 
                 table.innerHTML = response.value;
                 deleteValueModalHandle();
+                valueEvents();
 
             }).catch(err => {
                 console.log(err);
@@ -554,7 +558,7 @@
         row.innerHTML = `<tr>
                             <td>
                                 ${value_type_text}
-                                <input type="hidden" name="values[${index}][value_type]" value="${value_type}" class="value-type">
+                                <input type="hidden" name="values[${index}][value_type]" value="${value_type}">
                             </td>
                             <!--<td>
                                 ${description}
@@ -693,6 +697,29 @@
         });
     }
 
+
+
+    function valueEvents() {
+      if (document.querySelector(".edit-value")) {
+        document.querySelector(".edit-value").addEventListener("click", function() {
+
+          const valueType = document.querySelector("#value_modal #value_type");
+          valueType.value = document.querySelector(`#value_${this.dataset.id} .value-type`).value;
+          window.customSelectArray['value_type'].update();
+
+          document.querySelector("#value_modal #value").value = parseFloat(document.querySelector(`#value_${this.dataset.id} .value`).value)
+          .toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+          document.querySelector("#value_modal #obs").value = document.querySelector(`#value_${this.dataset.id} .obs`).value;
+          document.querySelector("#value_modal #additional_value").checked = document.querySelector(`#value_${this.dataset.id} .additional-value`).value;
+          document.querySelector("#value_modal #value_id").value = this.dataset.id;
+
+          toggleValueModal(true);
+        });
+      }
+    }
+    valueEvents();
+
     if (document.querySelector("#add_value")) {
         document.querySelector("#add_value").addEventListener("click", function() {
             toggleValueModal(true);
@@ -701,7 +728,7 @@
 
     if (document.querySelector("#add_address")) {
         document.querySelector("#add_address").addEventListener("click", function() {
-            toggleAddressModal(true);
+          toggleAddressModal(true);
         });
     }
 

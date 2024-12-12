@@ -21,13 +21,13 @@
             </h3>
             <div class="mt-2">
               <form action="" id="value_modal_form">
+                <input type="hidden" name="value_id" id="value_id" value="">
                 <div class="flex flex-wrap mt-2 w-full">
                   <div class="w-full pr-3 mb-6 md:mb-1">
                     <x-jet-label for="value_type" value="{{ __('Tipo de valor') }}" required />
                     <x-custom-select :options="array('proposed' => 'Valor CPEA',
                                       'direct_billing' => 'Faturamento Direto',
-                                      'technical_assistance' => 'Assessoria Técnica')" value="" name="value_type"
-                      id="value_type" class="mt-1" required />
+                                      'technical_assistance' => 'Assessoria Técnica')" value="" name="value_type" id="value_type" class="mt-1" required />
                   </div>
                   <div class="w-full pr-3 mb-6 md:mb-1" style="display: none">
                     <x-jet-label for="description" value="{{ __('Descrição do valor') }}" />
