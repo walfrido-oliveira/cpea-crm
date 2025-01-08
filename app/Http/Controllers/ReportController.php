@@ -105,12 +105,15 @@ class ReportController extends Controller
     $endDate = $request->has("end_date") ? new Carbon($request->get("end_date") . ' 23:59:59') : now();
 
     $conversations1 = ConversationItem::whereBetween("interaction_at", [$startDate, $endDate])
-      ->where('item_type', 'Proposta')
-      ->whereHas("values", function ($q) {
-        $q->where("additional_value", true);
-      })
-      ->orderBy('conversation_id')
-      ->get();
+    ->where('item_type', 'Proposta')
+    ->where(function ($query) {
+        $query->whereHas("values", function ($q) {
+            $q->where("additional_value", true);
+        })->orWhereDoesntHave("values");
+    })
+    ->orderBy('conversation_id')
+    ->get();
+
 
     // Subconsulta 1: Encontra a maior data (interaction_at) por conversation_id
     $subQuery1 = ConversationItem::select('conversation_id', DB::raw('MAX(interaction_at) as max_data'))
