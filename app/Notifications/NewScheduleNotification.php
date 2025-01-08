@@ -74,7 +74,8 @@ class NewScheduleNotification extends Notification
             $this->conversationItem->schedule_details ? $this->conversationItem->schedule_details : '-',
 
             $this->conversationItem->conversation->customer->customer ? $this->conversationItem->conversation->customer->customer->name : '-',
-            route('customers.show', ['customer' => $this->conversationItem->conversation->customer->customer_id]),
+            route('customers.show', ['customer' => $this->conversationItem->conversation->customer->customer_id ?
+            $this->conversationItem->conversation->customer->customer_id : $this->conversationItem->conversation->customer->id]),
             $this->conversationItem->conversation->customer->name,
             route('customers.show', ['customer' => $this->conversationItem->conversation->customer_id]),
             str_pad($this->conversationItem->conversation_id, 5, 0, STR_PAD_LEFT),
