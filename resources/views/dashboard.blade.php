@@ -7,7 +7,9 @@
         </div>
         <div class="w-full flex justify-end">
           <div class="m-2 ">
-            <a href="{{ route('customers.conversations.item.faster-create') }}" class="btn-outline-success">{{ __('Nova Interação') }}</a>
+            @if(auth()->user()->hasRole('admin'))
+              <a href="{{ route('customers.conversations.item.faster-create') }}" class="btn-outline-success">{{ __('Nova Interação') }}</a>
+            @endif
           </div>
         </div>
       </div>

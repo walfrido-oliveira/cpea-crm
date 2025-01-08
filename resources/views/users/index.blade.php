@@ -1,67 +1,69 @@
 <x-app-layout>
-    <div class="py-6 index-users">
-        <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
+  <div class="py-6 index-users">
+    <div class="md:max-w-6xl lg:max-w-full mx-auto px-4">
 
-            <div class="flex md:flex-row flex-col">
-                <div class="w-full flex items-center">
-                    <h1>{{ __('Lista de Usuários') }}</h1>
-                </div>
-                <div class="w-full flex justify-end">
-                    <div class="m-2 ">
-                        <a class="btn-outline-info" href="{{ route('users.create') }}" >{{ __('Cadastrar') }}</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
-                <div class="filter-container">
-                    <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
-                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="id">
-                                {{ __('ID') }}
-                            </label>
-                            <x-jet-input id="id" class="form-control block w-full filter-field" type="text" name="id" :value="app('request')->input('id')" autofocus autocomplete="id" />
-                        </div>
-                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
-                                {{ __('Nome') }}
-                            </label>
-                            <x-jet-input id="name" class="form-control block w-full filter-field" type="text" name="name" :value="app('request')->input('name')" autofocus autocomplete="name" />
-                        </div>
-                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="roles">
-                                {{ __('Nível de Acesso') }}
-                            </label>
-                            <x-custom-select :options="$roles" name="roles" id="roles" :value="app('request')->input('roles')"/>
-                        </div>
-                        <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="status">
-                                {{ __('Status') }}
-                            </label>
-                            <x-custom-select :options="$status" name="status" id="status" :value="app('request')->input('status')"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex mt-4">
-                    <table id="user_table" class="table table-responsive md:table w-full">
-                        @include('users.filter-result', ['users' => $users, 'ascending' => $ascending, 'orderBy' => $orderBy])
-                    </table>
-                </div>
-                <div class="flex mt-4 p-2" id="pagination">
-                        {{ $users->appends(request()->input())->links() }}
-                </div>
-            </div>
+      <div class="flex md:flex-row flex-col">
+        <div class="w-full flex items-center">
+          <h1>{{ __('Lista de Usuários') }}</h1>
         </div>
+        <div class="w-full flex justify-end">
+          <div class="m-2 ">
+            @if(auth()->user()->hasRole('admin'))
+              <a class="btn-outline-info" href="{{ route('users.create') }}">{{ __('Cadastrar') }}</a>
+            @endif
+          </div>
+        </div>
+      </div>
+
+      <div class="py-2 my-2 bg-white rounded-lg min-h-screen">
+        <div class="filter-container">
+          <div class="flex -mx-3 mb-6 p-3 md:flex-row flex-col w-full">
+            <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="id">
+                {{ __('ID') }}
+              </label>
+              <x-jet-input id="id" class="form-control block w-full filter-field" type="text" name="id"
+                :value="app('request')->input('id')" autofocus autocomplete="id" />
+            </div>
+            <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
+                {{ __('Nome') }}
+              </label>
+              <x-jet-input id="name" class="form-control block w-full filter-field" type="text" name="name"
+                :value="app('request')->input('name')" autofocus autocomplete="name" />
+            </div>
+            <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="roles">
+                {{ __('Nível de Acesso') }}
+              </label>
+              <x-custom-select :options="$roles" name="roles" id="roles" :value="app('request')->input('roles')" />
+            </div>
+            <div class="w-full md:w-1/4 px-2 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="status">
+                {{ __('Status') }}
+              </label>
+              <x-custom-select :options="$status" name="status" id="status" :value="app('request')->input('status')" />
+            </div>
+          </div>
+        </div>
+        <div class="flex mt-4">
+          <table id="user_table" class="table table-responsive md:table w-full">
+            @include('users.filter-result', ['users' => $users, 'ascending' => $ascending, 'orderBy' => $orderBy])
+          </table>
+        </div>
+        <div class="flex mt-4 p-2" id="pagination">
+          {{ $users->appends(request()->input())->links() }}
+        </div>
+      </div>
     </div>
+  </div>
 
-    <x-modal title="{{ __('Excluir usuário') }}"
-             msg="{{ __('Deseja realmente apagar esse usuário?') }}"
-             confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_user_modal"
-             method="DELETE"
-             redirect-url="{{ route('users.index') }}"/>
+  <x-modal title="{{ __('Excluir usuário') }}" msg="{{ __('Deseja realmente apagar esse usuário?') }}"
+    confirm="{{ __('Sim') }}" cancel="{{ __('Não') }}" id="delete_user_modal" method="DELETE"
+    redirect-url="{{ route('users.index') }}" />
 
-    <script>
-        window.addEventListener("load", function() {
+  <script>
+    window.addEventListener("load", function() {
             var filterCallback = function (event) {
                 var ajax = new XMLHttpRequest();
                 var url = "{!! route('users.filter') !!}";
@@ -176,6 +178,6 @@
             eventsDeleteCallback();
             eventsFilterCallback();
         });
-    </script>
+  </script>
 
 </x-app-layout>

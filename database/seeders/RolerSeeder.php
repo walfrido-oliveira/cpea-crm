@@ -7,13 +7,14 @@ use Spatie\Permission\Models\Role;
 
 class RolerSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        Role::create(['name' => 'admin']);
-    }
+  /**
+   * Run the database seeds.
+   *
+   * @return void
+   */
+  public function run()
+  {
+    Role::firstOrCreate(['name' => 'admin']);
+    Role::firstOrCreate(['name' => 'viewer']);
+  }
 }

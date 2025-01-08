@@ -212,7 +212,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
       Route::prefix('item')->name('item.')->group(function () {
         Route::get('/create/{conversation}', [ConversationItemController::class, 'create'])->name('create');
-        Route::get('/faster-create', [ConversationItemController::class, 'fasterCreate'])->name('faster-create');
+        Route::get('/criacao-rapida', [ConversationItemController::class, 'fasterCreate'])->name('faster-create')->middleware('role:admin');
         Route::get('/edit/{item}', [ConversationItemController::class, 'edit'])->name('edit');
         Route::get('/{item}', [ConversationItemController::class, 'show'])->name('show');
         Route::post('/store', [ConversationItemController::class, 'store'])->name('store');
