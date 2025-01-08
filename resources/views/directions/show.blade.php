@@ -44,7 +44,7 @@
                             <p class="font-bold">{{ __('Sigla') }}</p>
                         </div>
                         <div class="w-full md:w-1/2">
-                            <p class="text-gray-500 font-bold">{{ $department->acronym }}</p>
+                            <p class="text-gray-500 font-bold">{{ $direction->acronym }}</p>
                         </div>
                     </div>
 
