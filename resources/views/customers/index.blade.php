@@ -7,13 +7,14 @@
           <h1>{{ __('Cliente') }}</h1>
         </div>
         <div class="w-full flex justify-end">
-          <div class="m-2 ">
-            <a class="btn-outline-info" href="{{ route('customers.create') }}">{{ __('Cadastrar') }}</a>
-          </div>
-          <div class="m-2">
-            <button type="button" class="btn-outline-danger delete-customers" data-type="multiple">{{ __('Apagar')
-              }}</button>
-          </div>
+          @if(auth()->user()->hasRole('admin'))
+            <div class="m-2 ">
+              <a class="btn-outline-info" href="{{ route('customers.create') }}">{{ __('Cadastrar') }}</a>
+            </div>
+            <div class="m-2">
+              <button type="button" class="btn-outline-danger delete-customers" data-type="multiple">{{ __('Apagar') }}</button>
+            </div>
+          @endif
         </div>
       </div>
 
