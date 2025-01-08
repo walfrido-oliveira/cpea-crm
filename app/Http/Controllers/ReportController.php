@@ -70,7 +70,7 @@ class ReportController extends Controller
 
     $html = view('reports.report-3', compact('contacts', 'startDate', 'endDate'))->render();
 
-    return $this->reportFactory($html, "Relatório Contatos Públicos do Cliente-Empresa.xls");
+    return $this->reportFactory($html, "Relatório Contatos Públicos dos Cliente-Empresa.xls");
   }
 
   /**
@@ -90,7 +90,7 @@ class ReportController extends Controller
 
     $html = view('reports.report-4', compact('contacts', 'startDate', 'endDate'))->render();
 
-    return $this->reportFactory($html, "Relatório Contatos Públicos do Cliente-Empresa.xls");
+    return $this->reportFactory($html, "Relatório Contatos dos Cliente-Empresa.xls");
   }
 
   /**
