@@ -99,7 +99,7 @@
 
                 <div class="py-2 my-2 bg-white rounded-lg">
                     <div class="flex mx-4 px-3 py-2 mt-4">
-                        <h2 class="w-full px-3 mb-6 md:mb-0">Contatos Gerais</h2>
+                        <h2 class="w-full px-3 mb-6 md:mb-0">Contatos Públicos</h2>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
                             <button type="button" class="btn-outline-info add-contact px-1" title="Adicionar Contatos">
                                 Cadastrar

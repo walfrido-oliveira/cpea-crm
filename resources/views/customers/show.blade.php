@@ -174,7 +174,7 @@
                 x-transition:leave-start="opacity-100 transform scale-100"
                 x-transition:leave-end="opacity-0 transform scale-90 hidden">
                     <div class="flex flex-wrap mb-4">
-                        <h2>Contatos Gerais</h2>
+                        <h2>Contatos Públicos</h2>
                     </div>
 
                     @foreach ($customer->contacts as $contact)

@@ -145,7 +145,7 @@
             <a  href="{{ route('reports.report-2') }}" class="filter-reports">Clientes/Empresas</a>
           </div>
           <div class="px-0 py-0 ">
-            <a href="{{ route('reports.report-3') }}" class="filter-reports">Contatos Gerais</a>
+            <a href="{{ route('reports.report-3') }}" class="filter-reports">Contatos Públicos</a>
           </div>
           <div class="px-0 py-0 ">
             <a href="{{ route('reports.report-4') }}" class="filter-reports">Contatos</a>
