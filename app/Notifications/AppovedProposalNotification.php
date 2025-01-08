@@ -73,7 +73,7 @@ class AppovedProposalNotification extends Notification
             $this->conversationItem->detailed_contact ? $this->conversationItem->prospecting_status->contact : '-',
             implode(",", $this->conversationItem->products->pluck('name')->toArray()),
             $this->conversationItem->direction ? $this->conversationItem->direction->name : '-',
-            $this->conversationItem->employee ? $this->conversationItem->employee->department->name : '-',
+            optional($this->conversationItem->employee->department)->name ?: '-',
             $this->conversationItem->employee ? $this->conversationItem->employee->name : '-',
             $this->conversationItem->item_details,
             $attachments,
