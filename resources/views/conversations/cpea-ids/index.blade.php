@@ -8,8 +8,9 @@
         </div>
         <div class="w-full flex justify-end">
           <div class="m-2">
-            <button type="button" class="btn-outline-danger delete-conversationItems" data-type="multiple">{{
-              __('Apagar') }}</button>
+            @if(auth()->user()->hasRole('admin'))
+            <button type="button" class="btn-outline-danger delete-conversationItems" data-type="multiple">{{ __('Apagar') }}</button>
+            @endif
           </div>
         </div>
       </div>

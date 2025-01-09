@@ -17,11 +17,11 @@
         <div class="flex mx-4 px-3 py-2 mt-4">
           <h2 class="w-full px-3 mb-6 md:mb-0">Interações</h2>
           <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex justify-end align-baseline">
-            <a class="btn-outline-info"
-              href="{{ route('customers.conversations.item.create', ['conversation' => $conversation->id ]) }}"
-              id="add_conversation">
+            @if(auth()->user()->hasRole('admin'))
+            <a class="btn-outline-info" href="{{ route('customers.conversations.item.create', ['conversation' => $conversation->id ]) }}" id="add_conversation">
               Nova interação
             </a>
+            @endif
           </div>
         </div>
         <div class="flex py-2 mt-4">

@@ -42,6 +42,7 @@
         </div>
       </div>
 
+      @if(auth()->user()->hasRole('admin'))
       <div class="relative" x-data="{ openConfig: false }">
         <button @click="openConfig = !openConfig" class="submenu">
           <x-icon.plus/>
@@ -91,7 +92,9 @@
 
         </div>
       </div>
+      @endif
 
+      @if(auth()->user()->hasRole('admin'))
       <div class="relative" x-data="{ openConfig: {{ request()->routeIs('config.*') ? 'true' : 'false' }} }">
         <button @click="openConfig = !openConfig" class="submenu">
           <x-icon.tools/>
@@ -120,6 +123,7 @@
           </div>
         </div>
       </div>
+      @endif
 
       <div class="relative" x-data="{ reports: {{ request()->routeIs('reports.*') ? 'true' : 'false' }} }">
         <button @click="reports = !reports" class="submenu">

@@ -28,12 +28,10 @@
         value="{!! route('customers.destroy', ['customer' => $customer->id]) !!}">
     </td>
     <td>
-      <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->id
-        }}</a>
+      <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->id }}</a>
     </td>
     <td>
-      <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->name
-        }}</a>
+      <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{ $customer->name }}</a>
     </td>
     <td>
       <a class="text-item-table" href="{{ route('customers.show', ['customer' => $customer->id]) }}">{{
@@ -60,6 +58,7 @@
       </span>
     </td>
     <td>
+      @if(auth()->user()->hasRole('admin'))
       <a class="btn-transition-warning" href="{{ route('customers.edit', ['customer' => $customer->id]) }}">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -73,6 +72,7 @@
             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
         </svg>
       </button>
+      @endif
     </td>
   <tr>
     @empty

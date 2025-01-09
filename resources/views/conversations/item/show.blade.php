@@ -8,14 +8,13 @@
         </div>
         <div class="w-full flex justify-end">
           <div class="m-2 ">
-            <a class="btn-outline-warning"
-              href="{{ route('customers.conversations.item.edit', ['item' => $conversationItem->id]) }}">{{ __('Editar')
-              }}</a>
+            @if(auth()->user()->hasRole('admin'))
+            <a class="btn-outline-warning" href="{{ route('customers.conversations.item.edit', ['item' => $conversationItem->id]) }}">{{ __('Editar') }}</a>
+            @endif
           </div>
           <div class="m-2 ">
             <a class="btn-outline-danger"
-              href="{{ route('customers.conversations.show', ['conversation' => $conversationItem->conversation_id]) }}">{{
-              __('Voltar') }}</a>
+              href="{{ route('customers.conversations.show', ['conversation' => $conversationItem->conversation_id]) }}">{{ __('Voltar') }}</a>
           </div>
         </div>
       </div>
