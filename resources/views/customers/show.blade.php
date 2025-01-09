@@ -492,6 +492,7 @@
                   </svg>
                 </button>
               </div>
+              @if(auth()->user()->hasRole('admin'))
               <form method="POST" action="{{ route('customers.conversations.store') }}">
                 @csrf
                 @method("POST")
@@ -500,6 +501,7 @@
                   Nova Conversa
                 </button>
               </form>
+              @endif
             </div>
           </div>
           <div class="flex flex-wrap mt-2 table-responsive">
