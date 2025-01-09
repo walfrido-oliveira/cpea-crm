@@ -8,45 +8,51 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    /**
-    * Display a listing of the user.
-     *
-     * @param  Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $customers =  Customer::filter($request->all(), true);
-        $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
-        $status = Customer::getStatusArray();
-        $segments = Segment::pluck("name", "id");
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['create', 'edit', 'destroy', 'store', 'update']);
+    $this->middleware('role:admin|viewer')->only(['index', 'show']);
+  }
 
-        return view('customers.companies.index', compact('customers', 'ascending', 'orderBy', 'status', 'segments'));
-    }
+  /**
+   * Display a listing of the user.
+   *
+   * @param  Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function index(Request $request)
+  {
+    $customers =  Customer::filter($request->all(), true);
+    $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
+    $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
+    $status = Customer::getStatusArray();
+    $segments = Segment::pluck("name", "id");
 
-     /**
-     * Filter customer
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(Request $request)
-    {
-        $customers = Customer::filter($request->all(), true);
-        $customers = $customers->setPath('');
-        $orderBy = $request->get('order_by');
-        $ascending = $request->get('ascending');
-        $paginatePerPage = $request->get('paginate_per_page');
+    return view('customers.companies.index', compact('customers', 'ascending', 'orderBy', 'status', 'segments'));
+  }
 
-        return response()->json([
-            'filter_result' => view('customers.companies.filter-result', compact('customers', 'orderBy', 'ascending'))->render(),
-            'pagination' => view('layouts.pagination', [
-                'models' => $customers,
-                'order_by' => $orderBy,
-                'ascending' => $ascending,
-                'paginate_per_page' => $paginatePerPage,
-                ])->render(),
-        ]);
-    }
+  /**
+   * Filter customer
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function filter(Request $request)
+  {
+    $customers = Customer::filter($request->all(), true);
+    $customers = $customers->setPath('');
+    $orderBy = $request->get('order_by');
+    $ascending = $request->get('ascending');
+    $paginatePerPage = $request->get('paginate_per_page');
+
+    return response()->json([
+      'filter_result' => view('customers.companies.filter-result', compact('customers', 'orderBy', 'ascending'))->render(),
+      'pagination' => view('layouts.pagination', [
+        'models' => $customers,
+        'order_by' => $orderBy,
+        'ascending' => $ascending,
+        'paginate_per_page' => $paginatePerPage,
+      ])->render(),
+    ]);
+  }
 }

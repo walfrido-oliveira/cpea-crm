@@ -8,87 +8,93 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function validation($request)
-    {
-        $request->validate([
-            'general_contact_type_id' => ['required', 'exists:general_contact_types,id'],
-            'description' => ['required', 'string', 'max:255'],
-            'obs' => ['nullable', 'string', 'max:255'],
-        ]);
-    }
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['destroy', 'store', 'update']);
+    $this->middleware('role:admin|viewer')->only(['show']);
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validation($request);
+  public function validation($request)
+  {
+    $request->validate([
+      'general_contact_type_id' => ['required', 'exists:general_contact_types,id'],
+      'description' => ['required', 'string', 'max:255'],
+      'obs' => ['nullable', 'string', 'max:255'],
+    ]);
+  }
 
-        $input = $request->all();
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    $this->validation($request);
 
-        $contact = Contact::create([
-            'general_contact_type_id' => $input['general_contact_type_id'],
-            'description' => $input['description'],
-            'obs' => $input['obs'],
-            'customer_id' => $input['customer_id'],
-        ]);
+    $input = $request->all();
 
-        $key = count(Customer::find($input['customer_id'])->contacts) - 1;
+    $contact = Contact::create([
+      'general_contact_type_id' => $input['general_contact_type_id'],
+      'description' => $input['description'],
+      'obs' => $input['obs'],
+      'customer_id' => $input['customer_id'],
+    ]);
 
-        return response()->json([
-            'message' => __('Contato Cadastrado com Sucesso!'),
-            'alert-type' => 'success',
-            'contact' => view('customers.contact-content', compact('contact', 'key'))->render()
-        ]);
-    }
+    $key = count(Customer::find($input['customer_id'])->contacts) - 1;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $contact = Contact::findOrFail($id);
+    return response()->json([
+      'message' => __('Contato Cadastrado com Sucesso!'),
+      'alert-type' => 'success',
+      'contact' => view('customers.contact-content', compact('contact', 'key'))->render()
+    ]);
+  }
 
-        $this->validation($request);
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, $id)
+  {
+    $contact = Contact::findOrFail($id);
 
-        $input = $request->all();
-        $key = $input["key"];
+    $this->validation($request);
 
-        $contact->update([
-            'general_contact_type_id' => $input['general_contact_type_id'],
-            'description' => $input['description'],
-            'obs' => $input['obs'],
-        ]);
+    $input = $request->all();
+    $key = $input["key"];
 
-        return response()->json([
-            'message' => __('Contato atualizado com Sucesso!!'),
-            'alert-type' => 'success',
-            'contact' => view('customers.contact-content', compact('contact', 'key'))->render()
-        ]);
-    }
+    $contact->update([
+      'general_contact_type_id' => $input['general_contact_type_id'],
+      'description' => $input['description'],
+      'obs' => $input['obs'],
+    ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $customer = Contact::findOrFail($id);
+    return response()->json([
+      'message' => __('Contato atualizado com Sucesso!!'),
+      'alert-type' => 'success',
+      'contact' => view('customers.contact-content', compact('contact', 'key'))->render()
+    ]);
+  }
 
-        $customer->delete();
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $customer = Contact::findOrFail($id);
 
-        return response()->json([
-            'message' => __('Contato Apagado com Sucesso!!'),
-            'alert-type' => 'success'
-        ]);
-    }
+    $customer->delete();
+
+    return response()->json([
+      'message' => __('Contato Apagado com Sucesso!!'),
+      'alert-type' => 'success'
+    ]);
+  }
 }

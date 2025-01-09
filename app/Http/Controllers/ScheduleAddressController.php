@@ -7,85 +7,91 @@ use App\Models\ScheduleAddress;
 
 class ScheduleAddressController extends Controller
 {
-    public function validation($request)
-    {
-        $request->validate([
-            'conversation_item_id' => ['required', 'exists:conversation_items,id'],
-            'address_name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:255'],
-            'obs' => ['nullable', 'string']
-        ]);
-    }
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['create', 'edit', 'destroy', 'store', 'update']);
+    $this->middleware('role:admin|viewer')->only(['index', 'show']);
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validation($request);
+  public function validation($request)
+  {
+    $request->validate([
+      'conversation_item_id' => ['required', 'exists:conversation_items,id'],
+      'address_name' => ['required', 'string', 'max:255'],
+      'address' => ['required', 'string', 'max:255'],
+      'obs' => ['nullable', 'string']
+    ]);
+  }
 
-        $input = $request->all();
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    $this->validation($request);
 
-        $address = ScheduleAddress::create([
-            'conversation_item_id' => $input['conversation_item_id'],
-            'address_name' => $input['address_name'],
-            'obs' => $input['obs'],
-            'address' => $input['address'],
-        ]);
+    $input = $request->all();
 
-        return response()->json([
-            'message' => __('Destinatário Salvo com Sucesso!'),
-            'alert-type' => 'success',
-            'address' => view('conversations.item.address-content', compact('address'))->render()
-        ]);
-    }
+    $address = ScheduleAddress::create([
+      'conversation_item_id' => $input['conversation_item_id'],
+      'address_name' => $input['address_name'],
+      'obs' => $input['obs'],
+      'address' => $input['address'],
+    ]);
 
-    /**
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $this->validation($request);
+    return response()->json([
+      'message' => __('Destinatário Salvo com Sucesso!'),
+      'alert-type' => 'success',
+      'address' => view('conversations.item.address-content', compact('address'))->render()
+    ]);
+  }
 
-        $address = ScheduleAddress::findOrFail($id);
+  /**
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param int $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, $id)
+  {
+    $this->validation($request);
 
-        $input = $request->all();
+    $address = ScheduleAddress::findOrFail($id);
 
-        $address->update([
-            'conversation_item_id' => $input['conversation_item_id'],
-            'address_name' => $input['address_name'],
-            'obs' => $input['obs'],
-            'address' => $input['address'],
-        ]);
+    $input = $request->all();
 
-        return response()->json([
-            'message' => __('Destinatário Atualizado com Sucesso!'),
-            'alert-type' => 'success',
-            'address' => view('conversations.item.address-content', compact('address'))->render()
-        ]);
-    }
+    $address->update([
+      'conversation_item_id' => $input['conversation_item_id'],
+      'address_name' => $input['address_name'],
+      'obs' => $input['obs'],
+      'address' => $input['address'],
+    ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $address = ScheduleAddress::findOrFail($id);
+    return response()->json([
+      'message' => __('Destinatário Atualizado com Sucesso!'),
+      'alert-type' => 'success',
+      'address' => view('conversations.item.address-content', compact('address'))->render()
+    ]);
+  }
 
-        $address->delete();
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $address = ScheduleAddress::findOrFail($id);
 
-        return response()->json([
-            'message' => __('Destinatário Apagado com Sucesso!!'),
-            'alert-type' => 'success'
-        ]);
-    }
+    $address->delete();
+
+    return response()->json([
+      'message' => __('Destinatário Apagado com Sucesso!!'),
+      'alert-type' => 'success'
+    ]);
+  }
 }

@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 class GoalController extends Controller
 {
 
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['create', 'edit', 'destroy', 'store', 'update']);
+    $this->middleware('role:admin|viewer')->only(['index', 'show']);
+  }
+
   public function validation($request)
   {
     $request->validate(

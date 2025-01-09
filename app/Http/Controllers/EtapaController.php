@@ -8,6 +8,12 @@ use Illuminate\Validation\Rule;
 
 class EtapaController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['create', 'edit', 'destroy', 'store', 'update']);
+    $this->middleware('role:admin|viewer')->only(['index', 'show']);
+  }
+
   /**
    * Display a listing of the user.
    *

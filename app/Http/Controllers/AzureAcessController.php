@@ -6,15 +6,13 @@ use App\Models\Azure;
 
 class AzureAcessController extends Controller
 {
-    public function token()
-    {
-      return Azure::token();
-    }
+  public function token()
+  {
+    return Azure::token();
+  }
 
-    public function getUserId($email)
-    {
-      return Azure::user($email);
-    }
-
-
+  public function getUserId($email)
+  {
+    return Azure::user($email);
+  }
 }

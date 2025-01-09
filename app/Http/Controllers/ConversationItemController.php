@@ -18,10 +18,15 @@ use App\Models\ConversationStatus;
 use App\Models\CpeaId;
 use App\Models\Customer;
 use App\Models\Employee;
-use Illuminate\Support\Facades\DB;
 
 class ConversationItemController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['create', 'edit', 'store', 'update', 'fasterCreate']);
+    $this->middleware('role:admin|viewer')->only(['show']);
+  }
+
   public function validation($request)
   {
     $request->validate([

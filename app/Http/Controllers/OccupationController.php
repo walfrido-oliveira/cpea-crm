@@ -8,150 +8,156 @@ use Illuminate\Validation\Rule;
 
 class OccupationController extends Controller
 {
-    /**
-    * Display a listing of the user.
-     *
-     * @param  Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $occupations =  Occupation::filter($request->all());
-        $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['create', 'edit', 'destroy', 'store', 'update']);
+    $this->middleware('role:admin|viewer')->only(['index', 'show']);
+  }
 
-        return view('occupations.index', compact('occupations', 'ascending', 'orderBy'));
-    }
+  /**
+   * Display a listing of the user.
+   *
+   * @param  Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function index(Request $request)
+  {
+    $occupations =  Occupation::filter($request->all());
+    $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
+    $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('occupations.create');
-    }
+    return view('occupations.index', compact('occupations', 'ascending', 'orderBy'));
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('occupations', 'name')],
-        ]);
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function create()
+  {
+    return view('occupations.create');
+  }
 
-        $input = $request->all();
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    $request->validate([
+      'name' => ['required', 'string', 'max:255', Rule::unique('occupations', 'name')],
+    ]);
 
-       Occupation::create([
-            'name' => $input['name'],
-        ]);
+    $input = $request->all();
 
-        $resp = [
-            'message' => __('Cargo Cadastrado com Sucesso!'),
-            'alert-type' => 'success'
-        ];
+    Occupation::create([
+      'name' => $input['name'],
+    ]);
 
-        return redirect()->route('occupations.index')->with($resp);
-    }
+    $resp = [
+      'message' => __('Cargo Cadastrado com Sucesso!'),
+      'alert-type' => 'success'
+    ];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $occupation = Occupation::findOrFail($id);
-        return view('occupations.show', compact('occupation'));
-    }
+    return redirect()->route('occupations.index')->with($resp);
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $occupation = Occupation::findOrFail($id);
-        return view('occupations.edit', compact('occupation'));
-    }
+  /**
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    $occupation = Occupation::findOrFail($id);
+    return view('occupations.show', compact('occupation'));
+  }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $occupation = Occupation::findOrFail($id);
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+    $occupation = Occupation::findOrFail($id);
+    return view('occupations.edit', compact('occupation'));
+  }
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('occupations', 'name')->ignore($occupation->id)],
-        ]);
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, $id)
+  {
+    $occupation = Occupation::findOrFail($id);
 
-        $input = $request->all();
+    $request->validate([
+      'name' => ['required', 'string', 'max:255', Rule::unique('occupations', 'name')->ignore($occupation->id)],
+    ]);
 
-        $occupation->update([
-            'name' => $input['name'],
-        ]);
+    $input = $request->all();
 
-        $resp = [
-            'message' => __('Cargo Atualizado com Sucesso!'),
-            'alert-type' => 'success'
-        ];
+    $occupation->update([
+      'name' => $input['name'],
+    ]);
 
-        return redirect()->route('occupations.index')->with($resp);
-    }
+    $resp = [
+      'message' => __('Cargo Atualizado com Sucesso!'),
+      'alert-type' => 'success'
+    ];
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $occupation = Occupation::findOrFail($id);
+    return redirect()->route('occupations.index')->with($resp);
+  }
 
-        $occupation->delete();
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $occupation = Occupation::findOrFail($id);
 
-        return response()->json([
-            'message' => __('Cargo Apagado com Sucesso!!'),
-            'alert-type' => 'success'
-        ]);
-    }
+    $occupation->delete();
 
-    /**
-     * Filter occupation
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(Request $request)
-    {
-        $occupations = Occupation::filter($request->all());
-        $occupations = $occupations->setPath('');
-        $orderBy = $request->get('order_by');
-        $ascending = $request->get('ascending');
-        $paginatePerPage = $request->get('paginate_per_page');
+    return response()->json([
+      'message' => __('Cargo Apagado com Sucesso!!'),
+      'alert-type' => 'success'
+    ]);
+  }
 
-        return response()->json([
-            'filter_result' => view('occupations.filter-result', compact('occupations', 'orderBy', 'ascending'))->render(),
-            'pagination' => view('layouts.pagination', [
-                'models' => $occupations,
-                'order_by' => $orderBy,
-                'ascending' => $ascending,
-                'paginate_per_page' => $paginatePerPage,
-                ])->render(),
-            ]);
-    }
+  /**
+   * Filter occupation
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function filter(Request $request)
+  {
+    $occupations = Occupation::filter($request->all());
+    $occupations = $occupations->setPath('');
+    $orderBy = $request->get('order_by');
+    $ascending = $request->get('ascending');
+    $paginatePerPage = $request->get('paginate_per_page');
+
+    return response()->json([
+      'filter_result' => view('occupations.filter-result', compact('occupations', 'orderBy', 'ascending'))->render(),
+      'pagination' => view('layouts.pagination', [
+        'models' => $occupations,
+        'order_by' => $orderBy,
+        'ascending' => $ascending,
+        'paginate_per_page' => $paginatePerPage,
+      ])->render(),
+    ]);
+  }
 }

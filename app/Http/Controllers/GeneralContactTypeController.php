@@ -8,149 +8,155 @@ use App\Models\GeneralContactType;
 
 class GeneralContactTypeController extends Controller
 {
-     /**
-    * Display a listing of the user.
-     *
-     * @param  Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $generalContactTypes =  GeneralContactType::filter($request->all());
-        $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
-        $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['create', 'edit', 'destroy', 'store', 'update']);
+    $this->middleware('role:admin|viewer')->only(['index', 'show']);
+  }
 
-        return view('general-contact-types.index', compact('generalContactTypes', 'ascending', 'orderBy'));
-    }
+  /**
+   * Display a listing of the user.
+   *
+   * @param  Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function index(Request $request)
+  {
+    $generalContactTypes =  GeneralContactType::filter($request->all());
+    $ascending = isset($query['ascending']) ? $query['ascending'] : 'desc';
+    $orderBy = isset($query['order_by']) ? $query['order_by'] : 'name';
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('general-contact-types.create');
-    }
+    return view('general-contact-types.index', compact('generalContactTypes', 'ascending', 'orderBy'));
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('contact_types', 'name')],
-        ]);
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function create()
+  {
+    return view('general-contact-types.create');
+  }
 
-        $input = $request->all();
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    $request->validate([
+      'name' => ['required', 'string', 'max:255', Rule::unique('contact_types', 'name')],
+    ]);
 
-       GeneralContactType::create([
-            'name' => $input['name'],
-        ]);
+    $input = $request->all();
 
-        $resp = [
-            'message' => __('Tipo Contato Geral Cadastrado com Sucesso!'),
-            'alert-type' => 'success'
-        ];
+    GeneralContactType::create([
+      'name' => $input['name'],
+    ]);
 
-        return redirect()->route('general-contact-types.index')->with($resp);
-    }
+    $resp = [
+      'message' => __('Tipo Contato Geral Cadastrado com Sucesso!'),
+      'alert-type' => 'success'
+    ];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $generalContactType = GeneralContactType::findOrFail($id);
-        return view('general-contact-types.show', compact('generalContactType'));
-    }
+    return redirect()->route('general-contact-types.index')->with($resp);
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $generalContactType = GeneralContactType::findOrFail($id);
-        return view('general-contact-types.edit', compact('generalContactType'));
-    }
+  /**
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    $generalContactType = GeneralContactType::findOrFail($id);
+    return view('general-contact-types.show', compact('generalContactType'));
+  }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $generalContactType = GeneralContactType::findOrFail($id);
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+    $generalContactType = GeneralContactType::findOrFail($id);
+    return view('general-contact-types.edit', compact('generalContactType'));
+  }
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('contact_types', 'name')->ignore($generalContactType->id)],
-        ]);
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(Request $request, $id)
+  {
+    $generalContactType = GeneralContactType::findOrFail($id);
 
-        $input = $request->all();
+    $request->validate([
+      'name' => ['required', 'string', 'max:255', Rule::unique('contact_types', 'name')->ignore($generalContactType->id)],
+    ]);
 
-        $generalContactType->update([
-            'name' => $input['name'],
-        ]);
+    $input = $request->all();
 
-        $resp = [
-            'message' => __('Tipo Contato Geral Atualizado com Sucesso!'),
-            'alert-type' => 'success'
-        ];
+    $generalContactType->update([
+      'name' => $input['name'],
+    ]);
 
-        return redirect()->route('general-contact-types.index')->with($resp);
-    }
+    $resp = [
+      'message' => __('Tipo Contato Geral Atualizado com Sucesso!'),
+      'alert-type' => 'success'
+    ];
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $generalContactType = GeneralContactType::findOrFail($id);
+    return redirect()->route('general-contact-types.index')->with($resp);
+  }
 
-        $generalContactType->delete();
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $generalContactType = GeneralContactType::findOrFail($id);
 
-        return response()->json([
-            'message' => __('Tipo Contato Apagado com Sucesso!!'),
-            'alert-type' => 'success'
-        ]);
-    }
+    $generalContactType->delete();
 
-    /**
-     * Filter contactType
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(Request $request)
-    {
-        $generalContactTypes = GeneralContactType::filter($request->all());
-        $orderBy = $request->get('order_by');
-        $ascending = $request->get('ascending');
-        $paginatePerPage = $request->get('paginate_per_page');
+    return response()->json([
+      'message' => __('Tipo Contato Apagado com Sucesso!!'),
+      'alert-type' => 'success'
+    ]);
+  }
 
-        return response()->json([
-            'filter_result' => view('general-contact-types.filter-result', compact('contactTypes', 'orderBy', 'ascending'))->render(),
-            'pagination' => view('layouts.pagination', [
-                'models' => $generalContactTypes,
-                'order_by' => $orderBy,
-                'ascending' => $ascending,
-                'paginate_per_page' => $paginatePerPage,
-                ])->render(),
-            ]);
-    }
+  /**
+   * Filter contactType
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function filter(Request $request)
+  {
+    $generalContactTypes = GeneralContactType::filter($request->all());
+    $orderBy = $request->get('order_by');
+    $ascending = $request->get('ascending');
+    $paginatePerPage = $request->get('paginate_per_page');
+
+    return response()->json([
+      'filter_result' => view('general-contact-types.filter-result', compact('contactTypes', 'orderBy', 'ascending'))->render(),
+      'pagination' => view('layouts.pagination', [
+        'models' => $generalContactTypes,
+        'order_by' => $orderBy,
+        'ascending' => $ascending,
+        'paginate_per_page' => $paginatePerPage,
+      ])->render(),
+    ]);
+  }
 }

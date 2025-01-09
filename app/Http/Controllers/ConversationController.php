@@ -11,6 +11,12 @@ use App\Models\ConversationItem;
 
 class ConversationController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('role:admin')->only(['store']);
+    $this->middleware('role:admin|viewer')->only(['show']);
+  }
+
   /**
    * Display the specified resource.
    *
@@ -58,5 +64,4 @@ class ConversationController extends Controller
     $conversation = Conversation::findOrFail($id);
     return response()->json($conversation);
   }
-
 }
