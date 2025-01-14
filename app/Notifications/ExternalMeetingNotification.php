@@ -87,7 +87,7 @@ class ExternalMeetingNotification extends Notification
         ];
 
         return (new MailMessage())
-            ->subject(str_replace($tags, $values, TemplateEmail::getSubject('external_meeting')))
+            ->subject(str_replace($tags, $values, $this->conversationItem->schedule_name))
             ->line(new HtmlString(str_replace($tags, $values, TemplateEmail::getValue('external_meeting'))));
     }
 

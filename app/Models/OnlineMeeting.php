@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\ExternalMeetingNotification;
 
 class OnlineMeeting extends Model
 {
   public static function createOnlineMeeting(ConversationItem $conversationItem, $userId = NULL)
   {
-    if($userId == null) $userId = env('AZURE_USER_ONLINE_MEETING', '');
+    if ($userId == null) $userId = env('AZURE_USER_ONLINE_MEETING', '');
 
     $data =  [
       "startDateTime" => $conversationItem->schedule_at,
@@ -39,7 +40,24 @@ class OnlineMeeting extends Model
 
   public static function createEvent(ConversationItem $conversationItem, $userId = null)
   {
-    if($userId == null) $userId = env('AZURE_USER_ONLINE_MEETING', '');
+    if ($userId == null) $userId = env('AZURE_USER_ONLINE_MEETING', '');
+
+    $notification = new ExternalMeetingNotification($conversationItem);
+    $content = ($notification)->toMail(auth()->user());
+    $html = view('config.emails.templates.show', compact('content'))->render();
+
+    // Inline CSS styles to ensure they are applied in the email
+    $html = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $html);
+    $html = preg_replace_callback('/<([a-z]+)([^>]*)>/i', function ($matches) {
+      $tag = $matches[1];
+      $attributes = $matches[2];
+      if (preg_match('/style="([^"]*)"/i', $attributes, $styleMatches)) {
+        $styles = $styleMatches[1];
+        $attributes = preg_replace('/style="[^"]*"/i', '', $attributes);
+        $attributes .= ' style="' . $styles . '"';
+      }
+      return "<$tag$attributes>";
+    }, $html);
 
     $attendees[] = [
       "emailAddress" => [
@@ -71,7 +89,7 @@ class OnlineMeeting extends Model
       "subject" => $conversationItem->schedule_name,
       "body" => [
         "contentType" => "HTML",
-        "content" => $conversationItem->schedule_details
+        "content" => $html
       ],
       "start" => [
         "dateTime" => $conversationItem->schedule_at,
