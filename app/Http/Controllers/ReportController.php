@@ -106,19 +106,18 @@ class ReportController extends Controller
 
     $conversations1 = ConversationItem::whereBetween("interaction_at", [$startDate, $endDate])
     ->where('item_type', 'Proposta')
-    ->where(function ($query) {
-        $query->whereHas("values", function ($q) {
-            $q->where("additional_value", true);
-        })->orWhereDoesntHave("values");
+    ->whereHas("values", function ($q) {
+      $q->where("additional_value", true);
     })
     ->orderBy('conversation_id')
     ->get();
 
-
     // Subconsulta 1: Encontra a maior data (interaction_at) por conversation_id
     $subQuery1 = ConversationItem::select('conversation_id', DB::raw('MAX(interaction_at) as max_data'))
-      ->whereHas("values", function ($q) {
-        $q->where("additional_value", false);
+      ->where(function ($query) {
+        $query->whereHas("values", function ($q) {
+            $q->where("additional_value", false);
+        })->orWhereDoesntHave("values");
       })
       ->groupBy('conversation_id');
 
